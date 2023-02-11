@@ -3,10 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
+import 'package:jungle/model_view/change_theme/theme.dart';
 import 'package:jungle/view/home/home.dart';
 import 'dart:async';
 import 'package:jungle/view/welcome_page/welcome_page.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget{
   const SplashScreen({super.key});
@@ -22,6 +25,7 @@ class SplashScreenState extends State<SplashScreen>{
   void initState() {
     super.initState();
     navigation();
+    init(context);
     setTheme();
   }
 
@@ -60,6 +64,14 @@ class SplashScreenState extends State<SplashScreen>{
           );
       }
       );
+  }
+
+  Future<void> init(context) async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final changeTheme = Provider.of<ChangeTheme>(context, listen: false);
+    setState(() {
+      changeTheme.theme = preferences.getString("theme") ?? "light";
+    });
   }
 
   void setTheme(){
