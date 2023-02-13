@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:jungle/model/palette/palette.dart';
+import 'package:jungle/model/task_model/task_model.dart';
 import 'package:jungle/model_view/change_theme/theme.dart';
 import 'package:provider/provider.dart';
 
-class AddTaskBottomSheet extends StatelessWidget{
+class AddTaskBottomSheet extends StatefulWidget{
   const AddTaskBottomSheet({super.key});
 
+  @override
+  State<AddTaskBottomSheet> createState() => _AddTaskBottomSheetState();
+}
+
+class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  
   @override 
   Widget build(context){
     final ChangeTheme changeTheme = Provider.of<ChangeTheme>(context);
@@ -60,10 +70,12 @@ class AddTaskBottomSheet extends StatelessWidget{
                               ],
                             ),
                           ),
+                          
                           Divider(
                             thickness: 1.0,
                             color: changeTheme.changeTextTheme(),
                           ),
+                          const SizedBox(height: 10),
                           titleTextField(changeTheme),
                           const SizedBox(height: 20),
                           descriptionTextField(changeTheme),
@@ -73,7 +85,6 @@ class AddTaskBottomSheet extends StatelessWidget{
                             children: [
                               saveTaskButton(),
                               const SizedBox(width: 10),
-                              deleteTaskButton()
                             ],
                           )
                         ],
@@ -96,6 +107,7 @@ class AddTaskBottomSheet extends StatelessWidget{
         style: TextStyle(
           color: changeTheme.changeTextTheme()
         ),
+        controller: titleController,
         cursorColor: Colors.black,
         decoration: InputDecoration(
           hintText: "Title",
@@ -128,6 +140,7 @@ class AddTaskBottomSheet extends StatelessWidget{
         color: changeTheme.changeTextTheme()
       ),
       maxLines: 10,
+      controller: descriptionController,
       decoration: InputDecoration(
         hintText: "Description",
         hintStyle: TextStyle(
@@ -148,8 +161,16 @@ class AddTaskBottomSheet extends StatelessWidget{
   }
 
   Widget saveTaskButton(){
+    final taskBox = Hive.box<TaskModel>("task");
     return MaterialButton(
-      onPressed: (){},
+      onPressed: (){
+          taskBox.add(
+            TaskModel(titleController.text,
+            descriptionController.text
+            ),
+          );
+          Navigator.of(context).pop();
+      },
       color: Palette.copenhagenBlue,
       elevation: 0.0,
       shape: RoundedRectangleBorder(
@@ -164,23 +185,4 @@ class AddTaskBottomSheet extends StatelessWidget{
       ),
     );
   }
-
-  Widget deleteTaskButton(){
-    return MaterialButton(
-      onPressed: (){},
-      color: Colors.red.shade600,
-      elevation: 0.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20)
-      ),
-      child: const Text(
-        "Delete",
-        style: TextStyle(
-          fontSize: 17,
-          color: Colors.white
-        ),
-      ),
-    );
-  }
-
 } 

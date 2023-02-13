@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
 import 'package:page_transition/page_transition.dart';
 import '../page_2/page_2.dart';
 
@@ -10,7 +9,6 @@ class Page1 extends StatelessWidget{
   @override 
   Widget build(context){
     setTheme();
-    final welcomePageDB = Hive.box("welcomePage");
     return Material(
       color: Colors.purple.shade800,
       child: Padding(

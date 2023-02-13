@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
+import 'package:jungle/model/task_model/task_model.dart';
 import 'package:jungle/model_view/change_theme/theme.dart';
 import 'package:jungle/view/home/add_task_bottom_sheet/bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -12,8 +13,9 @@ class Home extends StatefulWidget{
   @override 
   HomeState createState()=> HomeState();
 }
-
 class HomeState extends State<Home>{
+  final taskBox = Hive.box<TaskModel>("task");
+
   @override
   Widget build(context){
     final ChangeTheme changeTheme = Provider.of<ChangeTheme>(context);
@@ -22,7 +24,7 @@ class HomeState extends State<Home>{
       backgroundColor: changeTheme.changeBackgroundTheme(),
       appBar: buildAppBar(changeTheme),
       floatingActionButton: addTaskFloatingActionButton(),
-      body: buildBody(),
+      body: buildBody(changeTheme),
 
     );
   }
@@ -55,8 +57,57 @@ class HomeState extends State<Home>{
     );
   }
 
-  Widget buildBody(){
-    return showNoTask();
+  Widget buildBody(ChangeTheme changeTheme){
+    return showTask(changeTheme);
+  }
+
+  Widget showTask(ChangeTheme changeTheme){
+    return ValueListenableBuilder(
+      valueListenable: taskBox.listenable(),
+      builder: (context, taskBox, child){
+        if(taskBox.isEmpty){
+          return showNoTask();
+        }
+        return ListView.builder(
+          itemCount: taskBox.length,
+          itemBuilder: (context, int index){
+            index = taskBox.length - 1 - index;
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: MaterialButton(
+                onPressed: (){
+                  showEditTaskDialog(index, changeTheme);
+                },
+                color: changeTheme.changeTaskTheme(),
+                elevation: 0.0,
+                padding: const EdgeInsets.all(0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  // side: BorderSide(
+                  //   color: changeTheme.changeTextTheme()
+                  // )
+                ),
+                child: ListTile(
+                  title: Text(
+                    taskBox.getAt(index)!.title,
+                    style: TextStyle(
+                      color: changeTheme.changeTextTheme(),
+                      fontWeight: FontWeight.bold                    )
+                  ),
+                  subtitle: Text(
+                    taskBox.getAt(index)!.description,
+                    style: TextStyle(
+                      color: changeTheme.changeDescriptionTheme()
+                    ),
+                    
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      }
+      );
   }
 
   Widget showNoTask(){
@@ -106,6 +157,7 @@ class HomeState extends State<Home>{
       }
     );
   }
+
 
   void settingsBottomSheet(context, ChangeTheme changeTheme){
     showModalBottomSheet(
@@ -290,8 +342,7 @@ class HomeState extends State<Home>{
     );
   }
 
-
-
+  /* This function changes status bar color and Navigation bar color */
   void setTheme(ChangeTheme changeTheme){
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(
@@ -300,5 +351,123 @@ class HomeState extends State<Home>{
           systemNavigationBarIconBrightness: Brightness.light,
           statusBarColor: Colors.transparent,
         ));
+  }
+
+  void showEditTaskDialog(int index, ChangeTheme changeTheme){
+    final taskDB = Hive.box<TaskModel>("task");
+    final task = taskDB.getAt(index) as TaskModel;
+    showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          backgroundColor: changeTheme.changeBackgroundTheme(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20)
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                  cursorColor: changeTheme.changeTextTheme(),
+                  textCapitalization: TextCapitalization.sentences,
+                  style: TextStyle(color: changeTheme.changeTextTheme()),
+                  initialValue: taskDB.getAt(index)!.title,
+                  onChanged: (value){
+                    task.title = value;
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Title",
+                    hintStyle: TextStyle(color: changeTheme.changeTextTheme()),
+                    border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: changeTheme.changeTextTheme()),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: changeTheme.changeTextTheme()),
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 10),
+              TextFormField(
+                  cursorColor: changeTheme.changeTextTheme(),
+                  style: TextStyle(color: changeTheme.changeTextTheme()),
+                  maxLines: 10,
+                  textCapitalization: TextCapitalization.sentences,
+                  initialValue: taskDB.getAt(index)!.description,
+                  onChanged: (value){
+                    task.description = value;
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Description",
+                    hintStyle: TextStyle(color: changeTheme.changeTextTheme()),
+                    border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: changeTheme.changeTextTheme()),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: changeTheme.changeTextTheme()),
+                    ),
+                  ),
+                )
+            ],
+          ),
+          actions: [
+            updateTaskButton(index),
+            deleteTaskButton(index)
+          ],
+        );
+      }
+      );
+  }
+
+  Widget updateTaskButton(int index){
+    final taskBox = Hive.box<TaskModel>("task");
+    final task = taskBox.getAt(index) as TaskModel;
+    return MaterialButton(
+      onPressed: (){
+          taskBox.putAt(index, TaskModel(task.title, task.description));
+          Navigator.of(context).pop();
+      },
+      height: 28,
+      minWidth: 10,
+      color: Palette.copenhagenBlue,
+      elevation: 0.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20)
+      ),
+      child: const Text(
+        "Update",
+        style: TextStyle(
+          fontSize: 14,
+          color: Colors.white
+        ),
+      ),
+    );
+  }
+
+  Widget deleteTaskButton(int index){
+    final taskBox = Hive.box<TaskModel>("task");
+    return MaterialButton(
+      onPressed: (){
+        taskBox.deleteAt(index);
+        Navigator.of(context).pop();
+      },
+      color: Colors.red.shade600,
+      elevation: 0.0,
+      height: 28,
+      minWidth: 10,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20)
+      ),
+      child: const Text(
+        "Delete",
+        style: TextStyle(
+          fontSize: 14,
+          color: Colors.white
+        ),
+      ),
+    );
   }
 }

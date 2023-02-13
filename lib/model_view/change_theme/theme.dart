@@ -29,6 +29,23 @@ class ChangeTheme extends ChangeNotifier{
     }
   }
 
+  Color changeDescriptionTheme(){
+    if(theme == "dark"){
+      return Colors.grey.shade200;
+    } else {
+      return Colors.grey.shade600;
+    }
+  }
+
+  Color changeTaskTheme(){
+    if(theme == "dark"){
+      return Colors.grey.shade700;
+    } else {
+      return Colors.grey.shade200;
+    }
+  }
+  
+
     Future<void> saveChangeTheme() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("theme", theme);

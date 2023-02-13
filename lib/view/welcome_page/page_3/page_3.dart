@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:jungle/view/home/home.dart';
 import 'package:page_transition/page_transition.dart';
-
 import '../page_2/page_2.dart';
 
 class Page3 extends StatelessWidget{
@@ -106,7 +105,6 @@ enjoy it.
                       type: PageTransitionType.rightToLeft
                     )
                    );
-
                 },
                 child: const Text(
                   "Start",
@@ -123,14 +121,6 @@ enjoy it.
       ),
     );
   }
-
-  Widget test(){
-    return Container(
-      child: const Text("Test"),
-      decoration: const BoxDecoration(),
-    );
-  }
-
 
   void setTheme(){
       SystemChrome.setSystemUIOverlayStyle(
