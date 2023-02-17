@@ -6,6 +6,7 @@ import 'package:jungle/model/task_model/task_model.dart';
 import 'package:jungle/model_view/change_theme/theme.dart';
 import 'package:jungle/view/home/add_task_bottom_sheet/bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget{
   const Home({super.key});
@@ -246,7 +247,9 @@ class HomeState extends State<Home>{
 
   Widget feedbackButton(ChangeTheme changeTheme){
     return MaterialButton(
-      onPressed: (){},
+      onPressed: (){
+        _sendMail();
+      },
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20)
       ),
@@ -469,5 +472,12 @@ class HomeState extends State<Home>{
         ),
       ),
     );
+  }
+
+
+  Future<void> _sendMail() async{
+    final uri = Uri.parse('mailto:kberfan99@gmail.com?subject=Need help');
+    await launchUrl(uri);
+  
   }
 }
