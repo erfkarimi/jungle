@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
-import 'package:jungle/model_view/change_theme/theme.dart';
+import 'package:jungle/view_model/change_theme/theme.dart';
 import 'package:jungle/view/home/home.dart';
 import 'dart:async';
 import 'package:jungle/view/welcome_page/welcome_page.dart';

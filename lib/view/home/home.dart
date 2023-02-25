@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/model/task_model/task_model.dart';
-import 'package:jungle/model_view/change_theme/theme.dart';
+import 'package:jungle/view_model/change_theme/theme.dart';
 import 'package:jungle/view/home/add_task_bottom_sheet/bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
