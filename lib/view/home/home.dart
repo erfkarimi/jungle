@@ -74,33 +74,35 @@ class HomeState extends State<Home>{
           itemBuilder: (context, int index){
             index = taskBox.length - 1 - index;
             return Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(10),
               child: MaterialButton(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
                 onPressed: (){
                   showEditTaskDialog(index, changeTheme);
                 },
-                color: changeTheme.changeTaskTheme(),
+                color: changeTheme.changeBackgroundTheme(),
                 elevation: 0.0,
                 padding: const EdgeInsets.all(0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
-                  // side: BorderSide(
-                  //   color: changeTheme.changeTextTheme()
-                  // )
+                  side: BorderSide(
+                    color: changeTheme.changeTextTheme()
+                  )
                 ),
                 child: ListTile(
                   title: Text(
                     taskBox.getAt(index)!.title,
                     style: TextStyle(
                       color: changeTheme.changeTextTheme(),
-                      fontWeight: FontWeight.bold                    )
+                      fontWeight: FontWeight.bold,                  
+                       ),
                   ),
                   subtitle: Text(
                     taskBox.getAt(index)!.description,
                     style: TextStyle(
                       color: changeTheme.changeDescriptionTheme()
                     ),
-                    
+                    maxLines: 1,
                   ),
                 ),
               ),
