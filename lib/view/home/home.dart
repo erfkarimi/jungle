@@ -76,7 +76,6 @@ class HomeState extends State<Home>{
             return Padding(
               padding: const EdgeInsets.all(10),
               child: MaterialButton(
-                clipBehavior: Clip.antiAliasWithSaveLayer,
                 onPressed: (){
                   showEditTaskDialog(index, changeTheme);
                 },
@@ -473,6 +472,12 @@ class HomeState extends State<Home>{
           color: Colors.white
         ),
       ),
+    );
+  }
+
+  Widget test(){
+    return const Text(
+      "Hello"
     );
   }
 
