@@ -79,7 +79,7 @@ application.
                     borderRadius: BorderRadius.circular(20)
                   ),
                 ),
-                const SizedBox(width: 66),
+                const SizedBox(width: 52),
                 MaterialButton(
                 minWidth: 20,
                 shape: RoundedRectangleBorder(

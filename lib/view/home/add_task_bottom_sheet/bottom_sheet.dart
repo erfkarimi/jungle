@@ -4,6 +4,7 @@ import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/model/task_model/task_model.dart';
 import 'package:jungle/view_model/change_theme/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddTaskBottomSheet extends StatefulWidget{
   const AddTaskBottomSheet({super.key});
@@ -51,15 +52,16 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    "Add new task",
+                                     AppLocalizations.of(context)!.bottomSheetTitle,
                                     style: TextStyle(
                                       color: changeTheme.changeTextTheme(),
-                                      fontSize: 18
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600
                                     ),
                                   ),
                                 ),
                                 Text(
-                                  "close",
+                                   AppLocalizations.of(context)!.bottomSheetCloseButtonTitle,
                                   style: TextStyle(
                                     color: Colors.red.shade600,
                                     letterSpacing: 2,
@@ -110,11 +112,11 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
         controller: titleController,
         cursorColor: Colors.black,
         decoration: InputDecoration(
-          hintText: "Title",
+          hintText:   AppLocalizations.of(context)!.taskTitleTextFieldHintText,
           hintStyle: TextStyle(
             color: changeTheme.changeTextTheme()
           ),
-          labelText: "Title",
+          labelText:  AppLocalizations.of(context)!.taskTitleTextFieldHintText,
           labelStyle: TextStyle(
             color: changeTheme.changeTextTheme()
           ),
@@ -142,7 +144,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       maxLines: 10,
       controller: descriptionController,
       decoration: InputDecoration(
-        hintText: "Description",
+        hintText:  AppLocalizations.of(context)!.taskDescriptionTextFieldHintText,
         hintStyle: TextStyle(
           color: changeTheme.changeTextTheme()
         ),
@@ -176,9 +178,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20)
       ),
-      child: const Text(
-        "Save",
-        style: TextStyle(
+      child:  Text(
+         AppLocalizations.of(context)!.saveButtonTitle,
+        style: const TextStyle(
           fontSize: 17,
           color: Colors.white
         ),

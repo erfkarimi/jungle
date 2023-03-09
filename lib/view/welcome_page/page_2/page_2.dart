@@ -64,7 +64,7 @@ your friends.
                   ),
                 )
                 ),
-                const SizedBox(width: 66),
+                const SizedBox(width: 52),
                 Container(
                   height: 6,
                   width: 6,
@@ -91,14 +91,13 @@ your friends.
                     borderRadius: BorderRadius.circular(20)
                   ),
                 ),
-                const SizedBox(width: 66),
+                const SizedBox(width: 52),
                 MaterialButton(
                 minWidth: 20,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)
                 ),
                 onPressed: (){
-                  
                   Navigator.of(context).push(
                     PageTransition(
                       type: PageTransitionType.rightToLeft,

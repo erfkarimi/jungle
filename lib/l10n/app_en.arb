@@ -1,0 +1,18 @@
+{
+    "appBarTitle": "Home",
+    "languageButtonTitle": "Language",
+    "themeButtonTitle": "Theme",
+    "feedbackButtonTitle": "feedback",
+    "darkButtonTitle": "Dark",
+    "lightButtonTitle": "Light",
+    "addTaskButtonTitle": "Add task",
+    "bottomSheetTitle": "Add new task",
+    "bottomSheetCloseButtonTitle": "Close",
+    "taskTitleTextFieldHintText": "Title",
+    "taskDescriptionTextFieldHintText": "Description",
+    "saveButtonTitle": "Save",
+    "updateButtonTitle": "Update",
+    "deleteButtonTitle": "Delete",
+    "noTask": "No task"
+
+}

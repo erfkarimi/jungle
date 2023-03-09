@@ -1,0 +1,18 @@
+{
+    "appBarTitle": "خانه",
+    "languageButtonTitle": "زبان",
+    "themeButtonTitle": "تم",
+    "feedbackButtonTitle": "بازخورد",
+    "darkButtonTitle": "تاریک",
+    "lightButtonTitle": "روشن",
+    "addTaskButtonTitle": "تکلیف جدید",
+    "bottomSheetTitle": "تکلیف جدید اضافه کن",
+    "bottomSheetCloseButtonTitle": "بستن",
+    "taskTitleTextFieldHintText": "عنوان",
+    "taskDescriptionTextFieldHintText": "توضیح",
+    "saveButtonTitle": "ذخیره",
+    "updateButtonTitle": "بروزرسانی",
+    "deleteButtonTitle": "پاک کردن",
+    "noTask": "بدون تکلیف"
+
+}

@@ -17,5 +17,5 @@ Future<void> main() async{
   runApp(
     ChangeNotifierProvider(
       create: (_)=> ChangeTheme(),
-      child: const App()));
+      child: App()));
 }

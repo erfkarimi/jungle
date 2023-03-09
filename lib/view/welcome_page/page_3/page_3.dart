@@ -64,7 +64,7 @@ enjoy it.
                   ),
                 )
                 ),
-                const SizedBox(width: 66),
+                const SizedBox(width: 52),
                 Container(
                   height: 6,
                   width: 6,
@@ -91,7 +91,7 @@ enjoy it.
                     borderRadius: BorderRadius.circular(20)
                   ),
                 ),
-                const SizedBox(width: 66),
+                const SizedBox(width: 52),
                 MaterialButton(
                 minWidth: 20,
                 shape: RoundedRectangleBorder(

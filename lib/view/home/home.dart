@@ -7,6 +7,7 @@ import 'package:jungle/view_model/change_theme/theme.dart';
 import 'package:jungle/view/home/add_task_bottom_sheet/bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Home extends StatefulWidget{
   const Home({super.key});
@@ -38,7 +39,7 @@ class HomeState extends State<Home>{
       automaticallyImplyLeading: false,
       backgroundColor: changeTheme.changeAppBarTheme(),
       title: Text(
-        "Home",
+        AppLocalizations.of(context)!.appBarTitle,
         style: TextStyle(
           color: changeTheme.changeTextTheme()
         ),
@@ -123,7 +124,7 @@ class HomeState extends State<Home>{
             width: 250,
           ),
           Text(
-            "No task",
+            AppLocalizations.of(context)!.noTask,
             style: TextStyle(
               fontSize: 17,
               color: changeTheme.changeTextTheme()
@@ -142,8 +143,8 @@ class HomeState extends State<Home>{
       },
       backgroundColor: Palette.copenhagenBlue,
       icon: const Icon(Icons.edit),
-      label: const Text(
-        "New task"
+      label: Text(
+        AppLocalizations.of(context)!.addTaskButtonTitle
       ),
     );
   }
@@ -211,7 +212,7 @@ class HomeState extends State<Home>{
           color: changeTheme.changeTextTheme()
           ),
           title: Text(
-            "Language",
+            AppLocalizations.of(context)!.languageButtonTitle,
             style: TextStyle(
               color: changeTheme.changeTextTheme()
             ),
@@ -236,7 +237,7 @@ class HomeState extends State<Home>{
           color: changeTheme.changeTextTheme(),
           ),
           title: Text(
-            "Theme",
+             AppLocalizations.of(context)!.themeButtonTitle,
             style: TextStyle(
               color: changeTheme.changeTextTheme(),
             ),
@@ -260,7 +261,7 @@ class HomeState extends State<Home>{
           color: changeTheme.changeTextTheme(),
           ),
           title: Text(
-            "feedback",
+            AppLocalizations.of(context)!.feedbackButtonTitle,
             style: TextStyle(
               color: changeTheme.changeTextTheme()
             ),
@@ -277,7 +278,7 @@ class HomeState extends State<Home>{
         return AlertDialog(
           backgroundColor: changeTheme.changeBackgroundTheme(),
           title: Text(
-            "Theme",
+             AppLocalizations.of(context)!.themeButtonTitle,
             style: TextStyle(
               color: changeTheme.changeTextTheme()
             ),
@@ -311,9 +312,9 @@ class HomeState extends State<Home>{
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      child: const Text(
-        "Light",
-        style: TextStyle(
+      child: Text(
+        AppLocalizations.of(context)!.lightButtonTitle,
+        style: const TextStyle(
           fontSize: 17,
           color: Colors.black
         ),
@@ -336,9 +337,9 @@ class HomeState extends State<Home>{
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      child: const Text(
-        "Dark",
-        style: TextStyle(
+      child: Text(
+        AppLocalizations.of(context)!.darkButtonTitle,
+        style: const TextStyle(
           fontSize: 17,
           color: Colors.black
         ),
@@ -380,7 +381,7 @@ class HomeState extends State<Home>{
                     task.title = value;
                   },
                   decoration: InputDecoration(
-                    hintText: "Title",
+                    hintText: AppLocalizations.of(context)!.taskTitleTextFieldHintText,
                     hintStyle: TextStyle(color: changeTheme.changeTextTheme()),
                     border: OutlineInputBorder(
                       borderSide:
@@ -403,7 +404,7 @@ class HomeState extends State<Home>{
                     task.description = value;
                   },
                   decoration: InputDecoration(
-                    hintText: "Description",
+                    hintText: AppLocalizations.of(context)!.taskDescriptionTextFieldHintText,
                     hintStyle: TextStyle(color: changeTheme.changeTextTheme()),
                     border: OutlineInputBorder(
                       borderSide:
@@ -441,9 +442,9 @@ class HomeState extends State<Home>{
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20)
       ),
-      child: const Text(
-        "Update",
-        style: TextStyle(
+      child: Text(
+        AppLocalizations.of(context)!.updateButtonTitle,
+        style: const TextStyle(
           fontSize: 14,
           color: Colors.white
         ),
@@ -465,22 +466,15 @@ class HomeState extends State<Home>{
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20)
       ),
-      child: const Text(
-        "Delete",
-        style: TextStyle(
+      child: Text(
+       AppLocalizations.of(context)!.deleteButtonTitle,
+        style: const TextStyle(
           fontSize: 14,
           color: Colors.white
         ),
       ),
     );
   }
-
-  Widget test(){
-    return const Text(
-      "Hello"
-    );
-  }
-
 
   Future<void> _sendMail() async{
     final uri = Uri.parse('mailto:kberfan99@gmail.com?subject=Need help');
