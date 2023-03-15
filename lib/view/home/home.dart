@@ -3,11 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/model/task_model/task_model.dart';
-import 'package:jungle/view_model/change_theme/theme.dart';
-import 'package:jungle/view/home/add_task_bottom_sheet/bottom_sheet.dart';
+import 'package:jungle/view/add_task/add_task.dart';
+import 'package:jungle/view/settings/settings.dart';
+import 'package:jungle/view_model/set_theme/set_theme.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part 'add_task_bottom_sheet/bottom_sheet.dart';
 
 class Home extends StatefulWidget{
   const Home({super.key});
@@ -20,13 +21,13 @@ class HomeState extends State<Home>{
 
   @override
   Widget build(context){
-    final ChangeTheme changeTheme = Provider.of<ChangeTheme>(context);
-    setTheme(changeTheme);
+    final SetTheme setTheme = Provider.of<SetTheme>(context);
+    setSystemTheme(setTheme);
     return Scaffold(
-      backgroundColor: changeTheme.changeBackgroundTheme(),
-      appBar: buildAppBar(changeTheme),
-      floatingActionButton: addTaskFloatingActionButton(),
-      body: buildBody(changeTheme),
+      backgroundColor: setTheme.setBackgroundTheme(),
+      appBar: buildAppBar(setTheme),
+      floatingActionButton: floatingActionButton(),
+      body: buildBody(setTheme),
 
     );
   }
@@ -34,36 +35,48 @@ class HomeState extends State<Home>{
   /*---------- Widgets and Functions ----------*/
 
   /* App Bar */
-  AppBar buildAppBar(ChangeTheme changeTheme){
+  AppBar buildAppBar(SetTheme setTheme){
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: changeTheme.changeAppBarTheme(),
+      backgroundColor: setTheme.setAppBarTheme(),
       title: Text(
-        AppLocalizations.of(context)!.appBarTitle,
+        "Home",
         style: TextStyle(
-          color: changeTheme.changeTextTheme()
+          color: setTheme.setTextTheme(),
+
         ),
       ),
       elevation: 0.0,
       actions: [
-        IconButton(
-          onPressed: (){
-            settingsBottomSheet(context, changeTheme);
-          },
-          icon: Icon(
-            Icons.settings_outlined,
-            color: changeTheme.changeTextTheme(),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          child: MaterialButton(
+            onPressed: (){
+              Navigator.of(context).push(
+                PageTransition(
+                  type: PageTransitionType.rightToLeft,
+                  child: const Settings()
+                )
+              );
+            },
+            minWidth: 20,
+            shape: CircleBorder(
+              side: BorderSide(
+                color: setTheme.setTextTheme()
+              )
             ),
-        )
+            child: Icon(
+            Icons.settings_outlined,
+            color: setTheme.setTextTheme(),
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  Widget buildBody(ChangeTheme changeTheme){
-    return showTask(changeTheme);
-  }
 
-  Widget showTask(ChangeTheme changeTheme){
+  Widget buildBody(SetTheme setTheme){
     return ValueListenableBuilder(
       valueListenable: taskBox.listenable(),
       builder: (context, taskBox, child){
@@ -75,36 +88,101 @@ class HomeState extends State<Home>{
           itemBuilder: (context, int index){
             index = taskBox.length - 1 - index;
             return Padding(
-              padding: const EdgeInsets.all(10),
-              child: MaterialButton(
-                onPressed: (){
-                  showEditTaskDialog(index, changeTheme);
-                },
-                color: changeTheme.changeBackgroundTheme(),
+              padding: const EdgeInsets.all(4),
+              child: Card(
+                color: setTheme.setAppBarTheme(),
                 elevation: 0.0,
-                padding: const EdgeInsets.all(0),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: BorderSide(
-                    color: changeTheme.changeTextTheme()
-                  )
+                  borderRadius: BorderRadius.circular(12),
+                  side: const BorderSide()
                 ),
-                child: ListTile(
-                  title: Text(
-                    taskBox.getAt(index)!.title,
-                    style: TextStyle(
-                      color: changeTheme.changeTextTheme(),
-                      fontWeight: FontWeight.bold,                  
-                       ),
-                  ),
-                  subtitle: Text(
-                    taskBox.getAt(index)!.description,
-                    style: TextStyle(
-                      color: changeTheme.changeDescriptionTheme()
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            taskBox.getAt(index)!.title,
+                            style: TextStyle(
+                            color: setTheme.setTextTheme(),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16                
+                              ),
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 2.0
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Palette.ultramarineBlue
+                                ),
+                                child: Text(
+                                  taskBox.getAt(index)!.label,
+                                  style: const TextStyle(
+                                    color: Colors.white
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: (){
+                                  addTaskBottomSheet(
+                                    context,
+                                    setTheme,
+                                    index
+                                    );
+                                },
+                                icon: Icon(
+                                  Icons.more_horiz,
+                                  color: setTheme.setTextTheme(),
+                                  ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    maxLines: 1,
-                  ),
-                ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 8.0, bottom: 8.0
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                                taskBox.getAt(index)!.description,
+                                style: TextStyle(
+                                    color:
+                                        setTheme.setDescriptionTheme()),
+                                maxLines: 4,
+                              ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                           Icon(
+                            Icons.calendar_month_outlined,
+                            color: setTheme.setTextTheme(),
+                            ),
+                          const SizedBox(width: 4.0),
+                          Text(
+                            taskBox.getAt(index)!.currentDate.toString(),
+                            style: TextStyle(
+                              color: setTheme.setTextTheme()
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                )
               ),
             );
           },
@@ -114,7 +192,7 @@ class HomeState extends State<Home>{
   }
 
   Widget showNoTask(){
-    final ChangeTheme changeTheme = Provider.of<ChangeTheme>(context);
+    final SetTheme setTheme = Provider.of<SetTheme>(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -124,10 +202,10 @@ class HomeState extends State<Home>{
             width: 250,
           ),
           Text(
-            AppLocalizations.of(context)!.noTask,
+            "No task",
             style: TextStyle(
               fontSize: 17,
-              color: changeTheme.changeTextTheme()
+              color: setTheme.setTextTheme()
             ),
           )
         ],
@@ -135,350 +213,37 @@ class HomeState extends State<Home>{
     );
   }
 
-  /* Floating button */
-  FloatingActionButton addTaskFloatingActionButton(){
-    return FloatingActionButton.extended(
-      onPressed: (){
-        addTaskBottomSheet(context);
-      },
-      backgroundColor: Palette.copenhagenBlue,
-      icon: const Icon(Icons.edit),
-      label: Text(
-        AppLocalizations.of(context)!.addTaskButtonTitle
-      ),
-    );
-  }
-
-  void addTaskBottomSheet(context){
-    showModalBottomSheet(
-      context: context, 
-      isDismissible: false,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (context){
-        return const AddTaskBottomSheet();
-      }
-    );
-  }
-
-
-  void settingsBottomSheet(context, ChangeTheme changeTheme){
-    showModalBottomSheet(
-      context: context, 
-      builder: (context){
-        return BottomSheet(
-          onClosing: (){},
-          backgroundColor: changeTheme.changeBackgroundTheme(),
-          enableDrag: false,
-          builder: (context){
-            return SizedBox(
-              height: 227,
-              child: Padding(
-                padding: const EdgeInsets.all(14),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 4,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: changeTheme.changeTextTheme(),
-                        borderRadius: BorderRadius.circular(20)
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    languageButton(changeTheme),
-                    themeButton(changeTheme),
-                    feedbackButton(changeTheme)
-                  ],
-                ),
-              )
-            );
-          }
-          );
-      }
-    );
-  }
-
-
-  Widget languageButton(ChangeTheme changeTheme){
-    return MaterialButton(
-      onPressed: (){},
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20)
-      ),
-      child: ListTile(
-        leading: Icon(
-          Icons.translate,
-          color: changeTheme.changeTextTheme()
-          ),
-          title: Text(
-            AppLocalizations.of(context)!.languageButtonTitle,
-            style: TextStyle(
-              color: changeTheme.changeTextTheme()
-            ),
-            ),
-      )
-    );
-  }
-
-
-  Widget themeButton(ChangeTheme changeTheme){
-    return MaterialButton(
-      onPressed: (){
-        Navigator.of(context).pop();
-        showThemeDialog(changeTheme);
-      },
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20)
-      ),
-      child: ListTile(
-        leading: Icon(
-          Icons.brightness_2_outlined,
-          color: changeTheme.changeTextTheme(),
-          ),
-          title: Text(
-             AppLocalizations.of(context)!.themeButtonTitle,
-            style: TextStyle(
-              color: changeTheme.changeTextTheme(),
-            ),
-            ),
-      )
-    );
-  }
-
-
-  Widget feedbackButton(ChangeTheme changeTheme){
-    return MaterialButton(
-      onPressed: (){
-        _sendMail();
-      },
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20)
-      ),
-      child: ListTile(
-        leading: Icon(
-          Icons.question_mark,
-          color: changeTheme.changeTextTheme(),
-          ),
-          title: Text(
-            AppLocalizations.of(context)!.feedbackButtonTitle,
-            style: TextStyle(
-              color: changeTheme.changeTextTheme()
-            ),
-            ),
-      )
-    );
-  }
-
-
-  void showThemeDialog(ChangeTheme changeTheme){
-    showDialog(
-      context: context,
-      builder: (context){
-        return AlertDialog(
-          backgroundColor: changeTheme.changeBackgroundTheme(),
-          title: Text(
-             AppLocalizations.of(context)!.themeButtonTitle,
-            style: TextStyle(
-              color: changeTheme.changeTextTheme()
-            ),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              lightThemeButton(),
-              darkThemeButton()
-            ],
+  FloatingActionButton floatingActionButton(){
+      return FloatingActionButton(
+        onPressed: (){
+         Navigator.of(context).push(
+          PageTransition(
+            type: PageTransitionType.rightToLeft,
+            child: const AddNewTask()
+            )
+         );
+        },
+        tooltip: "Add new task",
+        backgroundColor: Palette.ultramarineBlue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10)
+        ),
+        child: const Icon(
+          Icons.add,
+          size: 40,
           ),
         );
-      }
-    );
   }
-
-  Widget lightThemeButton(){
-    final ChangeTheme changeTheme = Provider.of<ChangeTheme>(context);
-    return MaterialButton(
-      minWidth: double.infinity,
-      onPressed: (){
-        changeTheme.theme = "light";
-        changeTheme.saveChangeTheme();
-        Navigator.of(context).pop();
-      },
-      color: Palette.copenhagenBlue,
-      elevation: 0.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        AppLocalizations.of(context)!.lightButtonTitle,
-        style: const TextStyle(
-          fontSize: 17,
-          color: Colors.black
-        ),
-      ),
-    );
-  }
-
-
-  Widget darkThemeButton(){
-    final ChangeTheme changeTheme = Provider.of<ChangeTheme>(context);
-    return MaterialButton(
-      minWidth: double.infinity,
-      onPressed: (){
-        changeTheme.theme = "dark";
-        changeTheme.saveChangeTheme();
-        Navigator.of(context).pop();
-      },
-      elevation: 0.0,
-      color: Palette.copenhagenBlue,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        AppLocalizations.of(context)!.darkButtonTitle,
-        style: const TextStyle(
-          fontSize: 17,
-          color: Colors.black
-        ),
-      ),
-    );
-  }
-
+  
   /* This function changes status bar color and Navigation bar color */
-  void setTheme(ChangeTheme changeTheme){
+  void setSystemTheme(SetTheme setTheme){
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(
           statusBarIconBrightness: Brightness.light,
-          systemNavigationBarColor: changeTheme.changeBackgroundTheme(),
+          systemNavigationBarColor: setTheme.setBackgroundTheme(),
           systemNavigationBarIconBrightness: Brightness.light,
           statusBarColor: Colors.transparent,
         ));
   }
 
-  void showEditTaskDialog(int index, ChangeTheme changeTheme){
-    final taskDB = Hive.box<TaskModel>("task");
-    final task = taskDB.getAt(index) as TaskModel;
-    showDialog(
-      context: context,
-      builder: (context){
-        return AlertDialog(
-          backgroundColor: changeTheme.changeBackgroundTheme(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20)
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                  cursorColor: changeTheme.changeTextTheme(),
-                  textCapitalization: TextCapitalization.sentences,
-                  style: TextStyle(color: changeTheme.changeTextTheme()),
-                  initialValue: taskDB.getAt(index)!.title,
-                  onChanged: (value){
-                    task.title = value;
-                  },
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context)!.taskTitleTextFieldHintText,
-                    hintStyle: TextStyle(color: changeTheme.changeTextTheme()),
-                    border: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: changeTheme.changeTextTheme()),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: changeTheme.changeTextTheme()),
-                    ),
-                  ),
-                ),
-              const SizedBox(height: 10),
-              TextFormField(
-                  cursorColor: changeTheme.changeTextTheme(),
-                  style: TextStyle(color: changeTheme.changeTextTheme()),
-                  maxLines: 10,
-                  textCapitalization: TextCapitalization.sentences,
-                  initialValue: taskDB.getAt(index)!.description,
-                  onChanged: (value){
-                    task.description = value;
-                  },
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context)!.taskDescriptionTextFieldHintText,
-                    hintStyle: TextStyle(color: changeTheme.changeTextTheme()),
-                    border: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: changeTheme.changeTextTheme()),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: changeTheme.changeTextTheme()),
-                    ),
-                  ),
-                )
-            ],
-          ),
-          actions: [
-            updateTaskButton(index),
-            deleteTaskButton(index)
-          ],
-        );
-      }
-      );
-  }
-
-  Widget updateTaskButton(int index){
-    final taskBox = Hive.box<TaskModel>("task");
-    final task = taskBox.getAt(index) as TaskModel;
-    return MaterialButton(
-      onPressed: (){
-          taskBox.putAt(index, TaskModel(task.title, task.description));
-          Navigator.of(context).pop();
-      },
-      height: 28,
-      minWidth: 10,
-      color: Palette.copenhagenBlue,
-      elevation: 0.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20)
-      ),
-      child: Text(
-        AppLocalizations.of(context)!.updateButtonTitle,
-        style: const TextStyle(
-          fontSize: 14,
-          color: Colors.white
-        ),
-      ),
-    );
-  }
-
-  Widget deleteTaskButton(int index){
-    final taskBox = Hive.box<TaskModel>("task");
-    return MaterialButton(
-      onPressed: (){
-        taskBox.deleteAt(index);
-        Navigator.of(context).pop();
-      },
-      color: Colors.red.shade600,
-      elevation: 0.0,
-      height: 28,
-      minWidth: 10,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20)
-      ),
-      child: Text(
-       AppLocalizations.of(context)!.deleteButtonTitle,
-        style: const TextStyle(
-          fontSize: 14,
-          color: Colors.white
-        ),
-      ),
-    );
-  }
-
-  Future<void> _sendMail() async{
-    final uri = Uri.parse('mailto:kberfan99@gmail.com?subject=Need help');
-    await launchUrl(uri);
-  
-  }
 }

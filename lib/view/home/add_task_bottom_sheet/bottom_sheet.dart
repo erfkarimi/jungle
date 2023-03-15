@@ -1,38 +1,31 @@
-import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:jungle/model/palette/palette.dart';
-import 'package:jungle/model/task_model/task_model.dart';
-import 'package:jungle/view_model/change_theme/theme.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of'../home.dart';
 
-class AddTaskBottomSheet extends StatefulWidget{
-  const AddTaskBottomSheet({super.key});
-
-  @override
-  State<AddTaskBottomSheet> createState() => _AddTaskBottomSheetState();
-}
-
-class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  
-  @override 
-  Widget build(context){
-    final ChangeTheme changeTheme = Provider.of<ChangeTheme>(context);
-    return BottomSheet(
-      backgroundColor: changeTheme.changeBackgroundTheme(),
-        onClosing: (){}, 
-        enableDrag: false,
-        builder: (context){
-          return Column(
+ void addTaskBottomSheet(
+  BuildContext context,
+  SetTheme setTheme,
+  int index
+  ){
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (context){
+        final taskDB = Hive.box<TaskModel>("task");
+        final task = taskDB.getAt(index) as TaskModel;
+        return BottomSheet(
+          backgroundColor: setTheme.setBackgroundTheme(),
+          onClosing: (){},
+          enableDrag: false,
+          builder: (context){
+            return Column(
             children: [
               const SizedBox(height: 14),
               Container(
                 height: 5,
                 width: 50,
                 decoration: BoxDecoration(
-                  color: changeTheme.changeTextTheme(),
+                  color: setTheme.setTextTheme(),
                   borderRadius: BorderRadius.circular(20)
                 ),
               ),
@@ -45,28 +38,26 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                         children: [
                           TextButton(
                             onPressed: (){
-                              Navigator.of(context).pop();
+                              deleteDialog(context,index, taskDB);
                             },
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Expanded(
-                                  child: Text(
-                                     AppLocalizations.of(context)!.bottomSheetTitle,
-                                    style: TextStyle(
-                                      color: changeTheme.changeTextTheme(),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600
-                                    ),
+                                Text(
+                                  "Add new task",
+                                  style: TextStyle(
+                                    color: setTheme.setTextTheme(),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600
                                   ),
                                 ),
                                 Text(
-                                   AppLocalizations.of(context)!.bottomSheetCloseButtonTitle,
+                                   "Delete",
                                   style: TextStyle(
                                     color: Colors.red.shade600,
                                     letterSpacing: 2,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 17
+                                    fontSize: 14
                                   ),
                                 ),
                               ],
@@ -75,20 +66,20 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                           
                           Divider(
                             thickness: 1.0,
-                            color: changeTheme.changeTextTheme(),
+                            color: setTheme.setTextFieldBorderTheme(),
                           ),
                           const SizedBox(height: 10),
-                          titleTextField(changeTheme),
-                          const SizedBox(height: 20),
-                          descriptionTextField(changeTheme),
+                          titleTextField(
+                            context,
+                            setTheme,
+                            task
+                            ),
+                          const SizedBox(height: 10),
+                          labelTextField(context, setTheme, task),
+                          const SizedBox(height: 10),
+                          descriptionTextField(context, setTheme, task),
                           const SizedBox(height: 24),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              saveTaskButton(),
-                              const SizedBox(width: 10),
-                            ],
-                          )
+                          updateTaskButton(context, index)
                         ],
                       ),
                     ],
@@ -97,94 +88,190 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               ),
             ],
           );
-        }
-      ); 
+          }
+          );
+      }
+    );
   }
 
-    Widget titleTextField(ChangeTheme changeTheme){
+    Widget titleTextField(
+      BuildContext context,
+      SetTheme setTheme,
+      TaskModel task
+      ){
     return SizedBox(
       height: 50,
-      child: TextField(
+      child: TextFormField(
         textCapitalization: TextCapitalization.sentences,
         style: TextStyle(
-          color: changeTheme.changeTextTheme()
+          color: setTheme.setTextTheme()
         ),
-        controller: titleController,
+        initialValue: task.title,
         cursorColor: Colors.black,
         decoration: InputDecoration(
-          hintText:   AppLocalizations.of(context)!.taskTitleTextFieldHintText,
-          hintStyle: TextStyle(
-            color: changeTheme.changeTextTheme()
-          ),
-          labelText:  AppLocalizations.of(context)!.taskTitleTextFieldHintText,
-          labelStyle: TextStyle(
-            color: changeTheme.changeTextTheme()
+          hintText: "title",
+          hintStyle: const TextStyle(
+            color: Colors.grey
           ),
           border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(
-              color: changeTheme.changeTextTheme()
+              color: setTheme.setTextFieldBorderTheme()
             ),
           ),
           enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(
-              color: changeTheme.changeTextTheme()
+              color: setTheme.setTextFieldBorderTheme()
             ),
         ),
       ),
+      onChanged: (String value){
+        task.title = value;
+      },
       )
     );
   }
 
-  Widget descriptionTextField(ChangeTheme changeTheme){
-    return TextField(
-      cursorColor: changeTheme.changeTextTheme(),
-      style: TextStyle(
-        color: changeTheme.changeTextTheme()
-      ),
-      maxLines: 10,
-      controller: descriptionController,
-      decoration: InputDecoration(
-        hintText:  AppLocalizations.of(context)!.taskDescriptionTextFieldHintText,
-        hintStyle: TextStyle(
-          color: changeTheme.changeTextTheme()
+  Widget labelTextField(
+    BuildContext context,
+    SetTheme setTheme,
+    TaskModel taskModel
+    ){
+    return SizedBox(
+      height: 50,
+      child: TextFormField(
+        cursorColor: setTheme.setTextTheme(),
+        textCapitalization: TextCapitalization.sentences,
+        style: TextStyle(
+          color: setTheme.setTextTheme()
         ),
-        border: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: changeTheme.changeTextTheme()
-            ),
+        initialValue: taskModel.label,
+        decoration: InputDecoration(
+          hintText: "Label",
+          hintStyle: const TextStyle(
+            color: Colors.grey
           ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: changeTheme.changeTextTheme()
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: setTheme.setTextFieldBorderTheme()
+              ),
             ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: setTheme.setTextFieldBorderTheme()
+              ),
+          ),
         ),
+        onChanged: (String value){
+          taskModel.label = value;
+        },
       ),
     );
   }
 
-  Widget saveTaskButton(){
+  Widget descriptionTextField(
+    BuildContext context,
+    SetTheme setTheme,
+    TaskModel taskModel
+    ){
+    return TextFormField(
+      cursorColor: setTheme.setTextTheme(),
+      style: TextStyle(
+        color: setTheme.setTextTheme()
+      ),
+      maxLines: 10,
+      initialValue: taskModel.description,
+      decoration: InputDecoration(
+        hintText:  "Description",
+        hintStyle: const TextStyle(
+          color: Colors.grey
+        ),
+        border: OutlineInputBorder(
+           borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: setTheme.setTextFieldBorderTheme()
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+             borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: setTheme.setTextFieldBorderTheme()
+            ),
+        ),
+      ),
+      onChanged: (String value){
+        taskModel.description = value;
+      },
+    );
+  }
+
+  Widget updateTaskButton(
+    BuildContext context,
+    int index){
     final taskBox = Hive.box<TaskModel>("task");
+    final task = taskBox.getAt(index) as TaskModel;
     return MaterialButton(
       onPressed: (){
-          taskBox.add(
-            TaskModel(titleController.text,
-            descriptionController.text
-            ),
-          );
+          taskBox.putAt(index, TaskModel(
+            task.title, task.label,
+            task.description, task.currentDate
+            ));
           Navigator.of(context).pop();
       },
-      color: Palette.copenhagenBlue,
+      height: 44,
+      minWidth: double.infinity,
+      color: Palette.ultramarineBlue,
       elevation: 0.0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20)
+        borderRadius: BorderRadius.circular(10)
       ),
-      child:  Text(
-         AppLocalizations.of(context)!.saveButtonTitle,
-        style: const TextStyle(
-          fontSize: 17,
+      child: const  Text(
+        "Update",
+        style: TextStyle(
+          fontSize: 18,
           color: Colors.white
         ),
       ),
     );
   }
-} 
+
+
+  void deleteDialog(BuildContext context,int index, Box<TaskModel> taskDB){
+    showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: const Text(
+            "Deletion"
+          ),
+          content: const Text(
+            "Are you sure ?"
+          ),
+          actions: [
+            TextButton(
+              onPressed: (){
+                taskDB.deleteAt(index);
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+              child: const Text("Yes"),
+            ),
+            TextButton(
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Colors.red.shade600
+                ),
+                ),
+            )
+          ],
+        );
+      }
+     );
+  }

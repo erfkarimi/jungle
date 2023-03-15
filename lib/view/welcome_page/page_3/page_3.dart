@@ -32,7 +32,7 @@ enjoy it.
 """,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 16,
               wordSpacing: 5,
               letterSpacing: 2
             )

@@ -22,7 +22,7 @@ class Page1 extends StatelessWidget{
                   "Jungle",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 40,
+                    fontSize: 34,
                     fontFamily: "Times new roman"
                   ),
                 ),
@@ -37,12 +37,12 @@ class Page1 extends StatelessWidget{
               """
 Welcome to Jungle 
 and thank you for
-choosing this good
+choosing this
 application.
 """,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 16,
               wordSpacing: 5,
               letterSpacing: 2
             )

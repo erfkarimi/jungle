@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jungle/model/palette/palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ChangeTheme extends ChangeNotifier{
+class SetTheme extends ChangeNotifier{
   String theme = "light";
 
-  Color changeTextTheme(){
+  Color setTextTheme(){
     if(theme == "dark"){
       return Colors.white;
     } else {
@@ -13,15 +12,15 @@ class ChangeTheme extends ChangeNotifier{
     }
   }
 
-  Color changeAppBarTheme(){
+  Color setAppBarTheme(){
     if(theme == "dark"){
       return Colors.grey.shade900;
     } else {
-      return Palette.copenhagenBlue;
+      return Colors.white;
     }
   }
 
-  Color changeBackgroundTheme(){
+  Color setBackgroundTheme(){
     if(theme == "dark"){
       return Colors.grey.shade800;
     } else {
@@ -29,7 +28,7 @@ class ChangeTheme extends ChangeNotifier{
     }
   }
 
-  Color changeDescriptionTheme(){
+  Color setDescriptionTheme(){
     if(theme == "dark"){
       return Colors.grey.shade200;
     } else {
@@ -37,11 +36,12 @@ class ChangeTheme extends ChangeNotifier{
     }
   }
 
-  Color changeTaskTheme(){
+
+  Color setTextFieldBorderTheme(){
     if(theme == "dark"){
-      return Colors.grey.shade700;
+      return Colors.grey;
     } else {
-      return Colors.grey.shade200;
+      return Colors.black;
     }
   }
   

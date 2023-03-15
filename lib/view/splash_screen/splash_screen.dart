@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
-import 'package:jungle/view_model/change_theme/theme.dart';
 import 'package:jungle/view/home/home.dart';
 import 'dart:async';
 import 'package:jungle/view/welcome_page/welcome_page.dart';
+import 'package:jungle/view_model/set_theme/set_theme.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,13 +32,12 @@ class SplashScreenState extends State<SplashScreen>{
   Widget build(context){
     
     return Material(
-      color: Palette.copenhagenBlue,
+      color: Palette.ultramarineBlue,
       child: const Center(
         child: Text(
           "Jungle",
           style: TextStyle(
-            color: Colors.black,
-            fontFamily: "Times new roman",
+            color: Colors.white,
             fontSize: 45
           ),
         )
@@ -67,7 +66,7 @@ class SplashScreenState extends State<SplashScreen>{
 
   Future<void> init(context) async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    final changeTheme = Provider.of<ChangeTheme>(context, listen: false);
+    final changeTheme = Provider.of<SetTheme>(context, listen: false);
     setState(() {
       changeTheme.theme = preferences.getString("theme") ?? "light";
     });
@@ -77,8 +76,8 @@ class SplashScreenState extends State<SplashScreen>{
     setState(() {
       SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.dark,
-          systemNavigationBarColor: Palette.copenhagenBlue,
+          statusBarIconBrightness: Brightness.light,
+          systemNavigationBarColor: Palette.ultramarineBlue,
           systemNavigationBarIconBrightness: Brightness.light,
           statusBarColor: Colors.transparent,
         ));     
