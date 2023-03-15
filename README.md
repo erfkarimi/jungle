@@ -2,6 +2,8 @@
 jungle is a task manager application that allows you to
 save your task locally.
 <p align="center">
-<img src="https://github.com/erfkarimi/jungle/blob/main/asset/image/screen/Screenshot_1676624237.png" width="250" hspace="4">
-<img src="https://github.com/erfkarimi/jungle/blob/8e8f7f1f66b2df748b40027e8f343fbf8227450c/asset/image/screen/Screenshot_1678270235.png" width="250" hspace="4">
+<img src="https://github.com/erfkarimi/jungle/blob/main/asset/image/screen/screen_1.png" width="250" hspace="4">
+<img src="https://github.com/erfkarimi/jungle/blob/main/asset/image/screen/screen_2.png" width="250" hspace="4">
+<img src="https://github.com/erfkarimi/jungle/blob/main/asset/image/screen/screen_3.png" width="250" hspace="4">
+<img src="https://github.com/erfkarimi/jungle/blob/main/asset/image/screen/screen_4.png" width="250" hspace="4">
 </p>

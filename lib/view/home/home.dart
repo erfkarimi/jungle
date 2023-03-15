@@ -8,7 +8,7 @@ import 'package:jungle/view/settings/settings.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-part 'add_task_bottom_sheet/bottom_sheet.dart';
+part 'edit_task_bottom_sheet.dart/edit_task_bottom_sheet.dart';
 
 class Home extends StatefulWidget{
   const Home({super.key});
@@ -81,7 +81,7 @@ class HomeState extends State<Home>{
       valueListenable: taskBox.listenable(),
       builder: (context, taskBox, child){
         if(taskBox.isEmpty){
-          return showNoTask();
+          return showNoTask(setTheme);
         }
         return ListView.builder(
           itemCount: taskBox.length,
@@ -191,8 +191,7 @@ class HomeState extends State<Home>{
       );
   }
 
-  Widget showNoTask(){
-    final SetTheme setTheme = Provider.of<SetTheme>(context);
+  Widget showNoTask(SetTheme setTheme){
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
