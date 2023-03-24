@@ -23,7 +23,7 @@ class AddNewTask extends StatelessWidget{
 
   AppBar buildAppBar(BuildContext context, SetTheme setTheme){
     return AppBar(
-      backgroundColor: setTheme.setAppBarTheme(),
+      backgroundColor: setTheme.setBackgroundTheme(),
       elevation: 0.0,
       title: Text(
         "Add new task",
@@ -94,13 +94,13 @@ class AddNewTask extends StatelessWidget{
      ){ return SizedBox(
       height: 50,
       child: TextField(
+        cursorColor: Palette.ultramarineBlue,
         textCapitalization: TextCapitalization.sentences,
-        
+        textInputAction: TextInputAction.next,
         style: TextStyle(
           color: setTheme.setTextTheme()
         ),
         controller: titleController,
-        cursorColor: setTheme.setTextTheme(),
         decoration: InputDecoration(
           hintText:  "Title",
           hintStyle: const TextStyle(
@@ -131,8 +131,9 @@ class AddNewTask extends StatelessWidget{
     return SizedBox(
       height: 50,
       child: TextField(
-        cursorColor: setTheme.setTextTheme(),
+        cursorColor: Palette.ultramarineBlue,
         textCapitalization: TextCapitalization.sentences,
+         textInputAction: TextInputAction.next,
         style: TextStyle(
           color: setTheme.setTextTheme()
         ),
@@ -166,8 +167,9 @@ class AddNewTask extends StatelessWidget{
     ){
     
     return TextField(
-      cursorColor: setTheme.setTextTheme(),
+      cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
+       textInputAction: TextInputAction.done,
       style: TextStyle(
         color: setTheme.setTextTheme()
       ),
@@ -220,7 +222,7 @@ class AddNewTask extends StatelessWidget{
             Navigator.of(context).pop();
         },
         minWidth: double.infinity,
-        height: 44,
+        height: 48,
         color: Palette.ultramarineBlue,
         elevation: 0.0,
         shape: RoundedRectangleBorder(

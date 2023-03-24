@@ -9,6 +9,7 @@ class Page1 extends StatelessWidget{
   @override 
   Widget build(context){
     setTheme();
+    const String hiEmoji = "👋🏻";
     return Material(
       color: Colors.purple.shade800,
       child: Padding(
@@ -19,11 +20,10 @@ class Page1 extends StatelessWidget{
             Row(
               children: const [
                  Text(
-                  "Jungle",
+                  "Welcome$hiEmoji",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 34,
-                    fontFamily: "Times new roman"
                   ),
                 ),
               ],
@@ -35,16 +35,16 @@ class Page1 extends StatelessWidget{
             ),
             const Text(
               """
-Welcome to Jungle 
-and thank you for
-choosing this
-application.
+Thanks for choosing
+Jungle. We hope you
+enjoy it and go to
+next pages for more
+about us.
 """,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 18,
               wordSpacing: 5,
-              letterSpacing: 2
             )
             ),
             const Expanded(

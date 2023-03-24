@@ -19,7 +19,7 @@ class Settings extends StatelessWidget{
 
   AppBar buildAppBar(BuildContext context, SetTheme setTheme){
     return AppBar(
-      backgroundColor: setTheme.setAppBarTheme(),
+      backgroundColor: setTheme.setBackgroundTheme(),
       elevation: 0.0,
       title: Text(
         "Settings",

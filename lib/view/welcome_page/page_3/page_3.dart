@@ -12,6 +12,7 @@ class Page3 extends StatelessWidget{
   Widget build(context){
     final welcomePageDB = Hive.box("welcomePage");
     setTheme();
+    const String emoji = "🤞🏻";
     return Material(
       color: Colors.blue.shade700,
       child: Padding(
@@ -26,15 +27,14 @@ class Page3 extends StatelessWidget{
             ),
             const Text(
               """
-So let's start using
-Jungle I hope you 
-enjoy it.
+So let's start our
+journey by saving a task
+and a todo$emoji
 """,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 18,
               wordSpacing: 5,
-              letterSpacing: 2
             )
             ),
             const Expanded(

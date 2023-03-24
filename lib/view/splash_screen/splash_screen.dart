@@ -54,8 +54,8 @@ class SplashScreenState extends State<SplashScreen>{
             child: ValueListenableBuilder(
               valueListenable: welcomePageDB.listenable(),
               builder: (context, box, child){
-                return welcomePageDB.get("welcomePage", defaultValue: false) ? const Home()
-                : const WelcomePage();
+                return welcomePageDB.get("welcomePage", defaultValue: false) 
+                ? const Home() : const WelcomePage();
               }
             )
           )
@@ -66,9 +66,9 @@ class SplashScreenState extends State<SplashScreen>{
 
   Future<void> init(context) async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    final changeTheme = Provider.of<SetTheme>(context, listen: false);
+    final setTheme = Provider.of<SetTheme>(context, listen: false);
     setState(() {
-      changeTheme.theme = preferences.getString("theme") ?? "light";
+      setTheme.theme = preferences.getString("theme") ?? "light";
     });
   }
 

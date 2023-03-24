@@ -34,6 +34,8 @@ flutter:
     - asset/image/notes-amico.png
     - asset/image/notes-pana.png
     - asset/image/notes-rafiki.png
+    - asset/image/to-do-list-cuate.png
+    - asset/image/to-do-list-rafiki.png
 
   fonts:
     - family: Lato

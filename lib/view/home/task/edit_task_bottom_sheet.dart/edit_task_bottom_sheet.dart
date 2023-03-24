@@ -1,4 +1,4 @@
-part of '../home.dart';
+part of 'package:jungle/view/home/task/task_page.dart';
 
  void addTaskBottomSheet(
   BuildContext context,
@@ -32,56 +32,50 @@ part of '../home.dart';
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(20),
-                  child: ListView(
+                  child: Column(
                     children: [
-                      Column(
-                        children: [
-                          TextButton(
-                            onPressed: (){
-                              deleteDialog(context,index, taskDB, setTheme);
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Add new task",
-                                  style: TextStyle(
-                                    color: setTheme.setTextTheme(),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600
-                                  ),
-                                ),
-                                Text(
-                                   "Delete",
-                                  style: TextStyle(
-                                    color: Colors.red.shade600,
-                                    letterSpacing: 2,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14
-                                  ),
-                                ),
-                              ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Add new task",
+                              style: TextStyle(
+                                color: setTheme.setTextTheme(),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600
+                              ),
                             ),
-                          ),
-                          
-                          Divider(
-                            thickness: 1.0,
-                            color: setTheme.setTextFieldBorderTheme(),
-                          ),
-                          const SizedBox(height: 10),
-                          titleTextField(
-                            context,
-                            setTheme,
-                            task
+                      TextButton(
+                        onPressed: (){
+                          deleteTaskDialog(context,index, taskDB, setTheme);
+                        },
+                        child:  Text(
+                                  "Delete",
+                              style: TextStyle(
+                                color: Colors.red.shade600,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14
+                              ),
                             ),
-                          const SizedBox(height: 10),
-                          labelTextField(context, setTheme, task),
-                          const SizedBox(height: 10),
-                          descriptionTextField(context, setTheme, task),
-                          const SizedBox(height: 24),
-                          updateTaskButton(context, index)
-                        ],
+                        )
+                      ],
                       ),
+                      Divider(
+                        thickness: 1.0,
+                        color: setTheme.setTextFieldBorderTheme(),
+                      ),
+                      const SizedBox(height: 10),
+                      titleTextField(
+                        context,
+                        setTheme,
+                        task
+                        ),
+                      const SizedBox(height: 10),
+                      labelTextField(context, setTheme, task),
+                      const SizedBox(height: 10),
+                      descriptionTextField(context, setTheme, task),
+                      const SizedBox(height: 24),
+                      updateTaskButton(context, index)
                     ],
                   ),
                 ),
@@ -102,14 +96,14 @@ part of '../home.dart';
     return SizedBox(
       height: 50,
       child: TextFormField(
+        cursorColor: Palette.ultramarineBlue,
         textCapitalization: TextCapitalization.sentences,
         style: TextStyle(
           color: setTheme.setTextTheme()
         ),
         initialValue: task.title,
-        cursorColor: Colors.black,
         decoration: InputDecoration(
-          hintText: "title",
+          hintText: "Title",
           hintStyle: const TextStyle(
             color: Colors.grey
           ),
@@ -141,7 +135,7 @@ part of '../home.dart';
     return SizedBox(
       height: 50,
       child: TextFormField(
-        cursorColor: setTheme.setTextTheme(),
+        cursorColor: Palette.ultramarineBlue,
         textCapitalization: TextCapitalization.sentences,
         style: TextStyle(
           color: setTheme.setTextTheme()
@@ -178,7 +172,7 @@ part of '../home.dart';
     TaskModel taskModel
     ){
     return TextFormField(
-      cursorColor: setTheme.setTextTheme(),
+      cursorColor: Palette.ultramarineBlue,
       style: TextStyle(
         color: setTheme.setTextTheme()
       ),
@@ -221,7 +215,7 @@ part of '../home.dart';
             ));
           Navigator.of(context).pop();
       },
-      height: 44,
+      height: 48,
       minWidth: double.infinity,
       color: Palette.ultramarineBlue,
       elevation: 0.0,
@@ -239,7 +233,7 @@ part of '../home.dart';
   }
 
 
-  void deleteDialog(
+  void deleteTaskDialog(
     BuildContext context,
     int index, Box<TaskModel> taskDB,
     SetTheme setTheme

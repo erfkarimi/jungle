@@ -25,16 +25,14 @@ class Page2 extends StatelessWidget{
             ),
             const Text(
               """
-You can save your
-tasks, notes and
-share them with
-your friends.
+Jungle helps you
+to save and manage
+your tasks and todos.
 """,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 18,
               wordSpacing: 5,
-              letterSpacing: 2
             )
             ),
             const Expanded(
