@@ -19,7 +19,6 @@ class TodoPage extends StatefulWidget{
 class TodoPageState extends State<TodoPage>{
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
-  final TextEditingController titleTextController = TextEditingController();
   String title = "";
   @override 
   Widget build(context){
@@ -257,7 +256,6 @@ class TodoPageState extends State<TodoPage>{
         style: TextStyle(
           color: setTheme.setTextTheme()
         ),
-        //controller: titleTextController,
         decoration: const InputDecoration(
           hintText: "Title",
           hintStyle: TextStyle(

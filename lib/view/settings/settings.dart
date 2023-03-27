@@ -129,7 +129,8 @@ class Settings extends StatelessWidget{
             mainAxisSize: MainAxisSize.min,
             children: [
               lightThemeButton(context, setTheme),
-              darkThemeButton(context, setTheme)
+              darkThemeButton(context, setTheme),
+              dimThemeButton(context, setTheme)
             ],
           ),
         );
@@ -140,22 +141,23 @@ class Settings extends StatelessWidget{
   Widget lightThemeButton(BuildContext context, SetTheme setTheme){
     return MaterialButton(
       minWidth: double.infinity,
-      onPressed: (){
+      onPressed: setTheme.theme == "light"?
+        null : (){
         setTheme.theme = "light";
         setTheme.saveChangeTheme();
         Navigator.of(context).pop();
       },
-      color: setTheme.setAppBarTheme(),
+      color: Colors.white,
+      disabledColor: Colors.grey.shade200,
       elevation: 0.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: const BorderSide()
       ),
-      child: Text(
+      child: const Text(
         "Light",
         style:  TextStyle(
-          fontSize: 17,
-          color: setTheme.setTextTheme()
+          fontSize: 16,
+          color: Colors.black
         ),
       ),
     );
@@ -165,22 +167,46 @@ class Settings extends StatelessWidget{
   Widget darkThemeButton(BuildContext context, SetTheme setTheme){
     return MaterialButton(
       minWidth: double.infinity,
-      onPressed: (){
+      onPressed: setTheme.theme == "dark" ?
+        null : (){
         setTheme.theme = "dark";
         setTheme.saveChangeTheme();
         Navigator.of(context).pop();
       },
       elevation: 0.0,
-      color: setTheme.setAppBarTheme(),
+      color: Colors.grey.shade800,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: const BorderSide()
       ),
-      child: Text(
+      child: const Text(
         "Dark",
         style: TextStyle(
-          fontSize: 17,
-          color: setTheme.setTextTheme()
+          fontSize: 16,
+          color: Colors.white
+        ),
+      ),
+    );
+  }
+
+  Widget dimThemeButton(BuildContext context, SetTheme setTheme){
+    return MaterialButton(
+      minWidth: double.infinity,
+      onPressed: setTheme.theme == "dim" ?
+        null : (){
+        setTheme.theme = "dim";
+        setTheme.saveChangeTheme();
+        Navigator.of(context).pop();
+      },
+      elevation: 0.0,
+      color: const Color.fromRGBO(36, 52, 71, 1.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: const Text(
+        "Dim",
+        style: TextStyle(
+          fontSize: 16,
+          color: Colors.white
         ),
       ),
     );

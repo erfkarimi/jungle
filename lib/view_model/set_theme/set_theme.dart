@@ -6,7 +6,7 @@ class SetTheme extends ChangeNotifier{
   bool showTaskPage = true;
 
   Color setTextTheme(){
-    if(theme == "dark"){
+    if(theme == "dark" || theme == "dim"){
       return Colors.white;
     } else {
       return Colors.black;
@@ -16,21 +16,25 @@ class SetTheme extends ChangeNotifier{
   Color setAppBarTheme(){
     if(theme == "dark"){
       return Colors.grey.shade900;
-    } else {
-      return Colors.white;
-    }
+    } else if(theme == "dim"){
+        return const Color.fromRGBO(20, 29, 38, 1.0);
+     }else {
+        return Colors.white;
+     }
   }
 
   Color setBackgroundTheme(){
     if(theme == "dark"){
-      return Colors.grey.shade800;
+        return Colors.grey.shade800;
+    } else if(theme == "dim") {
+        return const Color.fromRGBO(36, 52, 71, 1.0);
     } else {
-      return Colors.white;
+        return Colors.white;
     }
   }
 
   Color setDescriptionTheme(){
-    if(theme == "dark"){
+    if(theme == "dark" || theme == "dim"){
       return Colors.grey.shade200;
     } else {
       return Colors.grey.shade600;
@@ -39,7 +43,7 @@ class SetTheme extends ChangeNotifier{
 
 
   Color setTextFieldBorderTheme(){
-    if(theme == "dark"){
+    if(theme == "dark" || theme == "dim"){
       return Colors.grey;
     } else {
       return Colors.black;

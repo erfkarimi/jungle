@@ -38,7 +38,7 @@ part of 'package:jungle/view/home/task/task_page.dart';
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Add new task",
+                              "Edit task",
                               style: TextStyle(
                                 color: setTheme.setTextTheme(),
                                 fontSize: 18,
@@ -74,7 +74,7 @@ part of 'package:jungle/view/home/task/task_page.dart';
                       labelTextField(context, setTheme, task),
                       const SizedBox(height: 10),
                       descriptionTextField(context, setTheme, task),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 30),
                       updateTaskButton(context, index)
                     ],
                   ),
@@ -98,6 +98,7 @@ part of 'package:jungle/view/home/task/task_page.dart';
       child: TextFormField(
         cursorColor: Palette.ultramarineBlue,
         textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.next,
         style: TextStyle(
           color: setTheme.setTextTheme()
         ),
@@ -137,6 +138,7 @@ part of 'package:jungle/view/home/task/task_page.dart';
       child: TextFormField(
         cursorColor: Palette.ultramarineBlue,
         textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.next,
         style: TextStyle(
           color: setTheme.setTextTheme()
         ),
@@ -177,6 +179,8 @@ part of 'package:jungle/view/home/task/task_page.dart';
         color: setTheme.setTextTheme()
       ),
       maxLines: 10,
+      textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.newline,
       initialValue: taskModel.description,
       decoration: InputDecoration(
         hintText:  "Description",

@@ -67,7 +67,7 @@ void showEditBottomSheet(
                           titleTextField(context, setTheme, completedTodo),
                           const SizedBox(height: 10),
                           descriptionTextField(context, setTheme, completedTodo),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 30),
                           updateCompletedTodoButton(context, setTheme, completedTodoBox, completedTodo, index)
                         ],
                       ),
@@ -119,6 +119,7 @@ Widget backButton(
       child: TextFormField(
         cursorColor: Palette.ultramarineBlue,
         textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.next,
         style: TextStyle(
           color: setTheme.setTextTheme()
         ),
@@ -157,6 +158,7 @@ Widget backButton(
     return TextFormField(
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
+      textInputAction: TextInputAction.newline,
       style: TextStyle(
         color: setTheme.setTextTheme()
       ),

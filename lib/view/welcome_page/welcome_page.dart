@@ -6,11 +6,6 @@ class WelcomePage extends StatelessWidget{
 
   @override 
   Widget build(context){
-    return buildBody();
-  }
-
-  /* Widgets and Functions */
-  Widget buildBody(){
     return const Page1();
   }
 }

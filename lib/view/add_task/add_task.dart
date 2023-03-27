@@ -14,14 +14,34 @@ class AddNewTask extends StatelessWidget{
   @override 
   Widget build(context){
     final SetTheme setTheme = Provider.of<SetTheme>(context);
+    final TextEditingController titleController = TextEditingController();
+    final TextEditingController labelController = TextEditingController();
+    final TextEditingController descriptionController = TextEditingController();
+    final DateTime dateTime = DateTime.now();
+    var formatter = DateFormat("yyyy-MM-dd");
+    var currentDate = formatter.format(dateTime);
     return Scaffold(
       backgroundColor: setTheme.setBackgroundTheme(),
-      appBar: buildAppBar(context, setTheme),
-      body: buildBody(context, setTheme)
+      appBar: buildAppBar(
+              context,
+              setTheme,
+      ),
+      body: buildBody(
+        context,
+        setTheme,
+        titleController,
+        labelController,
+        descriptionController,
+        currentDate
+        )
     );
   }
 
-  AppBar buildAppBar(BuildContext context, SetTheme setTheme){
+  AppBar buildAppBar(
+    BuildContext context,
+    SetTheme setTheme,
+    ){
+    
     return AppBar(
       backgroundColor: setTheme.setBackgroundTheme(),
       elevation: 0.0,
@@ -57,13 +77,16 @@ class AddNewTask extends StatelessWidget{
     );
   }
 
-  Widget buildBody(BuildContext context, SetTheme setTheme){
-    final TextEditingController titleController = TextEditingController();
-    final TextEditingController labelController = TextEditingController();
-    final TextEditingController descriptionController = TextEditingController();
-    final DateTime dateTime = DateTime.now();
-    var formatter = DateFormat("yyyy-MM-dd");
-    var currentDate = formatter.format(dateTime);
+  Widget buildBody(
+    BuildContext context,
+    SetTheme setTheme,
+    TextEditingController titleController,
+    TextEditingController labelController,
+    TextEditingController descriptionController,
+    String currentDate
+    ){
+    
+    
     return Padding(
       padding: const EdgeInsets.all(12),
       child: ListView(
@@ -74,10 +97,10 @@ class AddNewTask extends StatelessWidget{
           labelTextField(context, setTheme, labelController),
           const SizedBox(height: 10),
           descriptionTextField(context, setTheme, descriptionController),
-          const SizedBox(height: 24),
+          const SizedBox(height: 30),
           saveTaskButton(
             context,
-            titleController, 
+            titleController,
             labelController,
             descriptionController,
             currentDate
@@ -165,11 +188,10 @@ class AddNewTask extends StatelessWidget{
     SetTheme setTheme,
     TextEditingController descriptionController
     ){
-    
     return TextField(
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
-       textInputAction: TextInputAction.done,
+       textInputAction: TextInputAction.newline,
       style: TextStyle(
         color: setTheme.setTextTheme()
       ),
@@ -207,33 +229,30 @@ class AddNewTask extends StatelessWidget{
     String currentDate
   ){
     final taskBox = Hive.box<TaskModel>("task");
-    return Align(
-      alignment: Alignment.bottomRight,
-      child: MaterialButton(
-        onPressed: (){
-            taskBox.add(
-              TaskModel(
-                titleController.text,
-                labelController.text,
-                descriptionController.text,
-                currentDate
-              ),
-            );
-            Navigator.of(context).pop();
-        },
-        minWidth: double.infinity,
-        height: 48,
-        color: Palette.ultramarineBlue,
-        elevation: 0.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10)
-        ),
-        child:  const Text(
-           "Save",
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.white
-          ),
+    return MaterialButton(
+      onPressed: (){
+          taskBox.add(
+            TaskModel(
+              titleController.text,
+              labelController.text,
+              descriptionController.text,
+              currentDate
+            ),
+          );
+          Navigator.of(context).pop();
+      },
+      minWidth: double.infinity,
+      height: 48,
+      color: Palette.ultramarineBlue,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10)
+      ),
+      elevation: 0.0,
+      child: const Text(
+         "Save",
+        style: TextStyle(
+          fontSize: 18,
+          color: Colors.white
         ),
       ),
     );
