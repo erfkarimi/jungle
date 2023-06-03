@@ -20,6 +20,7 @@ class AddNewTask extends StatelessWidget{
     final DateTime dateTime = DateTime.now();
     var formatter = DateFormat("yyyy-MM-dd");
     var currentDate = formatter.format(dateTime);
+
     return Scaffold(
       backgroundColor: setTheme.setBackgroundTheme(),
       appBar: buildAppBar(
@@ -217,9 +218,6 @@ class AddNewTask extends StatelessWidget{
       ),
     );
   }
-
-
-  
 
   Widget saveTaskButton(
     BuildContext context, 

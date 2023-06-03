@@ -20,6 +20,7 @@ class TodoPageState extends State<TodoPage>{
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
   String title = "";
+
   @override 
   Widget build(context){
     final SetTheme setTheme = Provider.of<SetTheme>(context);

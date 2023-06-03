@@ -17,6 +17,7 @@ class CompletedTodo extends StatefulWidget{
 class CompletedTodoState extends State<CompletedTodo>{
   final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
+  
   @override 
   Widget build(context){
     final SetTheme setTheme = Provider.of<SetTheme>(context);

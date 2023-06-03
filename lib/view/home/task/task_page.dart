@@ -113,100 +113,106 @@ class TaskPageState extends State<TaskPage>{
                 onLongPress: (){
                   deleteTaskOnLongPressDialog(context, index, taskBox, setTheme);
                 },
-                child: Card(
-                  color: setTheme.setAppBarTheme(),
-                  elevation: 0.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: const BorderSide()
+                child: GestureDetector(
+                  onTap: (){
+                    addTaskBottomSheet(context, setTheme, index);
+                  },
+                  child: Card(
+                    color: setTheme.setAppBarTheme(),
+                    elevation: 0.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: const BorderSide()
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                taskBox.getAt(index)!.title,
+                                style: TextStyle(
+                                color: setTheme.setTextTheme(),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16                
+                                  ),
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 2.0
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Palette.ultramarineBlue
+                                    ),
+                                    child: Text(
+                                      taskBox.getAt(index)!.label,
+                                      style: const TextStyle(
+                                        color: Colors.white
+                                      ),
+                                    ),
+                                  ),
+                                  // IconButton(
+                                  //   onPressed: (){
+                                  //     addTaskBottomSheet(
+                                  //       context,
+                                  //       setTheme,
+                                  //       index
+                                  //       );
+                                  //   },
+                                  //   icon: Icon(
+                                  //     Icons.more_horiz,
+                                  //     color: setTheme.setTextTheme(),
+                                  //     ),
+                                  // ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 8.0, bottom: 8.0
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                    taskBox.getAt(index)!.description,
+                                    style: TextStyle(
+                                        color:
+                                            setTheme.setDescriptionTheme()),
+                                    maxLines: 4,
+                                  ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                               Icon(
+                                Icons.calendar_month_outlined,
+                                color: setTheme.setTextTheme(),
+                                ),
+                              const SizedBox(width: 4.0),
+                              Text(
+                                taskBox.getAt(index)!.currentDate.toString(),
+                                style: TextStyle(
+                                  color: setTheme.setTextTheme()
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    )
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              taskBox.getAt(index)!.title,
-                              style: TextStyle(
-                              color: setTheme.setTextTheme(),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16                
-                                ),
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0, vertical: 2.0
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Palette.ultramarineBlue
-                                  ),
-                                  child: Text(
-                                    taskBox.getAt(index)!.label,
-                                    style: const TextStyle(
-                                      color: Colors.white
-                                    ),
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: (){
-                                    addTaskBottomSheet(
-                                      context,
-                                      setTheme,
-                                      index
-                                      );
-                                  },
-                                  icon: Icon(
-                                    Icons.more_horiz,
-                                    color: setTheme.setTextTheme(),
-                                    ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 8.0, bottom: 8.0
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                                  taskBox.getAt(index)!.description,
-                                  style: TextStyle(
-                                      color:
-                                          setTheme.setDescriptionTheme()),
-                                  maxLines: 4,
-                                ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                             Icon(
-                              Icons.calendar_month_outlined,
-                              color: setTheme.setTextTheme(),
-                              ),
-                            const SizedBox(width: 4.0),
-                            Text(
-                              taskBox.getAt(index)!.currentDate.toString(),
-                              style: TextStyle(
-                                color: setTheme.setTextTheme()
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  )
                 ),
               ),
             );

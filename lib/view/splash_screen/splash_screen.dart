@@ -19,7 +19,7 @@ class SplashScreen extends StatefulWidget{
 
 class SplashScreenState extends State<SplashScreen>{
 
-  final welcomePageDB = Hive.box("welcomePage");
+  final welcomePageDB = Hive.box("welcome");
   @override 
   void initState() {
     super.initState();
@@ -30,7 +30,6 @@ class SplashScreenState extends State<SplashScreen>{
 
   @override 
   Widget build(context){
-    
     return Material(
       color: Palette.ultramarineBlue,
       child: const Center(
