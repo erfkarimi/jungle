@@ -18,20 +18,14 @@ class HomeState extends State<Home>{
     super.initState();
     init(context);
   }
-  void toggleView(){
-    final setTheme = Provider.of<SetTheme>(context, listen: false);
-    setState(() {
-      setTheme.showTaskPage = !setTheme.showTaskPage;
-      setTheme.saveStatus();
-    });
-  }
+  
   @override 
   Widget build(context){
     final setTheme = Provider.of<SetTheme>(context);
     if(setTheme.showTaskPage == true){
-      return TaskPage(toggleView: toggleView);
+      return const TaskPage();
     } else {
-      return TodoPage(toggleView: toggleView);
+      return const TodoPage();
     }
   }
 

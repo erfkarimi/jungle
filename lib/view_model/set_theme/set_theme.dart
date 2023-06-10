@@ -18,9 +18,9 @@ class SetTheme extends ChangeNotifier{
       return Colors.grey.shade900;
     } else if(theme == "dim"){
         return const Color.fromRGBO(20, 29, 38, 1.0);
-     }else {
+    }else {
         return Colors.white;
-     }
+    }
   }
 
   Color setBackgroundTheme(){
@@ -47,6 +47,14 @@ class SetTheme extends ChangeNotifier{
       return Colors.grey;
     } else {
       return Colors.black;
+    }
+  }
+
+  Color setDrawerButtonTheme(){
+    if(theme == "dark" || theme == "dim"){
+      return Colors.blueGrey.shade800.withOpacity(0.7);
+    } else {
+      return Colors.blueGrey.shade100;
     }
   }
   
