@@ -175,7 +175,7 @@ class TaskPageState extends State<TaskPage> {
             itemBuilder: (context, int index) {
               index = taskBox.length - 1 - index;
               return Padding(
-                padding: const EdgeInsets.all(4),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
                 child: GestureDetector(
                   onLongPress: () {
                     deleteTaskOnLongPressDialog(
