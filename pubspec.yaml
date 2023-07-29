@@ -18,6 +18,7 @@ dependencies:
   path_provider: ^2.0.12
   url_launcher: ^6.1.9
   intl: ^0.18.1
+  flutter_native_splash: ^2.3.1
 
 dev_dependencies:
   flutter_test:
@@ -41,3 +42,10 @@ flutter:
     - family: Lato
       fonts:
         - asset: asset/font/Lato-Regular.ttf
+
+flutter_native_splash:
+  color: "#3166ff"
+
+  android_12:
+    color: "#3166ff"
+    icon_background_color: "#3166ff"

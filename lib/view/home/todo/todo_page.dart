@@ -43,6 +43,7 @@ class TodoPageState extends State<TodoPage> {
         ),
         bottom: TabBar(
             indicatorWeight: 3.0,
+            indicatorPadding: const EdgeInsets.symmetric(horizontal: 20),
             indicatorSize: TabBarIndicatorSize.label,
             indicatorColor: setTheme.setTextTheme(),
             tabs: [
@@ -64,21 +65,23 @@ class TodoPageState extends State<TodoPage> {
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.check,
-                    color: setTheme.setTextTheme(),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    "Done",
-                    style: TextStyle(
-                      color: setTheme.setTextTheme()
-                    )
-                    )
-                ],
+              Tab(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.check,
+                      color: setTheme.setTextTheme(),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      "Done",
+                      style: TextStyle(
+                        color: setTheme.setTextTheme()
+                      )
+                      )
+                  ],
+                ),
               )
             ]));
   }
