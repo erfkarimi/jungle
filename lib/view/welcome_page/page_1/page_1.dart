@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jungle/extension/widget_padding_x.dart';
-import 'package:page_transition/page_transition.dart';
-import '../page_2/page_2.dart';
+import 'package:get/get.dart';
 
 class Page1 extends StatelessWidget {
   const Page1({super.key});
@@ -79,9 +77,7 @@ about us.
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     onPressed: () {
-                      Navigator.of(context).push(PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: const Page2()));
+                      Get.toNamed("/page2");
                     },
                     child: const Text(
                       "Next",

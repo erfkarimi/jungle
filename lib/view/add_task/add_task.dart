@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:jungle/view/home/home.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import '../../model/palette/palette.dart';
 import '../../model/task_model/task_model.dart';
@@ -47,8 +46,7 @@ class AddNewTask extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: MaterialButton(
           onPressed: () {
-            Navigator.of(context).pop(PageTransition(
-                type: PageTransitionType.leftToRight, child: const Home()));
+            Get.back();
           },
           minWidth: 10,
           shape: CircleBorder(side: BorderSide(color: setTheme.setTextTheme())),

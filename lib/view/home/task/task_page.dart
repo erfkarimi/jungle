@@ -5,10 +5,9 @@ import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/model/task_model/task_model.dart';
 import 'package:jungle/view/add_task/add_task.dart';
 import 'package:jungle/view/home/todo/todo_page.dart';
-import 'package:jungle/view/settings/settings.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 part 'package:jungle/view/home/task/edit_task_bottom_sheet.dart/edit_task_bottom_sheet.dart';
 
 class TaskPage extends StatefulWidget {
@@ -37,9 +36,9 @@ class TaskPageState extends State<TaskPage> {
 
   /*---------- Widgets and Functions ----------*/
 
-  /* App Bar */
   AppBar buildAppBar(SetTheme setTheme) {
     return AppBar(
+      // toolTip: "AppBar widget used in Task page"
       backgroundColor: setTheme.setBackgroundTheme(),
       title: Text(
         "Task",
@@ -72,6 +71,7 @@ class TaskPageState extends State<TaskPage> {
             Padding(
               padding: const EdgeInsets.only(right: 10),
               child: MaterialButton(
+                  // toolTip: "Task button used in the Drawer"
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -97,11 +97,11 @@ class TaskPageState extends State<TaskPage> {
             Padding(
               padding: const EdgeInsets.only(right: 10),
               child: MaterialButton(
+                  // toolTip: "Todo button used in the Drawer"
                   onPressed: () {
                     setTheme.showTaskPage = !setTheme.showTaskPage;
                     setTheme.saveStatus();
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const TodoPage()));
+                    Get.off(()=> const TodoPage());
                   },
                   height: 50,
                   elevation: 0.0,
@@ -132,10 +132,9 @@ class TaskPageState extends State<TaskPage> {
             Padding(
               padding: const EdgeInsets.only(right: 10),
               child: MaterialButton(
+                  // toolTip: "Settings button used in the Drawer"
                   onPressed: () {
-                    Navigator.of(context).push(PageTransition(
-                        child: const Settings(),
-                        type: PageTransitionType.rightToLeft));
+                    Get.toNamed("/settings");
                   },
                   height: 50,
                   elevation: 0.0,
@@ -293,8 +292,10 @@ class TaskPageState extends State<TaskPage> {
   FloatingActionButton floatingActionButton() {
     return FloatingActionButton(
       onPressed: () {
-        Navigator.of(context).push(PageTransition(
-            type: PageTransitionType.rightToLeft, child: const AddNewTask()));
+        Get.to(
+          ()=> const AddNewTask(),
+          transition: Transition.rightToLeft
+          );
       },
       tooltip: "Add new task",
       backgroundColor: Palette.ultramarineBlue,

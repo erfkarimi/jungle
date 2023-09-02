@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../view_model/set_theme/set_theme.dart';
@@ -31,12 +31,7 @@ class Settings extends StatelessWidget{
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: MaterialButton(
             onPressed: (){
-              Navigator.of(context).pop(
-                PageTransition(
-                  type: PageTransitionType.leftToRight,
-                  child: const Settings()
-                )
-              );
+              Get.back();
             },
             minWidth: 10,
             shape: CircleBorder(

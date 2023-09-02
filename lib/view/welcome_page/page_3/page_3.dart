@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:jungle/view/home/home.dart';
-import 'package:page_transition/page_transition.dart';
-import '../page_2/page_2.dart';
-import '../../../extension/widget_padding_x.dart';
 
 class Page3 extends StatelessWidget{
   const Page3({super.key});
@@ -47,12 +44,7 @@ and a todo$emoji
                 borderRadius: BorderRadius.circular(20)
               ),
               onPressed: (){
-                 Navigator.of(context).pop(
-                  PageTransition(
-                    type: PageTransitionType.rightToLeft,
-                    child: const Page2()
-                  )
-                );
+                Get.back();
               },
               child: const Text(
                 "Back",
@@ -96,13 +88,8 @@ and a todo$emoji
                 borderRadius: BorderRadius.circular(20)
               ),
               onPressed: (){
-                 welcomePageDB.put("welcomePage", true);
-                 Navigator.of(context).pushReplacement(
-                  PageTransition(
-                    child: const Home(),
-                    type: PageTransitionType.rightToLeft
-                  )
-                 );
+                welcomePageDB.put("welcomePage", true);
+                Get.offNamed("/home");
               },
               child: const Text(
                 "Start",
@@ -115,8 +102,8 @@ and a todo$emoji
             ],
           )
         ],
-      ).paddingAll(24)
-    );
+      )
+    ).paddingAll(24);
   }
 
   void setTheme(){

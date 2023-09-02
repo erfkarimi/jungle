@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jungle/extension/widget_padding_x.dart';
-import 'package:page_transition/page_transition.dart';
-
-import '../page_3/page_3.dart';
+import 'package:get/get.dart';
 
 class Page2 extends StatelessWidget{
   const Page2({super.key});
@@ -16,7 +13,6 @@ class Page2 extends StatelessWidget{
       child: Column(
         children: [
           const SizedBox(height: 100),
-         
           const  SizedBox(height: 60),
           Image.asset(
             "asset/image/notes-pana.png",
@@ -46,12 +42,7 @@ your tasks and todos.
                 borderRadius: BorderRadius.circular(20)
               ),
               onPressed: (){
-                 Navigator.of(context).pop(
-                  PageTransition(
-                    type: PageTransitionType.rightToLeft,
-                    child: const Page2()
-                  )
-                );
+                Get.back();
               },
               child: const Text(
                 "Back",
@@ -95,12 +86,7 @@ your tasks and todos.
                 borderRadius: BorderRadius.circular(20)
               ),
               onPressed: (){
-                Navigator.of(context).push(
-                  PageTransition(
-                    type: PageTransitionType.rightToLeft,
-                    child: const Page3()
-                  )
-                );
+                Get.toNamed("/page3");
               },
               child: const Text(
                 "Next",

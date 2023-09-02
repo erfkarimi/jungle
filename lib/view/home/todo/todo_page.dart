@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jungle/view/home/task/task_page.dart';
 import 'package:jungle/view/home/todo/done/done.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import '../../../model/palette/palette.dart';
-import '../../settings/settings.dart';
 import 'undone/undone.dart';
+import 'package:get/get.dart';
 
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
@@ -109,9 +107,7 @@ class TodoPageState extends State<TodoPage> {
                   onPressed: () {
                     setTheme.showTaskPage = !setTheme.showTaskPage;
                     setTheme.saveStatus();
-                    Navigator.of(context).pushReplacement(PageTransition(
-                        type: PageTransitionType.rightToLeft,
-                        child: const TaskPage()));
+                    Get.offNamed('/todoPage');
                   },
                   height: 50,
                   elevation: 0.0,
@@ -172,9 +168,7 @@ class TodoPageState extends State<TodoPage> {
               padding: const EdgeInsets.only(right: 10),
               child: MaterialButton(
                   onPressed: () {
-                    Navigator.of(context).push(PageTransition(
-                        child: const Settings(),
-                        type: PageTransitionType.rightToLeft));
+                    Get.to("/settings");
                   },
                   height: 50,
                   elevation: 0.0,
