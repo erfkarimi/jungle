@@ -1,303 +1,200 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:jungle/model/todo_model/todo_model.dart';
-import 'package:jungle/view/home/todo/completed_todo/completed_todo.dart';
+import 'package:jungle/view/home/todo/done/done.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import '../../../model/palette/palette.dart';
-import '../../settings/settings.dart';
-part 'edit_todo.dart';
+import 'undone/undone.dart';
+import 'package:get/get.dart';
 
-class TodoPage extends StatefulWidget{
-  final Function toggleView;
-  const TodoPage({super.key, required this.toggleView});
+class TodoPage extends StatefulWidget {
+  const TodoPage({super.key});
 
-  @override 
-  TodoPageState createState()=> TodoPageState();
+  @override
+  TodoPageState createState() => TodoPageState();
 }
-class TodoPageState extends State<TodoPage>{
-  final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
-  final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
-  String title = "";
-  @override 
-  Widget build(context){
+
+class TodoPageState extends State<TodoPage> {
+  @override
+  Widget build(context) {
     final SetTheme setTheme = Provider.of<SetTheme>(context);
-    return Scaffold(
-      backgroundColor: setTheme.setBackgroundTheme(),
-      resizeToAvoidBottomInset: false,
-      appBar: buildAppBar(setTheme),
-      floatingActionButton: floatingActionButton(setTheme),
-      body: buildBody(setTheme)
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+          backgroundColor: setTheme.setBackgroundTheme(),
+          resizeToAvoidBottomInset: false,
+          appBar: buildAppBar(setTheme),
+          drawer: buildDrawer(setTheme),
+          body: const TabBarView(
+            children: [Undone(), Done()],
+          )),
     );
   }
 
-  AppBar buildAppBar(SetTheme setTheme){
+  AppBar buildAppBar(SetTheme setTheme) {
     return AppBar(
-      automaticallyImplyLeading: false,
-      backgroundColor: setTheme.setBackgroundTheme(),
-      elevation: 0.0,
-      title: Text(
-        "Todo",
-        style: TextStyle(
-          color: setTheme.setTextTheme()
-        ),
-        ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-          child: MaterialButton(
-            onPressed: (){
-              Navigator.of(context).push(
-                PageTransition(
-                  type: PageTransitionType.rightToLeft,
-                  child: const CompletedTodo()
-                  )
-              ).then((value){
-                setState(() {
-                });
-              });
-            },
-            minWidth: 20,
-            shape: CircleBorder(
-              side: BorderSide(
-                color: setTheme.setTextTheme()
-              )
-            ),
-            child: Icon(
-            Icons.check,
-            color: setTheme.setTextTheme(),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-          child: MaterialButton(
-            onPressed: (){
-              widget.toggleView();
-            },
-            minWidth: 20,
-            shape: CircleBorder(
-              side: BorderSide(
-                color: setTheme.setTextTheme()
-              )
-            ),
-            child: Icon(
-            Icons.event_note_outlined,
-            color: setTheme.setTextTheme(),
-            ),
-          ),
-        ),
-         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-          child: MaterialButton(
-            onPressed: (){
-              Navigator.of(context).push(
-                PageTransition(
-                  type: PageTransitionType.rightToLeft,
-                  child: const Settings()
-                )
-              );
-            },
-            minWidth: 20,
-            shape: CircleBorder(
-              side: BorderSide(
-                color: setTheme.setTextTheme()
-              )
-            ),
-            child: Icon(
-            Icons.settings_outlined,
-            color: setTheme.setTextTheme(),
-            ),
-          ),
-        ),
-        
-      ],
-    );
-  }
-
-  Widget buildBody(SetTheme setTheme){
-    return ValueListenableBuilder(
-      valueListenable: todoBox.listenable(), 
-      builder: (context, todoBox, __){
-        if(todoBox.isEmpty){
-          return showNoTodo(setTheme);
-        } else {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: setTheme.setAppBarTheme(),
-                  border: Border.all(
-                    color: Colors.black
-                  )
-                ),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: todoBox.length,
-                  itemBuilder: (context, int index){
-                    index = todoBox.length - 1 - index;
-                    return todoButton(index, setTheme);
-                  }
-                  ),
-              ),
-            );
-        }
-      }
-      );
-  }
-
-  Widget todoButton(int index, SetTheme setTheme){
-    final todo = todoBox.getAt(index) as TodoModel;
-    return MaterialButton(
-      onPressed: (){
-        showEditBottomSheet(context, todoBox, setTheme, index);
-      },
-      height: 50,
-      elevation: 0.0,
-        child: Row(
-          children: [
-            Theme(
-              data: Theme.of(context).copyWith(
-                unselectedWidgetColor: setTheme.setTextTheme()
-              ),
-              child: Checkbox(
-                shape: const CircleBorder(),
-                value: false,
-                onChanged: (value){
-                  setState(() {
-                    todoBox.deleteAt(index);
-                    completedTodoBox.add(todo);
-                  });
-                },
-              ),
-            ),
-            Text(
-              todoBox.getAt(index)!.title,
-              style: TextStyle(
-                color: setTheme.setTextTheme()
-              ),
-        ),
-          ],
-        ),
-      );
-  }
-
-  Widget showNoTodo(SetTheme setTheme){
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "asset/image/to-do-list-cuate.png",
-            width: 250,
-          ),
-          Text(
-            "No todo",
-            style: TextStyle(
-              fontSize: 17,
-              color: setTheme.setTextTheme()
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-    FloatingActionButton floatingActionButton(SetTheme setTheme){
-      return FloatingActionButton(
-        onPressed: (){
-          showNewTodoBottomSheet(setTheme);
-        },
-        tooltip: "Add new todo",
-        backgroundColor: Palette.ultramarineBlue,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10)
-        ),
-        child: const Icon(
-          Icons.add,
-          size: 40,
-          ),
-        );
-    }
-
-    void showNewTodoBottomSheet(SetTheme setTheme){
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (context){
-          return Padding(
-            padding: MediaQuery.of(context).viewInsets,
-            child: Container(
-              color: setTheme.setBackgroundTheme(),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    todoTextField(setTheme),
-                    const SizedBox(height: 10),
-                    saveTodoButton(setTheme)
-                  ],
-                )
-            ),
-            )
-          );
-        }
-      );
-    }
-
-    Widget todoTextField(SetTheme setTheme){
-      return TextField(
-        cursorColor: Palette.ultramarineBlue,
-        textCapitalization: TextCapitalization.sentences,
-        autofocus: true,
-        style: TextStyle(
-          color: setTheme.setTextTheme()
-        ),
-        decoration: const InputDecoration(
-          hintText: "Title",
-          hintStyle: TextStyle(
-            color: Colors.grey
-          ),
-          contentPadding: EdgeInsets.all(8.0),
-          border: InputBorder.none,
-      ),
-      onChanged: (String value){
-        title = value;
-      },
-    );
-  }
-
-  Widget saveTodoButton(SetTheme setTheme){
-    return Align(
-      alignment: Alignment.centerRight,
-      child: MaterialButton(
-        onPressed: (){
-          setState(() {
-            todoBox.add(
-            TodoModel(title, ""),
-          );
-          Navigator.of(context).pop();
-          });
-         
-        },
-        height: 40,
-        minWidth: 40,
-        color: Palette.ultramarineBlue,
+        backgroundColor: setTheme.setBackgroundTheme(),
         elevation: 0.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10)
+        iconTheme: IconThemeData(color: setTheme.setTextTheme()),
+        title: Text(
+          "Todo",
+          style: TextStyle(color: setTheme.setTextTheme()),
         ),
-        child: const  Text(
-          "Save",
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.white
-          ),
-        ),
-      ),
-    );
+        bottom: TabBar(
+            indicatorWeight: 3.0,
+            indicatorPadding: const EdgeInsets.symmetric(horizontal: 20),
+            indicatorSize: TabBarIndicatorSize.label,
+            indicatorColor: setTheme.setTextTheme(),
+            tabs: [
+              Tab(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.checklist,
+                      color: setTheme.setTextTheme(),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      "Undone",
+                      style: TextStyle(
+                      color: setTheme.setTextTheme()
+                    )
+                      )
+                  ],
+                ),
+              ),
+              Tab(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.check,
+                      color: setTheme.setTextTheme(),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      "Done",
+                      style: TextStyle(
+                        color: setTheme.setTextTheme()
+                      )
+                      )
+                  ],
+                ),
+              )
+            ]));
+  }
+
+  Widget buildDrawer(SetTheme setTheme) {
+    return Drawer(
+        backgroundColor: setTheme.setAppBarTheme(),
+        child: Column(
+          children: [
+            const SizedBox(height: 34),
+            Row(
+              children: [
+                const SizedBox(width: 20),
+                Text("Jungle",
+                    style: TextStyle(
+                        color: setTheme.setTextTheme(),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: MaterialButton(
+                  onPressed: () {
+                    setTheme.showTaskPage = !setTheme.showTaskPage;
+                    setTheme.saveStatus();
+                    Get.offNamed('/taskPage');
+                  },
+                  height: 50,
+                  elevation: 0.0,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(30),
+                          bottomRight: Radius.circular(30))),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      Icon(
+                        Icons.event_note_outlined,
+                        color: setTheme.setTextTheme(),
+                      ),
+                      const SizedBox(width: 20),
+                      Text(
+                        "Task",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: setTheme.setTextTheme(),
+                        ),
+                      )
+                    ],
+                  )),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: MaterialButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  height: 50,
+                  elevation: 0.0,
+                  color: setTheme.setDrawerButtonTheme(),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(30),
+                          bottomRight: Radius.circular(30))),
+                  child: const Row(
+                    children: [
+                      SizedBox(width: 10),
+                      Icon(Icons.checklist_sharp, color: Colors.teal),
+                      SizedBox(width: 20),
+                      Text(
+                        "Todo",
+                        style: TextStyle(color: Colors.teal, fontSize: 16),
+                      )
+                    ],
+                  )),
+            ),
+            const SizedBox(height: 10),
+            Divider(
+              thickness: 1.0,
+              color: Palette.ultramarineBlue,
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: MaterialButton(
+                  onPressed: () {
+                    Get.toNamed("/settings");
+                  },
+                  height: 50,
+                  elevation: 0.0,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(30),
+                          bottomRight: Radius.circular(30))),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      Icon(
+                        Icons.settings_outlined,
+                        color: setTheme.setTextTheme(),
+                      ),
+                      const SizedBox(width: 20),
+                      Text(
+                        "Settings",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: setTheme.setTextTheme(),
+                        ),
+                      )
+                    ],
+                  )),
+            ),
+          ],
+        ));
   }
 }

@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:jungle/view/splash_screen/splash_screen.dart';
+import 'package:jungle/routes/routes.dart';
 import '../model/palette/palette.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class App extends MaterialApp{
-  App({super.key})
-  : super(
+class App extends GetMaterialApp{
+  App({super.key}) : super(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
         primarySwatch: Palette.ultramarineBlue,
-        fontFamily: "Lato"
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Palette.ultramarineBlue),
+        textTheme: GoogleFonts.latoTextTheme()
       ),
-      home: const SplashScreen(),
+      defaultTransition: Transition.leftToRight,
+      routes: appRoutes,
+      initialRoute: "/splashScreen",
   );
 }
