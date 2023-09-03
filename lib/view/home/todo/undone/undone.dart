@@ -69,19 +69,15 @@ class UndoneState extends State<Undone>{
       ),
       child: Row(
         children: [
-          Theme(
-            data: Theme.of(context)
-                .copyWith(unselectedWidgetColor: setTheme.setTextTheme()),
-            child: Checkbox(
-              shape: const CircleBorder(),
-              value: false,
-              onChanged: (value) {
-                setState(() {
-                  todoBox.deleteAt(index);
-                  completedTodoBox.add(todo);
-                });
-              },
-            ),
+          Checkbox(
+            shape: const CircleBorder(),
+            value: true,
+            onChanged: (value) {
+              setState(() {
+                todoBox.deleteAt(index);
+                completedTodoBox.add(todo);
+              });
+            },
           ),
           Text(
             todoBox.getAt(index)!.title,

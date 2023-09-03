@@ -10,6 +10,7 @@ class App extends GetMaterialApp{
     theme: ThemeData(
         primarySwatch: Palette.ultramarineBlue,
         useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Palette.ultramarineBlue),
         textTheme: GoogleFonts.latoTextTheme()
       ),
       defaultTransition: Transition.leftToRight,

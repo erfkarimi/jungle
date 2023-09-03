@@ -107,7 +107,7 @@ class TodoPageState extends State<TodoPage> {
                   onPressed: () {
                     setTheme.showTaskPage = !setTheme.showTaskPage;
                     setTheme.saveStatus();
-                    Get.offNamed('/todoPage');
+                    Get.offNamed('/taskPage');
                   },
                   height: 50,
                   elevation: 0.0,
@@ -168,7 +168,7 @@ class TodoPageState extends State<TodoPage> {
               padding: const EdgeInsets.only(right: 10),
               child: MaterialButton(
                   onPressed: () {
-                    Get.to("/settings");
+                    Get.toNamed("/settings");
                   },
                   height: 50,
                   elevation: 0.0,
