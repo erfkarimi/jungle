@@ -20,5 +20,5 @@ Map<String, WidgetBuilder> appRoutes = {
   '/todoPage'     : (_)=> const TodoPage(),
   '/taskPage'     : (_)=> const TaskPage(),
   '/addNewTask'   : (_)=> const AddNewTask(),
-  '/settings'   : (_)=> const Settings()
+  '/settings'     : (_)=> const Settings()
 };

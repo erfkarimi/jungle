@@ -19,7 +19,8 @@ class SplashScreen extends StatefulWidget{
 
 class SplashScreenState extends State<SplashScreen>{
 
-  final welcomePageDB = Hive.box("welcome");
+  final Box welcomePageDB = Hive.box("welcome");
+
   @override 
   void initState() {
     super.initState();

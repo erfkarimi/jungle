@@ -324,7 +324,7 @@ class TaskPageState extends State<TaskPage> {
               TextButton(
                 onPressed: () {
                   taskDB.deleteAt(index);
-                  Navigator.of(context).pop();
+                  Get.back();
                 },
                 child: const Text("Yes"),
               ),
@@ -342,7 +342,6 @@ class TaskPageState extends State<TaskPage> {
         });
   }
 
-  /* This function changes status bar color and Navigation bar color */
   void setSystemTheme(SetTheme setTheme) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarIconBrightness: Brightness.light,

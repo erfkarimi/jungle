@@ -71,7 +71,7 @@ class UndoneState extends State<Undone>{
         children: [
           Checkbox(
             shape: const CircleBorder(),
-            value: true,
+            value: false,
             onChanged: (value) {
               setState(() {
                 todoBox.deleteAt(index);
