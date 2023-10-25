@@ -4,6 +4,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/view/home/home_page.dart';
 import 'package:jungle/view/welcome_page/welcome_page.dart';
+import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,9 +64,13 @@ class SplashScreenState extends State<SplashScreen>{
   Future<void> init(context) async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     final setTheme = Provider.of<SetTheme>(context, listen: false);
+    final DbCounterState dbCounterState = Provider.of<DbCounterState>(context, listen: false);
     setState(() {
       setTheme.theme = preferences.getString("theme") ?? "light";
-    });
+      dbCounterState.taskCounter = preferences.getInt("taskCounter") ?? 0;
+      dbCounterState.todoCounter = preferences.getInt("todoCounter") ?? 0;
+      dbCounterState.completedCounter = preferences.getInt("completedCounter") ?? 0;
+  });
   }
 
   void setTheme(){

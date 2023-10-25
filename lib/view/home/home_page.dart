@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:jungle/view/home/task/task_page.dart';
+import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
 import 'package:provider/provider.dart';
 import '../../model/palette/palette.dart';
+import '../../model/task_model/task_model.dart';
 import '../../model/todo_model/todo_model.dart';
 import 'completed/completed.dart';
 import 'todo_page/todo_page.dart';
 
 class  HomePage extends StatefulWidget{
-  const HomePage({super.key});
+  final Function? notifyParent;
+  const HomePage({Key? key, this.notifyParent}): super(key: key);
 
   @override 
   HomePageState createState()=> HomePageState();
@@ -78,8 +81,11 @@ class HomePageState extends State<HomePage>{
           indicatorPadding: const EdgeInsets.symmetric(
             vertical: 7, horizontal: 10),
           indicatorSize: TabBarIndicatorSize.tab,
+          splashBorderRadius: BorderRadius.circular(50),
           padding: const EdgeInsets.symmetric(
             horizontal: 10),
+            labelStyle: const TextStyle(
+              fontWeight: FontWeight.bold),
               indicator: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   color: Palette.ultramarineBlue),
@@ -88,13 +94,31 @@ class HomePageState extends State<HomePage>{
   }
 
   List<Tab> tabListWidget(SetTheme setTheme) {
-    final Box completedBox = Hive.box<TodoModel>("Completed");
+    final Box taskBox = Hive.box<TaskModel>("task");
+    final Box todoBox = Hive.box<TodoModel>("todo");
+    final Box completedBox = Hive.box<TodoModel>("completed");
     return [
       Tab(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Task", style: TextStyle(color: setTheme.setTextTheme()))
+            Text("Task", style: TextStyle(color: setTheme.setTextTheme())),
+            const SizedBox(width: 5.0),
+            Container(
+              height: 20,
+              width: 20,
+              decoration: BoxDecoration(
+                  color: Colors.green.shade200, shape: BoxShape.circle),
+              child: Center(
+                child:
+                  Consumer<DbCounterState>(
+                    builder: (context, dbCounterState, _){
+                      return Text("${dbCounterState.taskCounter}",
+                        style: TextStyle(color: setTheme.setTextTheme()));
+                    },
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -102,12 +126,18 @@ class HomePageState extends State<HomePage>{
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.check,
-              color: setTheme.setTextTheme(),
-            ),
-            const SizedBox(width: 10),
-            Text("Todo", style: TextStyle(color: setTheme.setTextTheme()))
+            Text("Todo", style: TextStyle(color: setTheme.setTextTheme())),
+            const SizedBox(width: 5.0),
+            Container(
+              height: 20,
+              width: 20,
+              decoration: BoxDecoration(
+                  color: Colors.green.shade200, shape: BoxShape.circle),
+              child: Center(
+                child: Text("${todoBox.length}",
+                    style: TextStyle(color: setTheme.setTextTheme())),
+              ),
+            )
           ],
         ),
       ),

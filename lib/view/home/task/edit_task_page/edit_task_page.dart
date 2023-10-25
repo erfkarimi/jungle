@@ -263,13 +263,19 @@ part of '../task_page.dart';
             )
           ),
           actions: [
-            TextButton(
-              onPressed: (){
-                taskDB.deleteAt(index);
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-              child: const Text("Yes"),
+            Consumer<DbCounterState>(
+              builder: (context, dbCounterState, _) {
+                return TextButton(
+                  onPressed: (){
+                    taskDB.deleteAt(index);
+                    dbCounterState.updateTaskCounter(taskDB.length);
+                    dbCounterState.saveDbCounterState();
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Yes"),
+                );
+              }
             ),
             TextButton(
               onPressed: (){

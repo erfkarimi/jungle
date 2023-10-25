@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:jungle/view/home/home_page.dart';
+import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:provider/provider.dart';
 import '../../../../model/palette/palette.dart';
 import '../../../../model/task_model/task_model.dart';
 import '../../../../view_model/set_theme/set_theme.dart';
 
-class AddNewTask extends StatelessWidget {
+class AddNewTask extends StatefulWidget {
   const AddNewTask({super.key});
 
+  @override
+  State<AddNewTask> createState() => _AddNewTaskState();
+}
+
+class _AddNewTaskState extends State<AddNewTask> {
+  
   @override
   Widget build(context) {
     final SetTheme setTheme = Provider.of<SetTheme>(context);
@@ -165,13 +173,17 @@ class AddNewTask extends StatelessWidget {
     String currentDate,
   ) {
     final taskBox = Hive.box<TaskModel>("task");
+    final DbCounterState dbCounterState = Provider.of<DbCounterState>(context);
+    
     return MaterialButton(
       onPressed: () {
         taskBox.add(
           TaskModel(titleController.text, labelController.text,
               descriptionController.text, currentDate),
         );
-        Navigator.of(context).pop();
+        dbCounterState.updateTaskCounter(taskBox.length);
+        dbCounterState.saveDbCounterState();
+        Navigator.pop(context);
       },
       minWidth: double.infinity,
       height: 48,

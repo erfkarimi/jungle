@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SetTheme extends ChangeNotifier{
   String theme = "light";
   bool showTaskPage = true;
+  
 
   Color setTextTheme(){
     if(theme == "dark" || theme == "dim"){
@@ -66,6 +67,12 @@ class SetTheme extends ChangeNotifier{
   }
 
   Future<void> saveStatus() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool("showTaskPage", showTaskPage);
+    notifyListeners();
+  }
+
+  Future<void> saveDbCounterState() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setBool("showTaskPage", showTaskPage);
     notifyListeners();
