@@ -1,8 +1,7 @@
-part of 'done.dart';
+part of '../task_page.dart';
 
-void showEditBottomSheet(
+ void editTaskBottomSheet(
   BuildContext context,
-  Box<TodoModel> completedTodoBox,
   SetTheme setTheme,
   int index
   ){
@@ -10,67 +9,73 @@ void showEditBottomSheet(
       context: context,
       isDismissible: false,
       isScrollControlled: true,
-      useSafeArea: false,
+      useSafeArea: true,
       builder: (context){
-        final completedTodoBox = Hive.box<TodoModel>("completed");
-        final completedTodo = completedTodoBox.getAt(index) as TodoModel;
+        final taskDB = Hive.box<TaskModel>("task");
+        final task = taskDB.getAt(index) as TaskModel;
         return BottomSheet(
-          onClosing: (){},
-          enableDrag: false,
-          builder: (context){
-            return BottomSheet(
           backgroundColor: setTheme.setBackgroundTheme(),
           onClosing: (){},
+          enableDrag: false,
           builder: (context){
             return Column(
             children: [
               const SizedBox(height: 14),
+              Container(
+                height: 5,
+                width: 50,
+                decoration: BoxDecoration(
+                  color: setTheme.setTextTheme(),
+                  borderRadius: BorderRadius.circular(20)
+                ),
+              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(20),
-                  child: ListView(
+                  child: Column(
                     children: [
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              backButton(context, setTheme),
-                               Text(
-                                "Edit completed todo",
-                                style: TextStyle(
-                                  color: setTheme.setTextTheme(),
-                                  fontSize: 18
-                                ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Edit task",
+                              style: TextStyle(
+                                color: setTheme.setTextTheme(),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600
                               ),
-                              TextButton(
-                                onPressed: (){
-                                  deleteTaskDialog(context, 
-                                  setTheme, completedTodoBox, index);
-                                },
-                                child: Text(
-                                   "Delete",
-                                  style: TextStyle(
-                                    color: Colors.red.shade600,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14
-                                  ),
-                                ),
+                            ),
+                      TextButton(
+                        onPressed: (){
+                          deleteTaskDialog(context,index, taskDB, setTheme);
+                        },
+                        child:  Text(
+                                  "Delete",
+                              style: TextStyle(
+                                color: Colors.red.shade600,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14
                               ),
-                            ],
-                          ),
-                          Divider(
-                            thickness: 1.0,
-                            color: setTheme.setTextFieldBorderTheme(),
-                          ),
-                          const SizedBox(height: 10),
-                          titleTextField(context, setTheme, completedTodo),
-                          const SizedBox(height: 10),
-                          descriptionTextField(context, setTheme, completedTodo),
-                          const SizedBox(height: 30),
-                          updateCompletedTodoButton(context, setTheme, completedTodoBox, completedTodo, index)
-                        ],
+                            ),
+                        )
+                      ],
                       ),
+                      Divider(
+                        thickness: 1.0,
+                        color: setTheme.setTextFieldBorderTheme(),
+                      ),
+                      const SizedBox(height: 10),
+                      titleTextField(
+                        context,
+                        setTheme,
+                        task
+                        ),
+                      const SizedBox(height: 10),
+                      labelTextField(context, setTheme, task),
+                      const SizedBox(height: 10),
+                      descriptionTextField(context, setTheme, task),
+                      const SizedBox(height: 30),
+                      updateTaskButton(context, index)
                     ],
                   ),
                 ),
@@ -79,40 +84,14 @@ void showEditBottomSheet(
           );
           }
           );
-          }
-          );
       }
     );
-}
+  }
 
-Widget backButton(
-  BuildContext context,
-  SetTheme setTheme
-  ){
-  return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: MaterialButton(
-            onPressed: (){
-              Navigator.pop(context);
-            },
-            minWidth: 10,
-            shape: CircleBorder(
-              side: BorderSide(
-                color: setTheme.setTextTheme()
-              )
-            ),
-            child: Icon(
-            Icons.arrow_downward,
-            color: setTheme.setTextTheme()
-            ),
-          ),
-        );
-}
-
- Widget titleTextField(
+    Widget titleTextField(
       BuildContext context,
       SetTheme setTheme,
-      TodoModel todo
+      TaskModel task
       ){
     return SizedBox(
       height: 50,
@@ -123,7 +102,7 @@ Widget backButton(
         style: TextStyle(
           color: setTheme.setTextTheme()
         ),
-        initialValue: todo.title,
+        initialValue: task.title,
         decoration: InputDecoration(
           hintText: "Title",
           hintStyle: const TextStyle(
@@ -143,27 +122,66 @@ Widget backButton(
         ),
       ),
       onChanged: (String value){
-        todo.title = value;
+        task.title = value;
       },
       )
     );
   }
 
+  Widget labelTextField(
+    BuildContext context,
+    SetTheme setTheme,
+    TaskModel taskModel
+    ){
+    return SizedBox(
+      height: 50,
+      child: TextFormField(
+        cursorColor: Palette.ultramarineBlue,
+        textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.next,
+        style: TextStyle(
+          color: setTheme.setTextTheme()
+        ),
+        initialValue: taskModel.label,
+        decoration: InputDecoration(
+          hintText: "Label",
+          hintStyle: const TextStyle(
+            color: Colors.grey
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: setTheme.setTextFieldBorderTheme()
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: setTheme.setTextFieldBorderTheme()
+              ),
+          ),
+        ),
+        onChanged: (String value){
+          taskModel.label = value;
+        },
+      ),
+    );
+  }
 
   Widget descriptionTextField(
-      BuildContext context,
-      SetTheme setTheme,
-      TodoModel todo
+    BuildContext context,
+    SetTheme setTheme,
+    TaskModel taskModel
     ){
     return TextFormField(
       cursorColor: Palette.ultramarineBlue,
-      textCapitalization: TextCapitalization.sentences,
-      textInputAction: TextInputAction.newline,
       style: TextStyle(
         color: setTheme.setTextTheme()
       ),
       maxLines: 10,
-      initialValue: todo.description,
+      textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.newline,
+      initialValue: taskModel.description,
       decoration: InputDecoration(
         hintText:  "Description",
         hintStyle: const TextStyle(
@@ -183,24 +201,21 @@ Widget backButton(
         ),
       ),
       onChanged: (String value){
-        todo.description = value;
+        taskModel.description = value;
       },
     );
   }
 
-   Widget updateCompletedTodoButton(
-      BuildContext context,
-      SetTheme setTheme,
-      Box<TodoModel> completedTodoBox,
-      TodoModel todo,
-      int index
-    ){
-
+  Widget updateTaskButton(
+    BuildContext context,
+    int index){
+    final taskBox = Hive.box<TaskModel>("task");
+    final task = taskBox.getAt(index) as TaskModel;
     return MaterialButton(
       onPressed: (){
-          completedTodoBox.putAt(index, TodoModel(
-            todo.title,
-            todo.description,
+          taskBox.putAt(index, TaskModel(
+            task.title, task.label,
+            task.description, task.currentDate
             ));
           Navigator.of(context).pop();
       },
@@ -223,10 +238,9 @@ Widget backButton(
 
 
   void deleteTaskDialog(
-      BuildContext context,
-      SetTheme setTheme,
-      Box<TodoModel> completedTodoBox,
-      int index
+    BuildContext context,
+    int index, Box<TaskModel> taskDB,
+    SetTheme setTheme
     ){
     showDialog(
       context: context,
@@ -251,7 +265,7 @@ Widget backButton(
           actions: [
             TextButton(
               onPressed: (){
-                completedTodoBox.deleteAt(index);
+                taskDB.deleteAt(index);
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
@@ -271,5 +285,5 @@ Widget backButton(
           ],
         );
       }
-    );
+     );
   }

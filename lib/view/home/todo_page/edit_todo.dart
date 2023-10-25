@@ -1,7 +1,8 @@
-part of 'package:jungle/view/home/task/task_page.dart';
+part of 'todo_page.dart';
 
- void addTaskBottomSheet(
+void showEditBottomSheet(
   BuildContext context,
+  Box<TodoModel> todoBox,
   SetTheme setTheme,
   int index
   ){
@@ -9,73 +10,67 @@ part of 'package:jungle/view/home/task/task_page.dart';
       context: context,
       isDismissible: false,
       isScrollControlled: true,
-      useSafeArea: true,
+      useSafeArea: false,
       builder: (context){
-        final taskDB = Hive.box<TaskModel>("task");
-        final task = taskDB.getAt(index) as TaskModel;
+        final todoBox = Hive.box<TodoModel>("todo");
+        final todo = todoBox.getAt(index) as TodoModel;
         return BottomSheet(
-          backgroundColor: setTheme.setBackgroundTheme(),
           onClosing: (){},
           enableDrag: false,
+          builder: (context){
+            return BottomSheet(
+          backgroundColor: setTheme.setBackgroundTheme(),
+          onClosing: (){},
           builder: (context){
             return Column(
             children: [
               const SizedBox(height: 14),
-              Container(
-                height: 5,
-                width: 50,
-                decoration: BoxDecoration(
-                  color: setTheme.setTextTheme(),
-                  borderRadius: BorderRadius.circular(20)
-                ),
-              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(20),
-                  child: Column(
+                  child: ListView(
                     children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Edit task",
-                              style: TextStyle(
-                                color: setTheme.setTextTheme(),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              backButton(context, setTheme),
+                               Text(
+                                "Edit todo",
+                                style: TextStyle(
+                                  color: setTheme.setTextTheme(),
+                                  fontSize: 18
+                                ),
                               ),
-                            ),
-                      TextButton(
-                        onPressed: (){
-                          deleteTaskDialog(context,index, taskDB, setTheme);
-                        },
-                        child:  Text(
-                                  "Delete",
-                              style: TextStyle(
-                                color: Colors.red.shade600,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14
+                              TextButton(
+                                onPressed: (){
+                                  deleteTaskDialog(context, 
+                                  setTheme, todoBox, index);
+                                },
+                                child: Text(
+                                   "Delete",
+                                  style: TextStyle(
+                                    color: Colors.red.shade600,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14
+                                  ),
+                                ),
                               ),
-                            ),
-                        )
-                      ],
+                            ],
+                          ),
+                          Divider(
+                            thickness: 1.0,
+                            color: setTheme.setTextFieldBorderTheme(),
+                          ),
+                          const SizedBox(height: 10),
+                          titleTextField(context, setTheme, todo),
+                          const SizedBox(height: 10),
+                          descriptionTextField(context, setTheme, todo),
+                          const SizedBox(height: 24),
+                          updateCompletedTodoButton(context, setTheme, todoBox, todo, index)
+                        ],
                       ),
-                      Divider(
-                        thickness: 1.0,
-                        color: setTheme.setTextFieldBorderTheme(),
-                      ),
-                      const SizedBox(height: 10),
-                      titleTextField(
-                        context,
-                        setTheme,
-                        task
-                        ),
-                      const SizedBox(height: 10),
-                      labelTextField(context, setTheme, task),
-                      const SizedBox(height: 10),
-                      descriptionTextField(context, setTheme, task),
-                      const SizedBox(height: 30),
-                      updateTaskButton(context, index)
                     ],
                   ),
                 ),
@@ -84,14 +79,40 @@ part of 'package:jungle/view/home/task/task_page.dart';
           );
           }
           );
+          }
+          );
       }
     );
-  }
+}
 
-    Widget titleTextField(
+Widget backButton(
+  BuildContext context,
+  SetTheme setTheme
+  ){
+  return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: MaterialButton(
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            minWidth: 10,
+            shape: CircleBorder(
+              side: BorderSide(
+                color: setTheme.setTextTheme()
+              )
+            ),
+            child: Icon(
+            Icons.arrow_downward,
+            color: setTheme.setTextTheme()
+            ),
+          ),
+        );
+}
+
+ Widget titleTextField(
       BuildContext context,
       SetTheme setTheme,
-      TaskModel task
+      TodoModel todo
       ){
     return SizedBox(
       height: 50,
@@ -102,7 +123,7 @@ part of 'package:jungle/view/home/task/task_page.dart';
         style: TextStyle(
           color: setTheme.setTextTheme()
         ),
-        initialValue: task.title,
+        initialValue: todo.title,
         decoration: InputDecoration(
           hintText: "Title",
           hintStyle: const TextStyle(
@@ -122,66 +143,27 @@ part of 'package:jungle/view/home/task/task_page.dart';
         ),
       ),
       onChanged: (String value){
-        task.title = value;
+        todo.title = value;
       },
       )
     );
   }
 
-  Widget labelTextField(
-    BuildContext context,
-    SetTheme setTheme,
-    TaskModel taskModel
-    ){
-    return SizedBox(
-      height: 50,
-      child: TextFormField(
-        cursorColor: Palette.ultramarineBlue,
-        textCapitalization: TextCapitalization.sentences,
-        textInputAction: TextInputAction.next,
-        style: TextStyle(
-          color: setTheme.setTextTheme()
-        ),
-        initialValue: taskModel.label,
-        decoration: InputDecoration(
-          hintText: "Label",
-          hintStyle: const TextStyle(
-            color: Colors.grey
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: setTheme.setTextFieldBorderTheme()
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: setTheme.setTextFieldBorderTheme()
-              ),
-          ),
-        ),
-        onChanged: (String value){
-          taskModel.label = value;
-        },
-      ),
-    );
-  }
 
   Widget descriptionTextField(
-    BuildContext context,
-    SetTheme setTheme,
-    TaskModel taskModel
+      BuildContext context,
+      SetTheme setTheme,
+      TodoModel todo
     ){
     return TextFormField(
       cursorColor: Palette.ultramarineBlue,
+      textCapitalization: TextCapitalization.sentences,
+      textInputAction: TextInputAction.newline,
       style: TextStyle(
         color: setTheme.setTextTheme()
       ),
       maxLines: 10,
-      textCapitalization: TextCapitalization.sentences,
-        textInputAction: TextInputAction.newline,
-      initialValue: taskModel.description,
+      initialValue: todo.description,
       decoration: InputDecoration(
         hintText:  "Description",
         hintStyle: const TextStyle(
@@ -201,21 +183,24 @@ part of 'package:jungle/view/home/task/task_page.dart';
         ),
       ),
       onChanged: (String value){
-        taskModel.description = value;
+        todo.description = value;
       },
     );
   }
 
-  Widget updateTaskButton(
-    BuildContext context,
-    int index){
-    final taskBox = Hive.box<TaskModel>("task");
-    final task = taskBox.getAt(index) as TaskModel;
+   Widget updateCompletedTodoButton(
+      BuildContext context,
+      SetTheme setTheme,
+      Box<TodoModel> completedTodoBox,
+      TodoModel todo,
+      int index
+    ){
+
     return MaterialButton(
       onPressed: (){
-          taskBox.putAt(index, TaskModel(
-            task.title, task.label,
-            task.description, task.currentDate
+          completedTodoBox.putAt(index, TodoModel(
+            todo.title,
+            todo.description,
             ));
           Navigator.of(context).pop();
       },
@@ -238,9 +223,10 @@ part of 'package:jungle/view/home/task/task_page.dart';
 
 
   void deleteTaskDialog(
-    BuildContext context,
-    int index, Box<TaskModel> taskDB,
-    SetTheme setTheme
+      BuildContext context,
+      SetTheme setTheme,
+      Box<TodoModel> completedTodoBox,
+      int index
     ){
     showDialog(
       context: context,
@@ -265,7 +251,7 @@ part of 'package:jungle/view/home/task/task_page.dart';
           actions: [
             TextButton(
               onPressed: (){
-                taskDB.deleteAt(index);
+                completedTodoBox.deleteAt(index);
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
@@ -285,5 +271,5 @@ part of 'package:jungle/view/home/task/task_page.dart';
           ],
         );
       }
-     );
+    );
   }

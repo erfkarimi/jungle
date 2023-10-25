@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
 import 'package:provider/provider.dart';
-import '../../../../model/palette/palette.dart';
-import '../../../../model/todo_model/todo_model.dart';
-part '../edit_todo.dart';
+import '../../../model/palette/palette.dart';
+import '../../../model/todo_model/todo_model.dart';
 
+part 'edit_todo.dart';
 
-class Undone extends StatefulWidget{
-  const Undone({super.key});
+class TodoPage extends StatefulWidget{
+  const TodoPage({super.key});
 
   @override
-  UndoneState createState()=> UndoneState();
+  TodoPageState createState()=> TodoPageState();
 }
-class UndoneState extends State<Undone>{
+class TodoPageState extends State<TodoPage>{
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
   String title = "";

@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../../model/palette/palette.dart';
-import '../../model/task_model/task_model.dart';
-import '../../view_model/set_theme/set_theme.dart';
+import '../../../../model/palette/palette.dart';
+import '../../../../model/task_model/task_model.dart';
+import '../../../../view_model/set_theme/set_theme.dart';
 
 class AddNewTask extends StatelessWidget {
   const AddNewTask({super.key});

@@ -4,14 +4,14 @@ import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
 import 'package:provider/provider.dart';
 import '../../../../model/todo_model/todo_model.dart';
-part 'edit_done_todo.dart';
+part 'edit_completed_todo.dart';
 
-class Done extends StatefulWidget{
-  const Done({super.key});
+class CompletedTodo extends StatefulWidget{
+  const CompletedTodo({super.key});
   @override
-  DoneState createState()=> DoneState();
+  CompletedTodoState createState()=> CompletedTodoState();
 }
-class DoneState extends State<Done>{
+class CompletedTodoState extends State<CompletedTodo>{
   final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   

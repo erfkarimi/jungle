@@ -3,13 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/model/task_model/task_model.dart';
-import 'package:jungle/view/add_task/add_task.dart';
-import 'package:jungle/view/home/todo/todo_page.dart';
+import 'package:jungle/view/home/task/add_task/add_task.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
-part 'package:jungle/view/home/task/edit_task_bottom_sheet.dart/edit_task_bottom_sheet.dart';
+import '../todo_page/todo_page.dart';
 
+part 'edit_task_page/edit_task_page.dart';
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
 
@@ -27,9 +27,7 @@ class TaskPageState extends State<TaskPage> {
     return Scaffold(
       backgroundColor: setTheme.setBackgroundTheme(),
       resizeToAvoidBottomInset: false,
-      appBar: buildAppBar(setTheme),
       floatingActionButton: floatingActionButton(),
-      drawer: buildDrawer(setTheme),
       body: buildBody(setTheme),
     );
   }
@@ -182,7 +180,7 @@ class TaskPageState extends State<TaskPage> {
                   },
                   child: GestureDetector(
                     onTap: () {
-                      addTaskBottomSheet(context, setTheme, index);
+                      editTaskBottomSheet(context, setTheme, index);
                     },
                     child: Card(
                         color: setTheme.setAppBarTheme(),

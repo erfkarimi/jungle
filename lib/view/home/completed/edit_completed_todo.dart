@@ -1,8 +1,8 @@
-part of 'undone/undone.dart';
+part of 'completed.dart';
 
 void showEditBottomSheet(
   BuildContext context,
-  Box<TodoModel> todoBox,
+  Box<TodoModel> completedTodoBox,
   SetTheme setTheme,
   int index
   ){
@@ -12,8 +12,8 @@ void showEditBottomSheet(
       isScrollControlled: true,
       useSafeArea: false,
       builder: (context){
-        final todoBox = Hive.box<TodoModel>("todo");
-        final todo = todoBox.getAt(index) as TodoModel;
+        final completedTodoBox = Hive.box<TodoModel>("completed");
+        final completedTodo = completedTodoBox.getAt(index) as TodoModel;
         return BottomSheet(
           onClosing: (){},
           enableDrag: false,
@@ -37,7 +37,7 @@ void showEditBottomSheet(
                             children: [
                               backButton(context, setTheme),
                                Text(
-                                "Edit todo",
+                                "Edit completed todo",
                                 style: TextStyle(
                                   color: setTheme.setTextTheme(),
                                   fontSize: 18
@@ -46,7 +46,7 @@ void showEditBottomSheet(
                               TextButton(
                                 onPressed: (){
                                   deleteTaskDialog(context, 
-                                  setTheme, todoBox, index);
+                                  setTheme, completedTodoBox, index);
                                 },
                                 child: Text(
                                    "Delete",
@@ -64,11 +64,11 @@ void showEditBottomSheet(
                             color: setTheme.setTextFieldBorderTheme(),
                           ),
                           const SizedBox(height: 10),
-                          titleTextField(context, setTheme, todo),
+                          titleTextField(context, setTheme, completedTodo),
                           const SizedBox(height: 10),
-                          descriptionTextField(context, setTheme, todo),
-                          const SizedBox(height: 24),
-                          updateCompletedTodoButton(context, setTheme, todoBox, todo, index)
+                          descriptionTextField(context, setTheme, completedTodo),
+                          const SizedBox(height: 30),
+                          updateCompletedTodoButton(context, setTheme, completedTodoBox, completedTodo, index)
                         ],
                       ),
                     ],

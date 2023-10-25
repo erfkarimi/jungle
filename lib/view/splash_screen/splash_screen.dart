@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
-import 'package:jungle/view/home/home.dart';
+import 'package:jungle/view/home/home_page.dart';
 import 'package:jungle/view/welcome_page/welcome_page.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +52,7 @@ class SplashScreenState extends State<SplashScreen>{
           valueListenable: welcomePageDB.listenable(),
           builder: (context, box, child){
             return welcomePageDB.get("welcomePage", defaultValue: false) 
-            ? const Home() : const WelcomePage();
+            ? const HomePage() : const WelcomePage();
           }
         ),
           );
