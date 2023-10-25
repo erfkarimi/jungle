@@ -94,9 +94,7 @@ class HomePageState extends State<HomePage>{
   }
 
   List<Tab> tabListWidget(SetTheme setTheme) {
-    final Box taskBox = Hive.box<TaskModel>("task");
-    final Box todoBox = Hive.box<TodoModel>("todo");
-    final Box completedBox = Hive.box<TodoModel>("completed");
+    final DbCounterState dbCounterState = Provider.of<DbCounterState>(context);
     return [
       Tab(
         child: Row(
@@ -111,12 +109,8 @@ class HomePageState extends State<HomePage>{
                   color: Colors.green.shade200, shape: BoxShape.circle),
               child: Center(
                 child:
-                  Consumer<DbCounterState>(
-                    builder: (context, dbCounterState, _){
-                      return Text("${dbCounterState.taskCounter}",
-                        style: TextStyle(color: setTheme.setTextTheme()));
-                    },
-                  ),
+                  Text("${dbCounterState.taskCounter}",
+                    style: TextStyle(color: setTheme.setTextTheme())),
                 ),
               ),
           ],
@@ -134,7 +128,7 @@ class HomePageState extends State<HomePage>{
               decoration: BoxDecoration(
                   color: Colors.green.shade200, shape: BoxShape.circle),
               child: Center(
-                child: Text("${todoBox.length}",
+                child: Text("${dbCounterState.todoCounter}",
                     style: TextStyle(color: setTheme.setTextTheme())),
               ),
             )
@@ -153,7 +147,7 @@ class HomePageState extends State<HomePage>{
               decoration: BoxDecoration(
                   color: Colors.green.shade200, shape: BoxShape.circle),
               child: Center(
-                child: Text("${completedBox.length}",
+                child: Text("${dbCounterState.completedCounter}",
                     style: TextStyle(color: setTheme.setTextTheme())),
               ),
             )

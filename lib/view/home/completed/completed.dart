@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
+import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
 import 'package:provider/provider.dart';
 import '../../../../model/todo_model/todo_model.dart';
@@ -71,17 +72,24 @@ class CompletedTodoState extends State<CompletedTodo>{
       ),
       child:Row(
           children: [
-            IconButton(
-              onPressed: (){
-                setState(() {
-                  completedTodoBox.deleteAt(index);
-                  todoBox.add(completedTodo);
-                });
-              },
-              icon: Icon(
-                Icons.check,
-                color: Palette.ultramarineBlue,
-                ),
+            Consumer<DbCounterState>(
+              builder: (context, dbCounterState, _) {
+                return IconButton(
+                  onPressed: (){
+                    setState(() {
+                      completedTodoBox.deleteAt(index);
+                      todoBox.add(completedTodo);
+                      dbCounterState.updateCompletedCounter(completedTodoBox.length);
+                      dbCounterState.updateTodoCounter(todoBox.length);
+                      dbCounterState.saveDbCounterState();
+                    });
+                  },
+                  icon: Icon(
+                    Icons.check,
+                    color: Palette.ultramarineBlue,
+                    ),
+                );
+              }
             ),
             Text(
               completedTodoBox.getAt(index)!.title,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
 import 'package:provider/provider.dart';
 import '../../../model/palette/palette.dart';
@@ -69,15 +70,22 @@ class TodoPageState extends State<TodoPage>{
       ),
       child: Row(
         children: [
-          Checkbox(
-            shape: const CircleBorder(),
-            value: false,
-            onChanged: (value) {
-              setState(() {
-                todoBox.deleteAt(index);
-                completedTodoBox.add(todo);
-              });
-            },
+          Consumer<DbCounterState>(
+            builder: (context, dbCounterState, _) {
+              return Checkbox(
+                shape: const CircleBorder(),
+                value: false,
+                onChanged: (value) {
+                  setState(() {
+                    todoBox.deleteAt(index);
+                    completedTodoBox.add(todo);
+                    dbCounterState.updateTodoCounter(todoBox.length);
+                    dbCounterState.updateCompletedCounter(completedTodoBox.length);
+                    dbCounterState.saveDbCounterState();
+                  });
+                },
+              );
+            }
           ),
           Text(
             todoBox.getAt(index)!.title,
@@ -150,6 +158,7 @@ class TodoPageState extends State<TodoPage>{
   }
 
   Widget saveTodoButton(SetTheme setTheme) {
+    final DbCounterState dbCounterState = Provider.of<DbCounterState>(context);
     return Align(
       alignment: Alignment.centerRight,
       child: MaterialButton(
@@ -158,6 +167,8 @@ class TodoPageState extends State<TodoPage>{
             todoBox.add(
               TodoModel(title, ""),
             );
+            dbCounterState.updateTodoCounter(todoBox.length);
+            dbCounterState.saveDbCounterState();
             Navigator.of(context).pop();
           });
         },

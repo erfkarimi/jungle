@@ -36,7 +36,7 @@ void showEditBottomSheet(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               backButton(context, setTheme),
-                               Text(
+                              Text(
                                 "Edit completed todo",
                                 style: TextStyle(
                                   color: setTheme.setTextTheme(),
@@ -49,7 +49,7 @@ void showEditBottomSheet(
                                   setTheme, completedTodoBox, index);
                                 },
                                 child: Text(
-                                   "Delete",
+                                  "Delete",
                                   style: TextStyle(
                                     color: Colors.red.shade600,
                                     fontWeight: FontWeight.bold,
@@ -249,13 +249,19 @@ Widget backButton(
             )
           ),
           actions: [
-            TextButton(
-              onPressed: (){
-                completedTodoBox.deleteAt(index);
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-              child: const Text("Yes"),
+            Consumer<DbCounterState>(
+              builder: (context, dbCounterState, _) {
+                return TextButton(
+                  onPressed: (){
+                    completedTodoBox.deleteAt(index);
+                    dbCounterState.updateCompletedCounter(completedTodoBox.length);
+                    dbCounterState.saveDbCounterState();
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Yes"),
+                );
+              }
             ),
             TextButton(
               onPressed: (){
