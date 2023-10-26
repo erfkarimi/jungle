@@ -27,6 +27,6 @@ class DbCounterState extends ChangeNotifier{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt("taskCounter", taskCounter);
     preferences.setInt("todoCounter", todoCounter);
-    preferences.setInt("completedCounter", taskCounter);
+    preferences.setInt("completedCounter", completedCounter);
   }
 }

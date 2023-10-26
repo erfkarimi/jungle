@@ -9,6 +9,7 @@ import 'package:jungle/view/welcome_page/page_3/page_3.dart';
 import 'package:jungle/view/welcome_page/welcome_page.dart';
 
 import '../view/home/home_page.dart';
+import '../view/home/notifications_page/notifications_page.dart';
 import '../view/home/todo_page/todo_page.dart';
 
 Map<String, WidgetBuilder> appRoutes = {
@@ -21,5 +22,6 @@ Map<String, WidgetBuilder> appRoutes = {
   '/todoPage'     : (_)=> const TodoPage(),
   '/taskPage'     : (_)=> const TaskPage(),
   '/addNewTask'   : (_)=> const AddNewTask(),
-  '/settings'     : (_)=> const Settings()
+  '/settings'     : (_)=> const Settings(),
+  '/notifications': (_)=> const NotificationsPage() 
 };
