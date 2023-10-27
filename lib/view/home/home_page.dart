@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:jungle/view/home/task/task_page.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
@@ -21,19 +22,22 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(context) {
     final SetTheme setTheme = Provider.of<SetTheme>(context);
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: setTheme.setBackgroundTheme(),
-        systemNavigationBarIconBrightness: Brightness.light,
-        statusBarColor: Colors.transparent,
-      ),
-      child: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: buildAppBar(setTheme),
-          body: buildBody(),
+    return SafeArea(
+      top: false,
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          statusBarIconBrightness: Brightness.light,
+          systemNavigationBarColor: setTheme.setBackgroundTheme(),
+          systemNavigationBarIconBrightness: Brightness.light,
+          statusBarColor: Colors.transparent,
+        ),
+        child: DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: buildAppBar(setTheme),
+            body: buildBody(),
+          ),
         ),
       ),
     );
@@ -57,10 +61,11 @@ class HomePageState extends State<HomePage> {
   }
 
   List<Widget> appBarActionWidget(SetTheme setTheme) {
+    final welcomePageDB = Hive.box("welcome");
     return [
       MaterialButton(
         minWidth: 10,
-        onPressed: () => Get.toNamed("/notifications"),
+        onPressed: () => welcomePageDB.put("welcomePage", false),
         shape: CircleBorder(
           side: BorderSide(color: setTheme.setTextTheme()),
         ),
@@ -85,7 +90,6 @@ class HomePageState extends State<HomePage> {
             const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
         indicatorSize: TabBarIndicatorSize.tab,
         splashBorderRadius: BorderRadius.circular(50),
-        padding: const EdgeInsets.symmetric(horizontal: 10),
         labelStyle: const TextStyle(fontWeight: FontWeight.bold),
         indicator: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
