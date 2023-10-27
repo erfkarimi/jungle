@@ -61,39 +61,47 @@ class HomePageState extends State<HomePage> {
   }
 
   List<Widget> appBarActionWidget(SetTheme setTheme) {
-    final welcomePageDB = Hive.box("welcome");
     return [
       MaterialButton(
         minWidth: 10,
-        onPressed: () => welcomePageDB.put("welcomePage", false),
+        onPressed: () => Get.toNamed("/notifications"),
         shape: CircleBorder(
           side: BorderSide(color: setTheme.setTextTheme()),
         ),
-        child: const Icon(Icons.notifications_outlined),
+        child: Icon(
+          Icons.notifications_outlined,
+          color: setTheme.setTextTheme()
+          ),
       ),
       MaterialButton(
         minWidth: 10,
         onPressed: () => Get.toNamed("/settings"),
         shape: CircleBorder(
-          side: BorderSide(color: setTheme.setTextTheme()),
+          side: BorderSide(
+            color: setTheme.setTextTheme()),
         ),
-        child: const Icon(Icons.settings_outlined),
+        child: Icon(
+          Icons.settings_outlined,
+          color: setTheme.setTextTheme()),
       ),
     ];
   }
 
   PreferredSizeWidget tabBarWidget(SetTheme setTheme) {
     return TabBar(
-        dividerColor: Colors.transparent,
+        dividerColor: setTheme.setAppBarTheme(),
         indicatorWeight: 1.0,
         indicatorPadding:
             const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
         indicatorSize: TabBarIndicatorSize.tab,
         splashBorderRadius: BorderRadius.circular(50),
-        labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        labelColor: Colors.black,
+        unselectedLabelColor: setTheme.setTextTheme(),
+        labelStyle: const TextStyle(
+          fontWeight: FontWeight.bold),
         indicator: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
-            color: Palette.ultramarineBlue),
+            color: Colors.green.shade200),
         tabs: tabListWidget(setTheme));
   }
 
@@ -104,16 +112,16 @@ class HomePageState extends State<HomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Task", style: TextStyle(color: setTheme.setTextTheme())),
+            const Text("Task"),
             const SizedBox(width: 5.0),
             Container(
               height: 20,
               width: 20,
               decoration: BoxDecoration(
-                  color: Colors.green.shade200, shape: BoxShape.circle),
+                  color: Colors.grey.shade300, shape: BoxShape.circle),
               child: Center(
                 child: Text("${dbCounterState.taskCounter}",
-                    style: TextStyle(color: setTheme.setTextTheme())),
+                style: const TextStyle(color: Colors.black)),
               ),
             ),
           ],
@@ -123,16 +131,16 @@ class HomePageState extends State<HomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Todo", style: TextStyle(color: setTheme.setTextTheme())),
+            const Text("Todo"),
             const SizedBox(width: 5.0),
             Container(
               height: 20,
               width: 20,
               decoration: BoxDecoration(
-                  color: Colors.green.shade200, shape: BoxShape.circle),
+                  color: Colors.grey.shade300, shape: BoxShape.circle),
               child: Center(
                 child: Text("${dbCounterState.todoCounter}",
-                    style: TextStyle(color: setTheme.setTextTheme())),
+                    style: const TextStyle(color: Colors.black)),
               ),
             )
           ],
@@ -142,16 +150,16 @@ class HomePageState extends State<HomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Completed", style: TextStyle(color: setTheme.setTextTheme())),
+            const Text("Completed",),
             const SizedBox(width: 5.0),
             Container(
               height: 20,
               width: 20,
               decoration: BoxDecoration(
-                  color: Colors.green.shade200, shape: BoxShape.circle),
+                  color: Colors.grey.shade300, shape: BoxShape.circle),
               child: Center(
                 child: Text("${dbCounterState.completedCounter}",
-                    style: TextStyle(color: setTheme.setTextTheme())),
+                    style: const TextStyle(color: Colors.black)),
               ),
             )
           ],
