@@ -3,7 +3,7 @@ part of 'completed.dart';
 void showEditBottomSheet(
   BuildContext context,
   Box<TodoModel> completedTodoBox,
-  SetTheme setTheme,
+  AppUiStyle appUiStyle,
   int index
   ){
     showModalBottomSheet(
@@ -19,7 +19,7 @@ void showEditBottomSheet(
           enableDrag: false,
           builder: (context){
             return BottomSheet(
-          backgroundColor: setTheme.setBackgroundTheme(),
+          backgroundColor: appUiStyle.setBackgroundTheme(),
           onClosing: (){},
           builder: (context){
             return Column(
@@ -35,18 +35,18 @@ void showEditBottomSheet(
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              backButton(context, setTheme),
+                              backButton(context, appUiStyle),
                               Text(
                                 "Edit completed todo",
                                 style: TextStyle(
-                                  color: setTheme.setTextTheme(),
+                                  color: appUiStyle.setTextTheme(),
                                   fontSize: 18
                                 ),
                               ),
                               TextButton(
                                 onPressed: (){
                                   deleteTaskDialog(context, 
-                                  setTheme, completedTodoBox, index);
+                                  appUiStyle, completedTodoBox, index);
                                 },
                                 child: Text(
                                   "Delete",
@@ -61,14 +61,14 @@ void showEditBottomSheet(
                           ),
                           Divider(
                             thickness: 1.0,
-                            color: setTheme.setTextFieldBorderTheme(),
+                            color: appUiStyle.setTextFieldBorderTheme(),
                           ),
                           const SizedBox(height: 10),
-                          titleTextField(context, setTheme, completedTodo),
+                          titleTextField(context, appUiStyle, completedTodo),
                           const SizedBox(height: 10),
-                          descriptionTextField(context, setTheme, completedTodo),
+                          descriptionTextField(context, appUiStyle, completedTodo),
                           const SizedBox(height: 30),
-                          updateCompletedTodoButton(context, setTheme, completedTodoBox, completedTodo, index)
+                          updateCompletedTodoButton(context, appUiStyle, completedTodoBox, completedTodo, index)
                         ],
                       ),
                     ],
@@ -87,7 +87,7 @@ void showEditBottomSheet(
 
 Widget backButton(
   BuildContext context,
-  SetTheme setTheme
+  AppUiStyle appUiStyle
   ){
   return Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -98,12 +98,12 @@ Widget backButton(
             minWidth: 10,
             shape: CircleBorder(
               side: BorderSide(
-                color: setTheme.setTextTheme()
+                color: appUiStyle.setTextTheme()
               )
             ),
             child: Icon(
             Icons.arrow_downward,
-            color: setTheme.setTextTheme()
+            color: appUiStyle.setTextTheme()
             ),
           ),
         );
@@ -111,7 +111,7 @@ Widget backButton(
 
  Widget titleTextField(
       BuildContext context,
-      SetTheme setTheme,
+      AppUiStyle appUiStyle,
       TodoModel todo
       ){
     return SizedBox(
@@ -121,7 +121,7 @@ Widget backButton(
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.next,
         style: TextStyle(
-          color: setTheme.setTextTheme()
+          color: appUiStyle.setTextTheme()
         ),
         initialValue: todo.title,
         decoration: InputDecoration(
@@ -132,13 +132,13 @@ Widget backButton(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(
-              color: setTheme.setTextFieldBorderTheme()
+              color: appUiStyle.setTextFieldBorderTheme()
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(
-              color: setTheme.setTextFieldBorderTheme()
+              color: appUiStyle.setTextFieldBorderTheme()
             ),
         ),
       ),
@@ -152,7 +152,7 @@ Widget backButton(
 
   Widget descriptionTextField(
       BuildContext context,
-      SetTheme setTheme,
+      AppUiStyle appUiStyle,
       TodoModel todo
     ){
     return TextFormField(
@@ -160,7 +160,7 @@ Widget backButton(
       textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.newline,
       style: TextStyle(
-        color: setTheme.setTextTheme()
+        color: appUiStyle.setTextTheme()
       ),
       maxLines: 10,
       initialValue: todo.description,
@@ -170,15 +170,15 @@ Widget backButton(
           color: Colors.grey
         ),
         border: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(
-              color: setTheme.setTextFieldBorderTheme()
+              color: appUiStyle.setTextFieldBorderTheme()
             ),
           ),
           enabledBorder: OutlineInputBorder(
-             borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(
-              color: setTheme.setTextFieldBorderTheme()
+              color: appUiStyle.setTextFieldBorderTheme()
             ),
         ),
       ),
@@ -190,7 +190,7 @@ Widget backButton(
 
    Widget updateCompletedTodoButton(
       BuildContext context,
-      SetTheme setTheme,
+      AppUiStyle appUiStyle,
       Box<TodoModel> completedTodoBox,
       TodoModel todo,
       int index
@@ -224,7 +224,7 @@ Widget backButton(
 
   void deleteTaskDialog(
       BuildContext context,
-      SetTheme setTheme,
+      AppUiStyle appUiStyle,
       Box<TodoModel> completedTodoBox,
       int index
     ){
@@ -235,17 +235,17 @@ Widget backButton(
           title: Text(
             "Deletion",
             style: TextStyle(
-              color: setTheme.setTextTheme()
+              color: appUiStyle.setTextTheme()
             )
           ),
-          backgroundColor: setTheme.setBackgroundTheme(),
+          backgroundColor: appUiStyle.setBackgroundTheme(),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10)
           ),
           content: Text(
             "Are you sure ?",
             style: TextStyle(
-              color: setTheme.setTextTheme()
+              color: appUiStyle.setTextTheme()
             )
           ),
           actions: [

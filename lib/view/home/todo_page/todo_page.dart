@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
-import 'package:jungle/view_model/set_theme/set_theme.dart';
+import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:provider/provider.dart';
 import '../../../model/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
@@ -21,33 +21,33 @@ class TodoPageState extends State<TodoPage>{
   @override 
   Widget build(context){
     
-    final SetTheme setTheme = Provider.of<SetTheme>(context);
+    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return Scaffold(
-      floatingActionButton: floatingActionButton(setTheme),
-      body: buildBody(setTheme)
+      floatingActionButton: floatingActionButton(appUiStyle),
+      body: buildBody(appUiStyle)
     );
   }
 
-  Widget buildBody(SetTheme setTheme) {
+  Widget buildBody(AppUiStyle appUiStyle) {
     return ValueListenableBuilder(
         valueListenable: todoBox.listenable(),
         builder: (context, todoBox, __) {
           if (todoBox.isEmpty) {
-            return showNoTodo(setTheme);
+            return showNoTodo(appUiStyle);
           } else {
             return Padding(
               padding: const EdgeInsets.all(10),
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: setTheme.setAppBarTheme(),
+                    color: appUiStyle.setAppBarTheme(),
                     border: Border.all(color: Colors.black)),
                 child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: todoBox.length,
                     itemBuilder: (context, int index) {
                       index = todoBox.length - 1 - index;
-                      return todoButton(index, setTheme);
+                      return todoButton(index, appUiStyle);
                     }),
               ),
             );
@@ -55,13 +55,13 @@ class TodoPageState extends State<TodoPage>{
         });
   }
 
-  Widget todoButton(int index, SetTheme setTheme) {
+  Widget todoButton(int index, AppUiStyle appUiStyle) {
     final todo = todoBox.getAt(index) as TodoModel;
     return MaterialButton(
       onPressed: () {
-        showEditBottomSheet(context, todoBox, setTheme, index);
+        showEditBottomSheet(context, todoBox, appUiStyle, index);
       },
-      onLongPress: () => deleteUnDoneTodoOnLongPressDialog(context, index, setTheme),
+      onLongPress: () => deleteUnDoneTodoOnLongPressDialog(context, index, appUiStyle),
       height: 50,
       elevation: 0.0,
       shape: RoundedRectangleBorder(
@@ -89,7 +89,7 @@ class TodoPageState extends State<TodoPage>{
           Text(
             todoBox.getAt(index)!.title,
             style: TextStyle(
-              color: setTheme.setTextTheme()
+              color: appUiStyle.setTextTheme()
               
               ),
           ),
@@ -98,7 +98,7 @@ class TodoPageState extends State<TodoPage>{
     );
   }
 
-  Widget showNoTodo(SetTheme setTheme) {
+  Widget showNoTodo(AppUiStyle appUiStyle) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -109,13 +109,13 @@ class TodoPageState extends State<TodoPage>{
           ),
           Text(
             "No todo",
-            style: TextStyle(fontSize: 17, color: setTheme.setTextTheme()),
+            style: TextStyle(fontSize: 17, color: appUiStyle.setTextTheme()),
           )
         ],
       ),
     );
   }
-    void showNewTodoBottomSheet(SetTheme setTheme) {
+    void showNewTodoBottomSheet(AppUiStyle appUiStyle) {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -123,27 +123,27 @@ class TodoPageState extends State<TodoPage>{
           return Padding(
               padding: MediaQuery.of(context).viewInsets,
               child: Container(
-                color: setTheme.setBackgroundTheme(),
+                color: appUiStyle.setBackgroundTheme(),
                 child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        todoTextField(setTheme),
+                        todoTextField(appUiStyle),
                         const SizedBox(height: 10),
-                        saveTodoButton(setTheme)
+                        saveTodoButton(appUiStyle)
                       ],
                     )),
               ));
         });
   }
 
-  Widget todoTextField(SetTheme setTheme) {
+  Widget todoTextField(AppUiStyle appUiStyle) {
     return TextField(
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
       autofocus: true,
-      style: TextStyle(color: setTheme.setTextTheme()),
+      style: TextStyle(color: appUiStyle.setTextTheme()),
       decoration: const InputDecoration(
         hintText: "Title",
         hintStyle: TextStyle(color: Colors.grey),
@@ -156,7 +156,7 @@ class TodoPageState extends State<TodoPage>{
     );
   }
 
-  Widget saveTodoButton(SetTheme setTheme) {
+  Widget saveTodoButton(AppUiStyle appUiStyle) {
     final DbCounterState dbCounterState = Provider.of<DbCounterState>(context);
     return Align(
       alignment: Alignment.centerRight,
@@ -184,10 +184,10 @@ class TodoPageState extends State<TodoPage>{
     );
   }
 
-  FloatingActionButton floatingActionButton(SetTheme setTheme) {
+  FloatingActionButton floatingActionButton(AppUiStyle appUiStyle) {
     return FloatingActionButton(
       onPressed: () {
-        showNewTodoBottomSheet(setTheme);
+        showNewTodoBottomSheet(appUiStyle);
       },
       tooltip: "Add new todo",
       backgroundColor: Palette.ultramarineBlue,
@@ -200,18 +200,18 @@ class TodoPageState extends State<TodoPage>{
   }
 
   void deleteUnDoneTodoOnLongPressDialog(BuildContext context, int index,
-      SetTheme setTheme) {
+      AppUiStyle appUiStyle) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text("Deletion",
-                style: TextStyle(color: setTheme.setTextTheme())),
-            backgroundColor: setTheme.setBackgroundTheme(),
+                style: TextStyle(color: appUiStyle.setTextTheme())),
+            backgroundColor: appUiStyle.setBackgroundTheme(),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             content: Text("Are you sure ?",
-                style: TextStyle(color: setTheme.setTextTheme())),
+                style: TextStyle(color: appUiStyle.setTextTheme())),
             actions: [
               TextButton(
                 onPressed: () {

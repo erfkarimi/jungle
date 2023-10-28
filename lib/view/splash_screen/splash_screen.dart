@@ -5,7 +5,7 @@ import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/view/home/home_page.dart';
 import 'package:jungle/view/welcome_page/welcome_page.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
-import 'package:jungle/view_model/set_theme/set_theme.dart';
+import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
@@ -27,22 +27,29 @@ class SplashScreenState extends State<SplashScreen>{
     super.initState();
     navigation();
     init(context);
-    setTheme();
   }
 
   @override 
   Widget build(context){
-    return Material(
-      color: Palette.ultramarineBlue,
-      child: const Center(
-        child: Text(
-          "Jungle",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 45
-          ),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+       value: SystemUiOverlayStyle(
+            statusBarIconBrightness: Brightness.light,
+            systemNavigationBarColor: Palette.ultramarineBlue,
+            systemNavigationBarIconBrightness: Brightness.light,
+            statusBarColor: Colors.transparent,
+            ),
+      child: Material(
+        color: Palette.ultramarineBlue,
+        child: const Center(
+          child: Text(
+            "Jungle",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 45
+            ),
+          )
         )
-      )
+      ),
     );
   }
 
@@ -63,25 +70,13 @@ class SplashScreenState extends State<SplashScreen>{
 
   Future<void> init(context) async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    final setTheme = Provider.of<SetTheme>(context, listen: false);
+    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context, listen: false);
     final DbCounterState dbCounterState = Provider.of<DbCounterState>(context, listen: false);
     setState(() {
-      setTheme.theme = preferences.getString("theme") ?? "light";
+      appUiStyle.theme = preferences.getString("theme") ?? "light";
       dbCounterState.taskCounter = preferences.getInt("taskCounter") ?? 0;
       dbCounterState.todoCounter = preferences.getInt("todoCounter") ?? 0;
       dbCounterState.completedCounter = preferences.getInt("completedCounter") ?? 0;
   });
-  }
-
-  void setTheme(){
-    setState(() {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.light,
-          systemNavigationBarColor: Palette.ultramarineBlue,
-          systemNavigationBarIconBrightness: Brightness.light,
-          statusBarColor: Colors.transparent,
-        ));     
-    });
   }
 }

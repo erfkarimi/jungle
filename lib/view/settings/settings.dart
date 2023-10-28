@@ -2,29 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../view_model/set_theme/set_theme.dart';
+import '../../view_model/app_ui_style/app_ui_style.dart';
 
 class Settings extends StatelessWidget{
   const Settings({super.key});
   
   @override 
   Widget build(context){
-    final SetTheme setTheme = Provider.of<SetTheme>(context);
+    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return Scaffold(
-      backgroundColor: setTheme.setBackgroundTheme(),
-      appBar: buildAppBar(context, setTheme),
-      body: buildBody(context, setTheme)
+      appBar: buildAppBar(context, appUiStyle),
+      body: buildBody(context, appUiStyle)
     );
   }
 
-  AppBar buildAppBar(BuildContext context, SetTheme setTheme){
+  AppBar buildAppBar(BuildContext context, AppUiStyle appUiStyle){
     return AppBar(
-      backgroundColor: setTheme.setBackgroundTheme(),
       elevation: 0.0,
       title: Text(
         "Settings",
         style: TextStyle(
-          color: setTheme.setTextTheme(),
+          color: appUiStyle.setTextTheme(),
         ),
       ),
       leading: Padding(
@@ -36,32 +34,32 @@ class Settings extends StatelessWidget{
             minWidth: 10,
             shape: CircleBorder(
               side: BorderSide(
-                color: setTheme.setTextTheme()
+                color: appUiStyle.setTextTheme()
               )
             ),
             child: Icon(
             Icons.arrow_back,
-            color: setTheme.setTextTheme()
+            color: appUiStyle.setTextTheme()
             ),
           ),
         ),
     );
   }
 
-  Widget buildBody(BuildContext context, SetTheme setTheme){
+  Widget buildBody(BuildContext context, AppUiStyle appUiStyle){
     return Column(
       children: [
-        themeButton(context, setTheme),
-        feedbackButton(context, setTheme)
+        themeButton(context, appUiStyle),
+        feedbackButton(context, appUiStyle)
       ],
     );
   }
 
 
-  Widget themeButton(BuildContext context, SetTheme setTheme){
+  Widget themeButton(BuildContext context, AppUiStyle appUiStyle){
     return MaterialButton(
       onPressed: (){
-        showThemeDialog(context, setTheme);
+        showThemeDialog(context, appUiStyle);
       },
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20)
@@ -69,12 +67,12 @@ class Settings extends StatelessWidget{
       child: ListTile(
         leading: Icon(
           Icons.brightness_2_outlined,
-          color: setTheme.setTextTheme(),
+          color: appUiStyle.setTextTheme(),
           ),
           title: Text(
              "Theme",
             style: TextStyle(
-              color: setTheme.setTextTheme(),
+              color: appUiStyle.setTextTheme(),
             ),
             ),
       )
@@ -82,7 +80,7 @@ class Settings extends StatelessWidget{
   }
 
 
-  Widget feedbackButton(BuildContext context, SetTheme setTheme){
+  Widget feedbackButton(BuildContext context, AppUiStyle appUiStyle){
     return MaterialButton(
       onPressed: (){
         _sendMail();
@@ -93,28 +91,28 @@ class Settings extends StatelessWidget{
       child: ListTile(
         leading: Icon(
           Icons.question_mark,
-          color: setTheme.setTextTheme(),
+          color: appUiStyle.setTextTheme(),
           ),
           title: Text(
             "Feedback",
             style: TextStyle(
-              color: setTheme.setTextTheme()
+              color: appUiStyle.setTextTheme()
             ),
             ),
       )
     );
   }
 
-  void showThemeDialog(BuildContext context, SetTheme setTheme){
+  void showThemeDialog(BuildContext context, AppUiStyle appUiStyle){
     showDialog(
       context: context,
       builder: (context){
         return AlertDialog(
-          backgroundColor: setTheme.setBackgroundTheme(),
+          backgroundColor: appUiStyle.setBackgroundTheme(),
           title: Text(
              "Theme",
             style: TextStyle(
-              color: setTheme.setTextTheme()
+              color: appUiStyle.setTextTheme()
             ),
           ),
           shape: RoundedRectangleBorder(
@@ -123,9 +121,9 @@ class Settings extends StatelessWidget{
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              lightThemeButton(context, setTheme),
-              darkThemeButton(context, setTheme),
-              dimThemeButton(context, setTheme)
+              lightThemeButton(context, appUiStyle),
+              darkThemeButton(context, appUiStyle),
+              dimThemeButton(context, appUiStyle)
             ],
           ),
         );
@@ -133,13 +131,13 @@ class Settings extends StatelessWidget{
     );
   }
 
-  Widget lightThemeButton(BuildContext context, SetTheme setTheme){
+  Widget lightThemeButton(BuildContext context, AppUiStyle appUiStyle){
     return MaterialButton(
       minWidth: double.infinity,
-      onPressed: setTheme.theme == "light"?
+      onPressed: appUiStyle.theme == "light"?
         null : (){
-        setTheme.theme = "light";
-        setTheme.saveChangeTheme();
+        appUiStyle.theme = "light";
+        appUiStyle.saveChangeTheme();
         Navigator.of(context).pop();
       },
       color: Colors.white,
@@ -159,13 +157,13 @@ class Settings extends StatelessWidget{
   }
 
 
-  Widget darkThemeButton(BuildContext context, SetTheme setTheme){
+  Widget darkThemeButton(BuildContext context, AppUiStyle appUiStyle){
     return MaterialButton(
       minWidth: double.infinity,
-      onPressed: setTheme.theme == "dark" ?
+      onPressed: appUiStyle.theme == "dark" ?
         null : (){
-        setTheme.theme = "dark";
-        setTheme.saveChangeTheme();
+        appUiStyle.theme = "dark";
+        appUiStyle.saveChangeTheme();
         Navigator.of(context).pop();
       },
       elevation: 0.0,
@@ -183,13 +181,13 @@ class Settings extends StatelessWidget{
     );
   }
 
-  Widget dimThemeButton(BuildContext context, SetTheme setTheme){
+  Widget dimThemeButton(BuildContext context, AppUiStyle appUiStyle){
     return MaterialButton(
       minWidth: double.infinity,
-      onPressed: setTheme.theme == "dim" ?
+      onPressed: appUiStyle.theme == "dim" ?
         null : (){
-        setTheme.theme = "dim";
-        setTheme.saveChangeTheme();
+        appUiStyle.theme = "dim";
+        appUiStyle.saveChangeTheme();
         Navigator.of(context).pop();
       },
       elevation: 0.0,

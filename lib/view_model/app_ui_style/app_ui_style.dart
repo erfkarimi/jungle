@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SetTheme extends ChangeNotifier{
+class AppUiStyle extends ChangeNotifier{
   String theme = "light";
   bool showTaskPage = true;
   
@@ -58,6 +58,19 @@ class SetTheme extends ChangeNotifier{
       return Colors.blueGrey.shade100;
     }
   }
+
+  Color setItemBackgroundTheme(){
+    switch (theme){
+      case "dark" :
+        return Colors.grey.shade800;
+      case "dim" :
+        return Colors.blueGrey.shade900;
+      default: 
+        return Colors.grey.shade300;
+      
+    }
+    
+  }
   
 
   Future<void> saveChangeTheme() async{
@@ -71,11 +84,4 @@ class SetTheme extends ChangeNotifier{
     preferences.setBool("showTaskPage", showTaskPage);
     notifyListeners();
   }
-
-  Future<void> saveDbCounterState() async{
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setBool("showTaskPage", showTaskPage);
-    notifyListeners();
-  }
-
 }

@@ -4,11 +4,10 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/model/task_model/task_model.dart';
 import 'package:jungle/view/home/task/create_task_page/create_task_page.dart';
-import 'package:jungle/view_model/set_theme/set_theme.dart';
+import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 import '../../../view_model/db_counter_state/db_counter_state.dart';
-import '../todo_page/todo_page.dart';
 
 part 'edit_task_page/edit_task_page.dart';
 class TaskPage extends StatefulWidget {
@@ -23,178 +22,69 @@ class TaskPageState extends State<TaskPage> {
 
   @override
   Widget build(context) {
-    final SetTheme setTheme = Provider.of<SetTheme>(context);
+    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
       statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: setTheme.setAppBarTheme(),
+      systemNavigationBarColor: appUiStyle.setAppBarTheme(),
       systemNavigationBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: setTheme.setAppBarTheme(),
+        backgroundColor: appUiStyle.setAppBarTheme(),
         resizeToAvoidBottomInset: false,
         floatingActionButton: floatingActionButton(),
-        body: buildBody(setTheme),
+        body: buildBody(appUiStyle),
       ),
     );
   }
 
   /*---------- Widgets and Functions ----------*/
 
-  AppBar buildAppBar(SetTheme setTheme) {
+  AppBar buildAppBar(AppUiStyle appUiStyle) {
     return AppBar(
       // toolTip: "AppBar widget used in Task page"
-      backgroundColor: setTheme.setBackgroundTheme(),
+      backgroundColor: appUiStyle.setBackgroundTheme(),
       title: Text(
         "Task",
         style: TextStyle(
-          color: setTheme.setTextTheme(),
+          color: appUiStyle.setTextTheme(),
         ),
       ),
       elevation: 0.0,
-      iconTheme: IconThemeData(color: setTheme.setTextTheme()),
+      iconTheme: IconThemeData(color: appUiStyle.setTextTheme()),
     );
   }
 
-  Widget buildDrawer(SetTheme setTheme) {
-    return Drawer(
-        backgroundColor: setTheme.setAppBarTheme(),
-        child: Column(
-          children: [
-            const SizedBox(height: 34),
-            Row(
-              children: [
-                const SizedBox(width: 20),
-                Text("Jungle",
-                    style: TextStyle(
-                        color: setTheme.setTextTheme(),
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: MaterialButton(
-                  // toolTip: "Task button used in the Drawer"
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  height: 50,
-                  color: setTheme.setDrawerButtonTheme(),
-                  elevation: 0.0,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30),
-                          bottomRight: Radius.circular(30))),
-                  child: const Row(
-                    children: [
-                      SizedBox(width: 10),
-                      Icon(Icons.event_note_outlined, color: Colors.teal),
-                      SizedBox(width: 20),
-                      Text(
-                        "Task",
-                        style: TextStyle(fontSize: 16, color: Colors.teal),
-                      )
-                    ],
-                  )),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: MaterialButton(
-                  // toolTip: "Todo button used in the Drawer"
-                  onPressed: () {
-                    setTheme.showTaskPage = !setTheme.showTaskPage;
-                    setTheme.saveStatus();
-                    Get.off(()=> const TodoPage());
-                  },
-                  height: 50,
-                  elevation: 0.0,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30),
-                          bottomRight: Radius.circular(30))),
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      Icon(Icons.checklist_sharp,
-                          color: setTheme.setTextTheme()),
-                      const SizedBox(width: 20),
-                      Text(
-                        "Todo",
-                        style: TextStyle(
-                            color: setTheme.setTextTheme(), fontSize: 16),
-                      )
-                    ],
-                  )),
-            ),
-            const SizedBox(height: 10),
-            Divider(
-              thickness: 1.0,
-              color: Palette.ultramarineBlue,
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: MaterialButton(
-                  // toolTip: "Settings button used in the Drawer"
-                  onPressed: () {
-                    Get.toNamed("/settings");
-                  },
-                  height: 50,
-                  elevation: 0.0,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30),
-                          bottomRight: Radius.circular(30))),
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      Icon(
-                        Icons.settings_outlined,
-                        color: setTheme.setTextTheme(),
-                      ),
-                      const SizedBox(width: 20),
-                      Text(
-                        "Settings",
-                        style: TextStyle(
-                            color: setTheme.setTextTheme(), fontSize: 16),
-                      )
-                    ],
-                  )),
-            ),
-          ],
-        ));
-  }
 
-  Widget buildBody(SetTheme setTheme) {
+  Widget buildBody(AppUiStyle appUiStyle) {
     return ValueListenableBuilder(
         valueListenable: taskBox.listenable(),
         builder: (context, taskBox, _) {
           if (taskBox.isEmpty) {
-            return showNoTask(setTheme);
+            return showNoTask(appUiStyle);
           }
           return ListView.builder(
             itemCount: taskBox.length,
             itemBuilder: (context, int index) {
+              /// To reverse elements of list
               index = taskBox.length - 1 - index;
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
                 child: GestureDetector(
                   onLongPress: () {
                     deleteTaskOnLongPressDialog(
-                        context, index, taskBox, setTheme);
+                        context, index, taskBox, appUiStyle);
                   },
                   child: GestureDetector(
                     onTap: () {
-                      editTaskBottomSheet(context, setTheme, index);
+                      editTaskBottomSheet(context, appUiStyle, index);
                     },
                     child: Card(
-                        color: setTheme.setAppBarTheme(),
+                        color: appUiStyle.setItemBackgroundTheme(),
                         elevation: 0.0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
-                            side: const BorderSide()),
+                            ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -208,7 +98,7 @@ class TaskPageState extends State<TaskPage> {
                                   Text(
                                     taskBox.getAt(index)!.title,
                                     style: TextStyle(
-                                        color: setTheme.setTextTheme(),
+                                        color: appUiStyle.setTextTheme(),
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),
                                   ),
@@ -240,7 +130,7 @@ class TaskPageState extends State<TaskPage> {
                                   Text(
                                     taskBox.getAt(index)!.description,
                                     style: TextStyle(
-                                        color: setTheme.setDescriptionTheme()),
+                                        color: appUiStyle.setDescriptionTheme()),
                                     maxLines: 4,
                                   ),
                                 ],
@@ -252,7 +142,7 @@ class TaskPageState extends State<TaskPage> {
                                 children: [
                                   Icon(
                                     Icons.calendar_month_outlined,
-                                    color: setTheme.setTextTheme(),
+                                    color: appUiStyle.setTextTheme(),
                                   ),
                                   const SizedBox(width: 4.0),
                                   Text(
@@ -261,7 +151,7 @@ class TaskPageState extends State<TaskPage> {
                                         .currentDate
                                         .toString(),
                                     style: TextStyle(
-                                        color: setTheme.setTextTheme()),
+                                        color: appUiStyle.setTextTheme()),
                                   ),
                                 ],
                               ),
@@ -276,7 +166,7 @@ class TaskPageState extends State<TaskPage> {
         });
   }
 
-  Widget showNoTask(SetTheme setTheme) {
+  Widget showNoTask(AppUiStyle appUiStyle) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -287,7 +177,7 @@ class TaskPageState extends State<TaskPage> {
           ),
           Text(
             "No task",
-            style: TextStyle(fontSize: 17, color: setTheme.setTextTheme()),
+            style: TextStyle(fontSize: 17, color: appUiStyle.setTextTheme()),
           )
         ],
       ),
@@ -313,18 +203,18 @@ class TaskPageState extends State<TaskPage> {
   }
 
   void deleteTaskOnLongPressDialog(BuildContext context, int index,
-      Box<TaskModel> taskDB, SetTheme setTheme) {
+      Box<TaskModel> taskDB, AppUiStyle appUiStyle) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text("Deletion",
-                style: TextStyle(color: setTheme.setTextTheme())),
-            backgroundColor: setTheme.setBackgroundTheme(),
+                style: TextStyle(color: appUiStyle.setTextTheme())),
+            backgroundColor: appUiStyle.setBackgroundTheme(),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             content: Text("Are you sure ?",
-                style: TextStyle(color: setTheme.setTextTheme())),
+                style: TextStyle(color: appUiStyle.setTextTheme())),
             actions: [
               TextButton(
                 onPressed: () {

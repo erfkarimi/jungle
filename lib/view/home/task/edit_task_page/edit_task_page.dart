@@ -2,7 +2,7 @@ part of '../task_page.dart';
 
 void editTaskBottomSheet(
   BuildContext context,
-  SetTheme setTheme,
+  AppUiStyle appUiStyle,
   int index
   ){
     showModalBottomSheet(
@@ -24,7 +24,7 @@ void editTaskBottomSheet(
                 height: 5,
                 width: 50,
                 decoration: BoxDecoration(
-                  color: setTheme.setTextTheme(),
+                  color: appUiStyle.setTextTheme(),
                   borderRadius: BorderRadius.circular(20)
                 ),
               ),
@@ -39,7 +39,7 @@ void editTaskBottomSheet(
                             Text(
                               "Edit task",
                               style: TextStyle(
-                                color: setTheme.setTextTheme(),
+                                color: appUiStyle.setTextTheme(),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600
                               ),
@@ -47,24 +47,24 @@ void editTaskBottomSheet(
                             const Expanded(child: SizedBox()),
                             updateTaskButton(context, index),
                             const SizedBox(width: 10),
-                            deleteTaskButton(context, index, taskBox, setTheme)
+                            deleteTaskButton(context, index, taskBox, appUiStyle)
                       
                       ],
                       ),
                       Divider(
                         thickness: 1.0,
-                        color: setTheme.setTextFieldBorderTheme(),
+                        color: appUiStyle.setTextFieldBorderTheme(),
                       ),
                       const SizedBox(height: 10),
                       titleTextField(
                         context,
-                        setTheme,
+                        appUiStyle,
                         task
                         ),
                       const SizedBox(height: 10),
-                      labelTextField(context, setTheme, task),
+                      labelTextField(context, appUiStyle, task),
                       const SizedBox(height: 10),
-                      descriptionTextField(context, setTheme, task),
+                      descriptionTextField(context, appUiStyle, task),
                       const SizedBox(height: 30),
                     ],
                   ),
@@ -80,7 +80,7 @@ void editTaskBottomSheet(
 
     Widget titleTextField(
       BuildContext context,
-      SetTheme setTheme,
+      AppUiStyle appUiStyle,
       TaskModel task
       ){
     return SizedBox(
@@ -90,7 +90,7 @@ void editTaskBottomSheet(
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.next,
         style: TextStyle(
-          color: setTheme.setTextTheme(),
+          color: appUiStyle.setTextTheme(),
           fontSize: 26, fontWeight: FontWeight.bold
         ),
         initialValue: task.title,
@@ -110,7 +110,7 @@ void editTaskBottomSheet(
 
   Widget labelTextField(
     BuildContext context,
-    SetTheme setTheme,
+    AppUiStyle appUiStyle,
     TaskModel taskModel
     ){
     return SizedBox(
@@ -120,7 +120,7 @@ void editTaskBottomSheet(
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.next,
         style: TextStyle(
-          color: setTheme.setTextTheme()
+          color: appUiStyle.setTextTheme()
         ),
         initialValue: taskModel.label,
         decoration: InputDecoration(
@@ -130,7 +130,7 @@ void editTaskBottomSheet(
           ),
           border: InputBorder.none,
           prefixIcon: Icon(Icons.tag,
-          color: setTheme.setTextTheme(),)
+          color: appUiStyle.setTextTheme(),)
         ),
         onChanged: (String value){
           taskModel.label = value;
@@ -141,13 +141,13 @@ void editTaskBottomSheet(
 
   Widget descriptionTextField(
     BuildContext context,
-    SetTheme setTheme,
+    AppUiStyle appUiStyle,
     TaskModel taskModel
     ){
     return TextFormField(
       cursorColor: Palette.ultramarineBlue,
       style: TextStyle(
-        color: setTheme.setTextTheme()
+        color: appUiStyle.setTextTheme()
       ),
       maxLines: 10,
       textCapitalization: TextCapitalization.sentences,
@@ -192,11 +192,11 @@ void editTaskBottomSheet(
     BuildContext context,
     int index,
     Box<TaskModel> taskBox,
-    SetTheme setTheme
+    AppUiStyle appUiStyle
   ){
     return TextButton(
     onPressed: () {
-      deleteTaskDialog(context, index, taskBox, setTheme);
+      deleteTaskDialog(context, index, taskBox, appUiStyle);
     },
     child: Text(
       "Delete",
@@ -212,7 +212,7 @@ void editTaskBottomSheet(
   void deleteTaskDialog(
     BuildContext context,
     int index, Box<TaskModel> taskDB,
-    SetTheme setTheme
+    AppUiStyle appUiStyle
     ){
     showDialog(
       context: context,
@@ -221,17 +221,17 @@ void editTaskBottomSheet(
           title: Text(
             "Deletion",
             style: TextStyle(
-              color: setTheme.setTextTheme()
+              color: appUiStyle.setTextTheme()
             )
           ),
-          backgroundColor: setTheme.setBackgroundTheme(),
+          backgroundColor: appUiStyle.setBackgroundTheme(),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10)
           ),
           content: Text(
             "Are you sure ?",
             style: TextStyle(
-              color: setTheme.setTextTheme()
+              color: appUiStyle.setTextTheme()
             )
           ),
           actions: [
