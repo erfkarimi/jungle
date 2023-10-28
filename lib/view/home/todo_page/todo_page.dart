@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
@@ -22,9 +23,16 @@ class TodoPageState extends State<TodoPage>{
   Widget build(context){
     
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
-    return Scaffold(
-      floatingActionButton: floatingActionButton(appUiStyle),
-      body: buildBody(appUiStyle)
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        systemNavigationBarColor: appUiStyle.setAppBarTheme()
+      ),
+      child: Scaffold(
+        backgroundColor: appUiStyle.setAppBarTheme(),
+        resizeToAvoidBottomInset: false,
+        floatingActionButton: floatingActionButton(appUiStyle),
+        body: buildBody(appUiStyle)
+      ),
     );
   }
 
@@ -40,8 +48,8 @@ class TodoPageState extends State<TodoPage>{
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: appUiStyle.setAppBarTheme(),
-                    border: Border.all(color: Colors.black)),
+                    color: appUiStyle.setItemBackgroundTheme(),
+                    ),
                 child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: todoBox.length,
@@ -65,7 +73,7 @@ class TodoPageState extends State<TodoPage>{
       height: 50,
       elevation: 0.0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10)
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         children: [
@@ -74,6 +82,7 @@ class TodoPageState extends State<TodoPage>{
               return Checkbox(
                 shape: const CircleBorder(),
                 value: false,
+                side: BorderSide(color: appUiStyle.setTextTheme()),
                 onChanged: (value) {
                   setState(() {
                     todoBox.deleteAt(index);

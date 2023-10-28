@@ -6,37 +6,26 @@ import '../model/palette/palette.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class App extends GetMaterialApp{
+class App extends StatelessWidget{
   const App({super.key});
 
   @override 
   Widget build(context){
-    return Consumer<AppUiStyle>(
-      builder: (context, appUiStyle, _) {
-        return GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-            primarySwatch: Palette.ultramarineBlue,
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(seedColor: Palette.ultramarineBlue),
-            textTheme: GoogleFonts.latoTextTheme(),
-            appBarTheme: AppBarTheme(
-              backgroundColor: appUiStyle.setAppBarTheme()
-            ),
-            scaffoldBackgroundColor: appUiStyle.setAppBarTheme(),
-            bottomSheetTheme: BottomSheetThemeData(
-              backgroundColor: appUiStyle.setBackgroundTheme()
-            ),
-            pageTransitionsTheme: const PageTransitionsTheme(
-            builders: {
-              TargetPlatform.android : CupertinoPageTransitionsBuilder()
-            }
-          )
-          ),
-          routes: appRoutes,
-          initialRoute: "/splashScreen",
-        );
-      }
+    return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+        primarySwatch: Palette.ultramarineBlue,
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Palette.ultramarineBlue),
+        textTheme: GoogleFonts.latoTextTheme(),
+        pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android : CupertinoPageTransitionsBuilder()
+        }
+      )
+      ),
+      routes: appRoutes,
+      initialRoute: "/splashScreen",
     );
   }
 }

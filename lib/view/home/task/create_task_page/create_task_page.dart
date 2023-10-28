@@ -31,6 +31,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     var currentDate = formatter.format(dateTime);
     return Scaffold(
+        backgroundColor: appUiStyle.setAppBarTheme(),
         appBar: buildAppBar(
           context,
           appUiStyle,
@@ -46,6 +47,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     String currentDate
   ) {
     return AppBar(
+      backgroundColor: appUiStyle.setAppBarTheme(),
       elevation: 0.0,
       title: Text(
         "Create task",

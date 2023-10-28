@@ -11,6 +11,7 @@ class Settings extends StatelessWidget{
   Widget build(context){
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return Scaffold(
+      backgroundColor: appUiStyle.setAppBarTheme(),
       appBar: buildAppBar(context, appUiStyle),
       body: buildBody(context, appUiStyle)
     );
@@ -18,6 +19,7 @@ class Settings extends StatelessWidget{
 
   AppBar buildAppBar(BuildContext context, AppUiStyle appUiStyle){
     return AppBar(
+      backgroundColor: appUiStyle.setAppBarTheme(),
       elevation: 0.0,
       title: Text(
         "Settings",

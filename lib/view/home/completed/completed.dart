@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
@@ -19,8 +20,14 @@ class CompletedTodoState extends State<CompletedTodo>{
   @override 
   Widget build(context){
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
-    return Scaffold(
-      body: buildBody(appUiStyle)
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        systemNavigationBarColor: appUiStyle.setAppBarTheme()
+      ),
+      child: Scaffold(
+        backgroundColor: appUiStyle.setAppBarTheme(),
+        body: buildBody(appUiStyle)
+      ),
     );
   }
 
@@ -28,7 +35,7 @@ class CompletedTodoState extends State<CompletedTodo>{
     Widget buildBody(AppUiStyle appUiStyle){
     return ValueListenableBuilder(
       valueListenable: completedTodoBox.listenable(), 
-      builder: (context,completedTodoBox, __){
+      builder: (context, completedTodoBox, _){
         if(completedTodoBox.isEmpty){
           return showNoCompletedTodo(appUiStyle);
         } else {
@@ -37,10 +44,7 @@ class CompletedTodoState extends State<CompletedTodo>{
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: appUiStyle.setAppBarTheme(),
-                    border: Border.all(
-                      color: Colors.black
-                    )
+                    color: appUiStyle.setItemBackgroundTheme(),
                   ),
                 child: ListView.builder(
                   shrinkWrap: true,

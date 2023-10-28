@@ -15,6 +15,7 @@ void editTaskBottomSheet(
         final task = taskBox.getAt(index) as TaskModel;
         return BottomSheet(
           onClosing: (){},
+          backgroundColor: appUiStyle.setBackgroundTheme(),
           enableDrag: false,
           builder: (context){
             return Column(
