@@ -1,6 +1,6 @@
 part of '../task_page.dart';
 
- void editTaskBottomSheet(
+void editTaskBottomSheet(
   BuildContext context,
   SetTheme setTheme,
   int index
@@ -11,10 +11,9 @@ part of '../task_page.dart';
       isScrollControlled: true,
       useSafeArea: true,
       builder: (context){
-        final taskDB = Hive.box<TaskModel>("task");
-        final task = taskDB.getAt(index) as TaskModel;
+        final taskBox = Hive.box<TaskModel>("task");
+        final task = taskBox.getAt(index) as TaskModel;
         return BottomSheet(
-          backgroundColor: setTheme.setBackgroundTheme(),
           onClosing: (){},
           enableDrag: false,
           builder: (context){
@@ -45,19 +44,11 @@ part of '../task_page.dart';
                                 fontWeight: FontWeight.w600
                               ),
                             ),
-                      TextButton(
-                        onPressed: (){
-                          deleteTaskDialog(context,index, taskDB, setTheme);
-                        },
-                        child:  Text(
-                                  "Delete",
-                              style: TextStyle(
-                                color: Colors.red.shade600,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14
-                              ),
-                            ),
-                        )
+                            const Expanded(child: SizedBox()),
+                            updateTaskButton(context, index),
+                            const SizedBox(width: 10),
+                            deleteTaskButton(context, index, taskBox, setTheme)
+                      
                       ],
                       ),
                       Divider(
@@ -75,7 +66,6 @@ part of '../task_page.dart';
                       const SizedBox(height: 10),
                       descriptionTextField(context, setTheme, task),
                       const SizedBox(height: 30),
-                      updateTaskButton(context, index)
                     ],
                   ),
                 ),
@@ -100,26 +90,16 @@ part of '../task_page.dart';
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.next,
         style: TextStyle(
-          color: setTheme.setTextTheme()
+          color: setTheme.setTextTheme(),
+          fontSize: 26, fontWeight: FontWeight.bold
         ),
         initialValue: task.title,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: "Title",
-          hintStyle: const TextStyle(
+          hintStyle: TextStyle(
             color: Colors.grey
           ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: setTheme.setTextFieldBorderTheme()
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: setTheme.setTextFieldBorderTheme()
-            ),
-        ),
+          border: InputBorder.none
       ),
       onChanged: (String value){
         task.title = value;
@@ -148,18 +128,9 @@ part of '../task_page.dart';
           hintStyle: const TextStyle(
             color: Colors.grey
           ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: setTheme.setTextFieldBorderTheme()
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: setTheme.setTextFieldBorderTheme()
-              ),
-          ),
+          border: InputBorder.none,
+          prefixIcon: Icon(Icons.tag,
+          color: setTheme.setTextTheme(),)
         ),
         onChanged: (String value){
           taskModel.label = value;
@@ -182,23 +153,12 @@ part of '../task_page.dart';
       textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.newline,
       initialValue: taskModel.description,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         hintText:  "Description",
-        hintStyle: const TextStyle(
+        hintStyle: TextStyle(
           color: Colors.grey
         ),
-        border: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: setTheme.setTextFieldBorderTheme()
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: setTheme.setTextFieldBorderTheme()
-            ),
-        ),
+        border: InputBorder.none
       ),
       onChanged: (String value){
         taskModel.description = value;
@@ -211,7 +171,7 @@ part of '../task_page.dart';
     int index){
     final taskBox = Hive.box<TaskModel>("task");
     final task = taskBox.getAt(index) as TaskModel;
-    return MaterialButton(
+    return TextButton(
       onPressed: (){
           taskBox.putAt(index, TaskModel(
             task.title, task.label,
@@ -219,21 +179,33 @@ part of '../task_page.dart';
             ));
           Navigator.of(context).pop();
       },
-      height: 48,
-      minWidth: double.infinity,
-      color: Palette.ultramarineBlue,
-      elevation: 0.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10)
-      ),
       child: const  Text(
         "Update",
         style: TextStyle(
-          fontSize: 18,
-          color: Colors.white
+          fontSize: 16, fontWeight: FontWeight.bold
         ),
       ),
     );
+  }
+
+  Widget deleteTaskButton(
+    BuildContext context,
+    int index,
+    Box<TaskModel> taskBox,
+    SetTheme setTheme
+  ){
+    return TextButton(
+    onPressed: () {
+      deleteTaskDialog(context, index, taskBox, setTheme);
+    },
+    child: Text(
+      "Delete",
+      style: TextStyle(
+          color: Colors.red.shade600,
+          fontWeight: FontWeight.bold,
+          fontSize: 16),
+    ),
+  );
   }
 
 

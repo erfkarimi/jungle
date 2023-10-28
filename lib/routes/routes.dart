@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jungle/view/home/task/add_task/add_task.dart';
+import 'package:jungle/view/home/task/create_task_page/create_task_page.dart';
 import 'package:jungle/view/home/task/task_page.dart';
 import 'package:jungle/view/settings/settings.dart';
 import 'package:jungle/view/splash_screen/splash_screen.dart';
@@ -20,7 +20,7 @@ Map<String, WidgetBuilder> appRoutes = {
   '/homePage'       : (_)=> const HomePage(),
   '/todoPage'       : (_)=> const TodoPage(),
   '/taskPage'       : (_)=> const TaskPage(),
-  '/addNewTask'     : (_)=> const AddNewTask(),
+  '/addNewTask'     : (_)=> const CreateTaskPage(),
   '/settings'       : (_)=> const Settings(),
   '/notifications'  : (_)=> const NotificationsPage() 
 };

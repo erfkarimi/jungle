@@ -1,12 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:jungle/view/home/task/task_page.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
 import 'package:provider/provider.dart';
-import '../../model/palette/palette.dart';
 import 'completed/completed.dart';
 import 'todo_page/todo_page.dart';
 
@@ -90,18 +90,18 @@ class HomePageState extends State<HomePage> {
   PreferredSizeWidget tabBarWidget(SetTheme setTheme) {
     return TabBar(
         dividerColor: setTheme.setAppBarTheme(),
-        indicatorWeight: 1.0,
+        indicatorWeight: 2.0,
         indicatorPadding:
             const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
         indicatorSize: TabBarIndicatorSize.tab,
-        splashBorderRadius: BorderRadius.circular(50),
+        splashBorderRadius: BorderRadius.circular(10),
         labelColor: Colors.black,
         unselectedLabelColor: setTheme.setTextTheme(),
         labelStyle: const TextStyle(
           fontWeight: FontWeight.bold),
         indicator: BoxDecoration(
-            borderRadius: BorderRadius.circular(50),
-            color: Colors.green.shade200),
+            borderRadius: BorderRadius.circular(10),
+            color: const Color(0xff29c5e6)),
         tabs: tabListWidget(setTheme));
   }
 
@@ -118,7 +118,9 @@ class HomePageState extends State<HomePage> {
               height: 20,
               width: 20,
               decoration: BoxDecoration(
-                  color: Colors.grey.shade300, shape: BoxShape.circle),
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(5)
+                  ),
               child: Center(
                 child: Text("${dbCounterState.taskCounter}",
                 style: const TextStyle(color: Colors.black)),
@@ -137,7 +139,8 @@ class HomePageState extends State<HomePage> {
               height: 20,
               width: 20,
               decoration: BoxDecoration(
-                  color: Colors.grey.shade300, shape: BoxShape.circle),
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(5)),
               child: Center(
                 child: Text("${dbCounterState.todoCounter}",
                     style: const TextStyle(color: Colors.black)),
@@ -156,7 +159,8 @@ class HomePageState extends State<HomePage> {
               height: 20,
               width: 20,
               decoration: BoxDecoration(
-                  color: Colors.grey.shade300, shape: BoxShape.circle),
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(5)),
               child: Center(
                 child: Text("${dbCounterState.completedCounter}",
                     style: const TextStyle(color: Colors.black)),

@@ -20,7 +20,6 @@ class CompletedTodoState extends State<CompletedTodo>{
   Widget build(context){
     final SetTheme setTheme = Provider.of<SetTheme>(context);
     return Scaffold(
-      backgroundColor: setTheme.setBackgroundTheme(),
       body: buildBody(setTheme)
     );
   }

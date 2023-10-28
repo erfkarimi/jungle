@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/model/task_model/task_model.dart';
-import 'package:jungle/view/home/task/add_task/add_task.dart';
+import 'package:jungle/view/home/task/create_task_page/create_task_page.dart';
 import 'package:jungle/view_model/set_theme/set_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
@@ -24,12 +24,18 @@ class TaskPageState extends State<TaskPage> {
   @override
   Widget build(context) {
     final SetTheme setTheme = Provider.of<SetTheme>(context);
-    setSystemTheme(setTheme);
-    return Scaffold(
-      backgroundColor: setTheme.setBackgroundTheme(),
-      resizeToAvoidBottomInset: false,
-      floatingActionButton: floatingActionButton(),
-      body: buildBody(setTheme),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: setTheme.setAppBarTheme(),
+      systemNavigationBarIconBrightness: Brightness.light,
+      ),
+      child: Scaffold(
+        backgroundColor: setTheme.setAppBarTheme(),
+        resizeToAvoidBottomInset: false,
+        floatingActionButton: floatingActionButton(),
+        body: buildBody(setTheme),
+      ),
     );
   }
 
@@ -292,7 +298,7 @@ class TaskPageState extends State<TaskPage> {
     return FloatingActionButton(
       onPressed: () {
         Get.to(
-          ()=> const AddNewTask(),
+          ()=> const CreateTaskPage(),
           transition: Transition.rightToLeft
           );
       },
@@ -340,14 +346,4 @@ class TaskPageState extends State<TaskPage> {
           );
         });
   }
-
-  void setSystemTheme(SetTheme setTheme) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: setTheme.setBackgroundTheme(),
-      systemNavigationBarIconBrightness: Brightness.light,
-      statusBarColor: Colors.transparent,
-    ));
-  }
-
 }

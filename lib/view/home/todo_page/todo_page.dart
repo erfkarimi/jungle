@@ -23,7 +23,6 @@ class TodoPageState extends State<TodoPage>{
     
     final SetTheme setTheme = Provider.of<SetTheme>(context);
     return Scaffold(
-      backgroundColor: setTheme.setBackgroundTheme(),
       floatingActionButton: floatingActionButton(setTheme),
       body: buildBody(setTheme)
     );
