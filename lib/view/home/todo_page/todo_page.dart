@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:provider/provider.dart';
 import '../../../model/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
-
-part 'edit_todo.dart';
+import 'edit_todo.dart';
 
 class TodoPage extends StatefulWidget{
   const TodoPage({super.key});
@@ -53,7 +53,7 @@ class TodoPageState extends State<TodoPage>{
                 child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: todoBox.length,
-                    itemBuilder: (context, int index) {
+                    itemBuilder: (context, index) {
                       index = todoBox.length - 1 - index;
                       return todoButton(index, appUiStyle);
                     }),
@@ -67,7 +67,11 @@ class TodoPageState extends State<TodoPage>{
     final todo = todoBox.getAt(index) as TodoModel;
     return MaterialButton(
       onPressed: () {
-        showEditBottomSheet(context, todoBox, appUiStyle, index);
+        Get.to(
+          EditTodoPage(index: index),
+          transition: Transition.cupertino
+          );
+        
       },
       onLongPress: () => deleteUnDoneTodoOnLongPressDialog(context, index, appUiStyle),
       height: 50,
@@ -210,7 +214,7 @@ class TodoPageState extends State<TodoPage>{
 
   void deleteUnDoneTodoOnLongPressDialog(BuildContext context, int index,
       AppUiStyle appUiStyle) {
-    showDialog(
+      showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(

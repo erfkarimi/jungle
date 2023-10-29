@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:jungle/constant/constant.dart';
-import 'package:jungle/view/welcome_page/first_welcome_page/first_welcome_page.dart';
-import 'package:jungle/view/welcome_page/second_welcome_page/second_welcome_page.dart';
-import 'package:jungle/view/welcome_page/third_welcome_page/third_welcome_page.dart';
-import 'package:jungle/widget/page_widget/page_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import '../../model/palette/palette.dart';
+import '../../widget/page_widget.dart/page_widget.dart';
 
 class OnboardingPage extends StatefulWidget{
   const OnboardingPage({super.key});

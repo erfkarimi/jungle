@@ -4,7 +4,6 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/view/home/home_page.dart';
 import 'package:jungle/view/onboarding_page/onboarding_page.dart';
-import 'package:jungle/view/welcome_page/welcome_page.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';

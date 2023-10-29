@@ -78,7 +78,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     TextEditingController descriptionController,
   ) {
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(20),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
