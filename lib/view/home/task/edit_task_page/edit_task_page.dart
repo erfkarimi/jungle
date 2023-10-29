@@ -264,5 +264,5 @@ void editTaskBottomSheet(
           ],
         );
       }
-     );
+    );
   }

@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:jungle/model/db_counter/db_counter.dart';
-import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:provider/provider.dart';
 import '../../../model/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
 import '../../../view_model/app_ui_style/app_ui_style.dart';
+import '../../../view_model/db_counter_state/db_counter_state.dart';
 
-class EditTodoPage extends StatelessWidget {
+class EditCompletedTodoPage extends StatelessWidget {
   final int index;
-  const EditTodoPage({super.key, required this.index});
+  const EditCompletedTodoPage({super.key, required this.index});
 
   @override
   Widget build(context) {
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
-    final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
-    final todo = todoBox.getAt(index) as TodoModel;
+    final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
+    final todo = completedTodoBox.getAt(index) as TodoModel;
     return Scaffold(
       backgroundColor: appUiStyle.setAppBarTheme(),
-      appBar: buildAppBar(context, appUiStyle, todoBox, todo),
-      body: buildBody(context, appUiStyle, todoBox, todo),
+      appBar: buildAppBar(context, appUiStyle, completedTodoBox, todo),
+      body: buildBody(context, appUiStyle, completedTodoBox, todo),
     );
-  }
+  } 
 
   AppBar buildAppBar(BuildContext context, AppUiStyle appUiStyle,
-      Box<TodoModel> todoBox, TodoModel todoModel) {
+      Box<TodoModel> completedTodoBox, TodoModel todoModel) {
     return AppBar(
-      backgroundColor: appUiStyle.setAppBarTheme(),
       title: Text(
-        "Edit todo",
-        style: TextStyle(color: appUiStyle.setTextTheme()),
+        "Edit completed todo",
+        style: TextStyle(
+          color: appUiStyle.setTextTheme()
+        ),
       ),
       leading: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -45,9 +45,8 @@ class EditTodoPage extends StatelessWidget {
         ),
       ),
       actions: [
-        updateTodoButton(context, appUiStyle, todoBox, todoModel, index),
-        const SizedBox(width: 10),
-        deleteTodoButton(context, appUiStyle, todoBox, index)
+        updateCompletedTodoButton(context, appUiStyle, completedTodoBox, todoModel, index),
+        deleteCompletedTodoButton(context, appUiStyle, completedTodoBox, index)
       ],
     );
   }
@@ -77,9 +76,10 @@ class EditTodoPage extends StatelessWidget {
           textCapitalization: TextCapitalization.sentences,
           textInputAction: TextInputAction.next,
           style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              color: appUiStyle.setTextTheme()),
+            color: appUiStyle.setTextTheme(),
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            ),
           initialValue: todo.title,
           decoration: const InputDecoration(
               hintText: "Title",
@@ -101,20 +101,21 @@ class EditTodoPage extends StatelessWidget {
       maxLines: 20,
       initialValue: todo.description,
       decoration: const InputDecoration(
-          hintText: "Description",
-          hintStyle: TextStyle(color: Colors.grey),
-          border: InputBorder.none),
+        hintText: "Description",
+        hintStyle: TextStyle(color: Colors.grey),
+        border: InputBorder.none
+      ),
       onChanged: (String value) {
         todo.description = value;
       },
     );
   }
 
-  Widget updateTodoButton(BuildContext context, AppUiStyle appUiStyle,
-      Box<TodoModel> todoBox, TodoModel todo, int index) {
+  Widget updateCompletedTodoButton(BuildContext context, AppUiStyle appUiStyle,
+      Box<TodoModel> completedTodoBox, TodoModel todo, int index) {
     return TextButton(
       onPressed: () {
-        todoBox.putAt(
+        completedTodoBox.putAt(
             index,
             TodoModel(
               todo.title,
@@ -129,13 +130,11 @@ class EditTodoPage extends StatelessWidget {
     );
   }
 
-  Widget deleteTodoButton(
-    BuildContext context, AppUiStyle appUiStyle,
-      Box<TodoModel> todoBox, int index
-  ){
+  Widget deleteCompletedTodoButton(BuildContext context, AppUiStyle appUiStyle,
+      Box<TodoModel> completedTodoBox, int index) {
     return TextButton(
       onPressed: () {
-        deleteTaskDialog(context, appUiStyle, todoBox, index);
+        deleteCompletedTodoDialog(context, appUiStyle, completedTodoBox, index);
       },
       child: Text(
         "Delete",
@@ -147,8 +146,8 @@ class EditTodoPage extends StatelessWidget {
     );
   }
 
-  void deleteTaskDialog(BuildContext context, AppUiStyle appUiStyle,
-      Box<TodoModel> todoBox, int index) {
+  void deleteCompletedTodoDialog(BuildContext context, AppUiStyle appUiStyle,
+      Box<TodoModel> completedTodoBox, int index) {
     showDialog(
         context: context,
         builder: (context) {
@@ -161,20 +160,19 @@ class EditTodoPage extends StatelessWidget {
             content: Text("Are you sure ?",
                 style: TextStyle(color: appUiStyle.setTextTheme())),
             actions: [
-              Consumer<DbCounterState>(
-                builder: (context, dbCounterState, _) {
-                  return TextButton(
-                    onPressed: () {
-                      todoBox.deleteAt(index);
-                      dbCounterState.updateTodoCounter(todoBox.length);
-                      dbCounterState.saveDbCounterState();
-                      Get.back();
-                      Get.back();
+              Consumer<DbCounterState>(builder: (context, dbCounterState, _) {
+                return TextButton(
+                  onPressed: () {
+                    completedTodoBox.deleteAt(index);
+                    dbCounterState
+                        .updateCompletedCounter(completedTodoBox.length);
+                    dbCounterState.saveDbCounterState();
+                    Get.back();
+                    Get.back();
                     },
-                    child: const Text("Yes"),
-                  );
-                }
-              ),
+                  child: const Text("Yes"),
+                );
+              }),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();

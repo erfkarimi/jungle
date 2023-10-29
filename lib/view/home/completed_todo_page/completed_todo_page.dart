@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:provider/provider.dart';
 import '../../../../model/todo_model/todo_model.dart';
-part 'edit_completed_todo.dart';
+import 'edit_completed_todo_page.dart';
 
 class CompletedTodo extends StatefulWidget{
   const CompletedTodo({super.key});
@@ -65,7 +66,9 @@ class CompletedTodoState extends State<CompletedTodo>{
     final completedTodo = completedTodoBox.getAt(index) as TodoModel;
     return MaterialButton(
       onPressed: (){
-        showEditBottomSheet(context,completedTodoBox, appUiStyle, index);
+        Get.to(
+          EditCompletedTodoPage(index: index),
+          transition: Transition.cupertino);
       },
       onLongPress: ()=> deleteDoneTodoOnLongPressDialog(context, index, appUiStyle),
       height: 50,
@@ -73,7 +76,7 @@ class CompletedTodoState extends State<CompletedTodo>{
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10)
       ),
-      child:Row(
+      child: Row(
           children: [
             Consumer<DbCounterState>(
               builder: (context, dbCounterState, _) {
