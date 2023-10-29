@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:jungle/constant/constant.dart';
 import 'package:jungle/view/welcome_page/first_welcome_page/first_welcome_page.dart';
 import 'package:jungle/view/welcome_page/second_welcome_page/second_welcome_page.dart';
 import 'package:jungle/view/welcome_page/third_welcome_page/third_welcome_page.dart';
+import 'package:jungle/widget/page_widget/page_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../../model/palette/palette.dart';
 
 class OnboardingPage extends StatefulWidget{
   const OnboardingPage({super.key});
@@ -31,10 +35,21 @@ class _OnboardingPageState extends State<OnboardingPage> {
             });
           },
           controller: controller,
-            children: const [
-              FirstWelcomePage(),
-              SecondWelcomePage(),
-              ThirdWelcomePage()
+            children: [
+              PageWidget(
+              text: text1,
+              image: "asset/image/notes-amico.png",
+              backgroundColor: Colors.purple.shade800
+              ),
+              PageWidget(
+              text: text2,
+              image: "asset/image/notes-pana.png",
+              backgroundColor: Colors.teal
+              ),
+              PageWidget(
+              text: text3,
+              image: "asset/image/notes-rafiki.png",
+              backgroundColor: Palette.ultramarineBlue)
             ],
           ),
           
@@ -54,17 +69,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextButton(
-                onPressed: ()=> controller.jumpToPage(2),
-                child: const Text(
-                  "Skip",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold
-                  ),
-                ),
-              ),
+              skipButtonWidget(),
               Center(
                 child: SmoothPageIndicator(
                   count: 3,
@@ -111,5 +116,21 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ],
           ),
         );
+  }
+
+  Widget skipButtonWidget(){
+    return TextButton(
+                onPressed: isLastPage ? null : ()=> controller.jumpToPage(2),
+                child: Text(
+                  "Skip",
+                  style: TextStyle(
+                    color: isLastPage ? 
+                    const Color(0xff29c5e6) 
+                    :Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              );
   }
 }
