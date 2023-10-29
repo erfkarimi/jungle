@@ -3,36 +3,31 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:jungle/constant/constant.dart';
+import 'package:jungle/model/palette/palette.dart';
 
 class ThirdWelcomePage extends StatelessWidget{
   const ThirdWelcomePage({super.key});
 
   @override 
   Widget build(context){
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.light,
-          systemNavigationBarColor: Colors.blue.shade700,
-          systemNavigationBarIconBrightness: Brightness.light,
-          statusBarColor: Colors.transparent,
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.blue.shade700,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 24, vertical: 10
-          ),
+    return Scaffold(
+      backgroundColor: Palette.ultramarineBlue,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 24, vertical: 10
+        ),
+        child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Expanded(child: SizedBox()),
               Image.asset(
               "asset/image/notes-rafiki.png",
               width: 300,
             ),
               const Text(
-""" So let's start our
-journey by saving a task
-and a todo$wishLuckEmoji""",
+        """ So let's start our
+        journey by saving a task
+        and a todo$wishLuckEmoji""",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -40,15 +35,15 @@ and a todo$wishLuckEmoji""",
               wordSpacing: 5,
             )
             ),
-            const Expanded(child: SizedBox()),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                backButtonWidget(),
-                pageBarWidget(),
-                startButtonWidget()
-              ],
-            )
+            // const Expanded(child: SizedBox()),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     backButtonWidget(),
+            //     pageBarWidget(),
+            //     startButtonWidget(context)
+            //   ],
+            // )
             ],
           ),
         ),
@@ -96,7 +91,7 @@ and a todo$wishLuckEmoji""",
     );
   }
 
-  Widget startButtonWidget() {
+  Widget startButtonWidget(BuildContext context) {
     final welcomePageDB = Hive.box("welcome");
     return TextButton(
         onPressed: () {
@@ -109,5 +104,4 @@ and a todo$wishLuckEmoji""",
               color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
         ));
   }
-
 }

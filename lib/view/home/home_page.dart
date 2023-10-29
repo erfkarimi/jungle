@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:jungle/view/home/task/task_page.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
@@ -46,6 +47,7 @@ class HomePageState extends State<HomePage> {
       preferredSize: const Size.fromHeight(100),
       child: AppBar(
         backgroundColor: appUiStyle.setAppBarTheme(),
+        leading: null,
         elevation: 0.0,
         title: Text(
           "Jungle",
@@ -59,10 +61,11 @@ class HomePageState extends State<HomePage> {
   }
 
   List<Widget> appBarActionWidget(AppUiStyle appUiStyle) {
+    final Box welcomePageDB = Hive.box("welcome");
     return [
       MaterialButton(
         minWidth: 10,
-        onPressed: () => Get.toNamed("/notifications"),
+        onPressed: () => welcomePageDB.put("welcomePage", false),
         shape: CircleBorder(
           side: BorderSide(color: appUiStyle.setTextTheme()),
         ),

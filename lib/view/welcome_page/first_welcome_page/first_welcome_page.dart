@@ -8,63 +8,55 @@ class FirstWelcomePage extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Colors.purple.shade800,
-      systemNavigationBarIconBrightness: Brightness.light,
-      statusBarColor: Colors.transparent,
-    ),
-      child: Scaffold(
-          backgroundColor: Colors.purple.shade800,
-          body: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24, vertical: 10
-            ),
-            child: Column(
-              children: [
-                const Expanded(child: SizedBox()),
-                const Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "Welcome !!",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 34,
-                    ),
+    return Scaffold(
+        backgroundColor: Colors.purple.shade800,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 24, vertical: 10
+          ),
+          child: Column(
+            children: [
+              const Expanded(child: SizedBox()),
+              const Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  "Welcome !!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 34,
                   ),
                 ),
-                const SizedBox(height: 60),
-                Image.asset(
-                  "asset/image/notes-amico.png",
-                  width: 300,
-                ),
-                const Text(
+              ),
+              const SizedBox(height: 60),
+              Image.asset(
+                "asset/image/notes-amico.png",
+                width: 300,
+              ),
+              const Text(
 """Thanks for choosing
 Jungle. We hope you
 enjoy it and go to
 next pages for more
 about us.""",   
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      wordSpacing: 5,
-                    )),
-                const Expanded(child: SizedBox()),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    skipButtonWidget(),
-                    pageBarWidget(),
-                    nextButtonWidget()
-                    
-                  ],
-                )
-              ],
-            ),
-          )),
-    );
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    wordSpacing: 5,
+                  )),
+              const Expanded(child: SizedBox()),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     skipButtonWidget(),
+              //     pageBarWidget(),
+              //     nextButtonWidget()
+                  
+              //   ],
+              // )
+            ],
+          ),
+        ));
   }
 
   Widget skipButtonWidget(){

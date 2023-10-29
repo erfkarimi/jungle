@@ -6,25 +6,20 @@ class SecondWelcomePage extends StatelessWidget {
   const SecondWelcomePage({super.key});
   @override
   Widget build(context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.teal,
-        systemNavigationBarIconBrightness: Brightness.light,
-        statusBarColor: Colors.transparent,
-      ),
-      child: Scaffold(
-          backgroundColor: Colors.teal,
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+    return Scaffold(
+        backgroundColor: Colors.teal,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          child: Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Expanded(child: SizedBox()),
                 Image.asset(
                   "asset/image/notes-pana.png",
                   width: 300,
                 ),
-                const Text("""Jungle helps you
+                const Text(
+"""Jungle helps you
 to save and manage
 your tasks and todos.""",
                     textAlign: TextAlign.center,
@@ -33,19 +28,19 @@ your tasks and todos.""",
                       fontSize: 18,
                       wordSpacing: 5,
                     )),
-                const Expanded(child: SizedBox()),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    backButtonWidget(),
-                    pageBarWidget(),
-                    nextButtonWidget()
-                  ],
-                )
+                // const Expanded(child: SizedBox()),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     backButtonWidget(),
+                //     pageBarWidget(),
+                //     nextButtonWidget()
+                //   ],
+                // )
               ],
             ),
-          )),
-    );
+          ),
+        ));
   }
 
   Widget backButtonWidget() {
