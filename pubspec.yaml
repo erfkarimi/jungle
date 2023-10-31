@@ -39,6 +39,14 @@ flutter:
     - asset/image/notes-rafiki.png
     - asset/image/to-do-list-cuate.png
     - asset/image/to-do-list-rafiki.png
+  
+  fonts:
+    - family: Italic
+      fonts:
+        - asset: "asset/font/Lato-Italic.ttf"
+    - family: Regular
+      fonts:
+        - asset: "asset/font/Lato-Regular.ttf"
 
 flutter_native_splash:
   color: "#3166ff"

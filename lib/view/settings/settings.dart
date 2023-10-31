@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -56,9 +57,33 @@ class Settings extends StatelessWidget{
   Widget buildBody(BuildContext context, AppUiStyle appUiStyle){
     return Column(
       children: [
+        fontButton(context, appUiStyle),
         themeButton(context, appUiStyle),
         feedbackButton(context, appUiStyle)
       ],
+    );
+  }
+
+  Widget fontButton(BuildContext context, AppUiStyle appUiStyle){
+    return MaterialButton(
+      onPressed: (){
+        showFontDialog(context, appUiStyle);
+      },
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20)
+      ),
+      child: ListTile(
+        leading: Icon(
+          Icons.translate,
+          color: appUiStyle.setTextTheme(),
+          ),
+          title: Text(
+            "Font",
+            style: TextStyle(
+              color: appUiStyle.setTextTheme(),
+            ),
+            ),
+      )
     );
   }
 
@@ -77,7 +102,7 @@ class Settings extends StatelessWidget{
           color: appUiStyle.setTextTheme(),
           ),
           title: Text(
-             "Theme",
+            "Theme",
             style: TextStyle(
               color: appUiStyle.setTextTheme(),
             ),
@@ -117,7 +142,7 @@ class Settings extends StatelessWidget{
         return AlertDialog(
           backgroundColor: appUiStyle.setBackgroundTheme(),
           title: Text(
-             "Theme",
+            "Theme",
             style: TextStyle(
               color: appUiStyle.setTextTheme()
             ),
@@ -135,6 +160,79 @@ class Settings extends StatelessWidget{
           ),
         );
       }
+    );
+  }
+
+  void showFontDialog(BuildContext context, AppUiStyle appUiStyle){
+    showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          backgroundColor: appUiStyle.setBackgroundTheme(),
+          title: Text(
+            "Font",
+            style: TextStyle(
+              color: appUiStyle.setTextTheme()
+            ),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              italicFontButton(context, appUiStyle),
+              regularFontButton(context, appUiStyle),
+            ]
+          ),
+        );
+      }
+    );
+  }
+
+  Widget italicFontButton(BuildContext context, AppUiStyle appUiStyle){
+    return TextButton(
+        onPressed: (){
+          appUiStyle.setAppFont("Italic");
+          appUiStyle.saveChangeTheme();
+          Get.back();
+        },
+        child: const ListTile(
+          leading: Text(
+            "Aa",
+            style: TextStyle(
+              fontSize: 20,
+              fontFamily: "Italic",
+              fontWeight: FontWeight.bold
+            ),
+          ),
+          title: Text(
+            "Italic"
+          ),
+        )
+    );
+  }
+
+  Widget regularFontButton(BuildContext context, AppUiStyle appUiStyle){
+    return TextButton(
+        onPressed: (){
+          appUiStyle.setAppFont("Regular");
+          appUiStyle.saveChangeTheme();
+          Get.back();
+        },
+        child: const ListTile(
+          leading: Text(
+            "Aa",
+            style: TextStyle(
+              fontSize: 20,
+              fontFamily: "Regular",
+              fontWeight: FontWeight.bold
+            ),
+          ),
+          title: Text(
+            "Regular"
+          ),
+        )
     );
   }
 

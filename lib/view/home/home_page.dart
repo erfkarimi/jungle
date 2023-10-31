@@ -50,7 +50,9 @@ class HomePageState extends State<HomePage> {
         title: Text(
           "Jungle",
           style: TextStyle(
-              fontWeight: FontWeight.bold, color: appUiStyle.setTextTheme()),
+              fontWeight: FontWeight.bold,
+              fontFamily: appUiStyle.font,
+              color: appUiStyle.setTextTheme()),
         ),
         actions: appBarActionWidget(appUiStyle),
         bottom: tabBarWidget(appUiStyle),

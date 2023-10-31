@@ -5,6 +5,7 @@ export 'package:provider/provider.dart';
 class AppUiStyle extends ChangeNotifier{
   String theme = "light";
   bool showTaskPage = true;
+  String font = "Regular";
   
 
   Color setTextTheme(){
@@ -72,17 +73,17 @@ class AppUiStyle extends ChangeNotifier{
     }
     
   }
-  
+
+  void setAppFont(String appFont){
+    font = appFont;
+    notifyListeners();
+  }
+
 
   Future<void> saveChangeTheme() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("theme", theme);
-    notifyListeners();
-  }
-
-  Future<void> saveStatus() async{
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setBool("showTaskPage", showTaskPage);
+    preferences.setString("font", font);
     notifyListeners();
   }
 }

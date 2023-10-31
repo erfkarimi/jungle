@@ -118,7 +118,7 @@ class CompletedTodoState extends State<CompletedTodo>{
             width: 250,
           ),
           Text(
-            "Nothing is here",
+            "Nothing is completed",
             style: TextStyle(
               fontSize: 17,
               color: appUiStyle.setTextTheme()

@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/model/task_model/task_model.dart';
-import 'package:jungle/view/home/task/create_task_page/create_task_page.dart';
 import 'package:jungle/view/home/task/edit_task_page/edit_task_page.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:get/get.dart';
@@ -34,23 +33,6 @@ class TaskPageState extends State<TaskPage> {
         floatingActionButton: floatingActionButton(),
         body: buildBody(appUiStyle),
       ),
-    );
-  }
-
-  /*---------- Widgets and Functions ----------*/
-
-  AppBar buildAppBar(AppUiStyle appUiStyle) {
-    return AppBar(
-      // toolTip: "AppBar widget used in Task page"
-      backgroundColor: appUiStyle.setBackgroundTheme(),
-      title: Text(
-        "Task",
-        style: TextStyle(
-          color: appUiStyle.setTextTheme(),
-        ),
-      ),
-      elevation: 0.0,
-      iconTheme: IconThemeData(color: appUiStyle.setTextTheme()),
     );
   }
 
@@ -187,12 +169,7 @@ class TaskPageState extends State<TaskPage> {
 
   FloatingActionButton floatingActionButton() {
     return FloatingActionButton(
-      onPressed: () {
-        Get.to(
-          ()=> const CreateTaskPage(),
-          transition: Transition.rightToLeft
-          );
-      },
+      onPressed: ()=> Get.toNamed("/createTask"),
       tooltip: "Add new task",
       backgroundColor: Palette.ultramarineBlue,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
