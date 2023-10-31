@@ -5,13 +5,11 @@ import 'package:hive/hive.dart';
 import 'package:jungle/view/home/task/task_page.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
-import 'package:provider/provider.dart';
 import 'completed_todo_page/completed_todo_page.dart';
 import 'todo_page/todo_page.dart';
 
 class HomePage extends StatefulWidget {
-  final Function? notifyParent;
-  const HomePage({Key? key, this.notifyParent}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   HomePageState createState() => HomePageState();

@@ -5,7 +5,6 @@ import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/view/home/home_page.dart';
 import 'package:jungle/view/onboarding_page/onboarding_page.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../view_model/app_ui_style/app_ui_style.dart';

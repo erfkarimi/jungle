@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+export 'package:provider/provider.dart';
 
 class DbCounterState extends ChangeNotifier{
   int taskCounter = 0;

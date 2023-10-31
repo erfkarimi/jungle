@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
-import 'package:provider/provider.dart';
 import '../../../../model/palette/palette.dart';
 import '../../../../model/task_model/task_model.dart';
 import '../../../../view_model/app_ui_style/app_ui_style.dart';

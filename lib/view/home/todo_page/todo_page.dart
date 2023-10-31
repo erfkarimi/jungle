@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
-import 'package:provider/provider.dart';
 import '../../../model/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
 import 'edit_todo.dart';

@@ -4,12 +4,11 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/model/task_model/task_model.dart';
 import 'package:jungle/view/home/task/create_task_page/create_task_page.dart';
+import 'package:jungle/view/home/task/edit_task_page/edit_task_page.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
-import 'package:provider/provider.dart';
 import 'package:get/get.dart';
-import '../../../view_model/db_counter_state/db_counter_state.dart';
-
-part 'edit_task_page/edit_task_page.dart';
+import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
+import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
 
@@ -73,11 +72,13 @@ class TaskPageState extends State<TaskPage> {
                 child: GestureDetector(
                   onLongPress: () {
                     deleteTaskOnLongPressDialog(
-                        context, index, taskBox, appUiStyle);
+                        context, index, taskBox);
                   },
                   child: GestureDetector(
                     onTap: () {
-                      editTaskBottomSheet(context, appUiStyle, index);
+                      Get.to(
+                        EditTaskPage(index: index),
+                        transition: Transition.cupertino);
                     },
                     child: Card(
                         color: appUiStyle.setItemBackgroundTheme(),
@@ -203,36 +204,22 @@ class TaskPageState extends State<TaskPage> {
   }
 
   void deleteTaskOnLongPressDialog(BuildContext context, int index,
-      Box<TaskModel> taskDB, AppUiStyle appUiStyle) {
+      Box<TaskModel> taskBox) {
     showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text("Deletion",
-                style: TextStyle(color: appUiStyle.setTextTheme())),
-            backgroundColor: appUiStyle.setBackgroundTheme(),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            content: Text("Are you sure ?",
-                style: TextStyle(color: appUiStyle.setTextTheme())),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  taskDB.deleteAt(index);
-                  Get.back();
+          return Consumer<DbCounterState>(
+            builder: (context, dbCounterState, _) {
+              return DeleteDialogWidget(
+                index: index,
+                firstButtonFunction: (){
+                  taskBox.deleteAt(index);
+                  dbCounterState.updateTaskCounter(taskBox.length);
+                  dbCounterState.saveDbCounterState();
+                  Get.back(); 
                 },
-                child: const Text("Yes"),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  "Cancel",
-                  style: TextStyle(color: Colors.red.shade600),
-                ),
-              )
-            ],
+              );
+            }
           );
         });
   }

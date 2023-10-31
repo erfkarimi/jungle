@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../view_model/app_ui_style/app_ui_style.dart';
 
@@ -10,10 +10,15 @@ class Settings extends StatelessWidget{
   @override 
   Widget build(context){
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
-    return Scaffold(
-      backgroundColor: appUiStyle.setAppBarTheme(),
-      appBar: buildAppBar(context, appUiStyle),
-      body: buildBody(context, appUiStyle)
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        systemNavigationBarColor: appUiStyle.setAppBarTheme()
+      ),
+      child: Scaffold(
+        backgroundColor: appUiStyle.setAppBarTheme(),
+        appBar: buildAppBar(context, appUiStyle),
+        body: buildBody(context, appUiStyle)
+      ),
     );
   }
 

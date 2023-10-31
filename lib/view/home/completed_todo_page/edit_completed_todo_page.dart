@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:provider/provider.dart';
+import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
+import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
+import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
 import '../../../model/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
 import '../../../view_model/app_ui_style/app_ui_style.dart';
@@ -15,84 +17,68 @@ class EditCompletedTodoPage extends StatelessWidget {
   Widget build(context) {
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
-    final todo = completedTodoBox.getAt(index) as TodoModel;
+    final completedTodoModel = completedTodoBox.getAt(index) as TodoModel;
     return Scaffold(
       backgroundColor: appUiStyle.setAppBarTheme(),
-      appBar: buildAppBar(context, appUiStyle, completedTodoBox, todo),
-      body: buildBody(context, appUiStyle, completedTodoBox, todo),
+      appBar: buildAppBar(context, appUiStyle,
+      completedTodoBox, completedTodoModel),
+      body: buildBody(appUiStyle, completedTodoModel),
     );
   } 
 
   AppBar buildAppBar(BuildContext context, AppUiStyle appUiStyle,
       Box<TodoModel> completedTodoBox, TodoModel todoModel) {
     return AppBar(
+      backgroundColor: appUiStyle.setAppBarTheme(),
       title: Text(
         "Edit completed todo",
         style: TextStyle(
           color: appUiStyle.setTextTheme()
         ),
       ),
-      leading: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: MaterialButton(
-          onPressed: () {
-            Get.back();
-          },
-          minWidth: 10,
-          shape:
-              CircleBorder(side: BorderSide(color: appUiStyle.setTextTheme())),
-          child: Icon(Icons.arrow_back, color: appUiStyle.setTextTheme()),
-        ),
-      ),
+      leading: LeadingButtonWidget(appUiStyle: appUiStyle),
       actions: [
-        updateCompletedTodoButton(context, appUiStyle, completedTodoBox, todoModel, index),
-        deleteCompletedTodoButton(context, appUiStyle, completedTodoBox, index)
+        updateCompletedTodoButton(completedTodoBox, todoModel),
+        deleteCompletedTodoButton(context, completedTodoBox)
       ],
     );
   }
 
-  Widget buildBody(BuildContext context, AppUiStyle appUiStyle,
-      Box<TodoModel> todoBox, TodoModel todoModel) {
+  Widget buildBody(AppUiStyle appUiStyle, TodoModel todoModel) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            titleTextField(context, appUiStyle, todoModel),
+            titleTextField(appUiStyle, todoModel),
             const SizedBox(height: 10),
-            descriptionTextField(context, appUiStyle, todoModel),
+            descriptionTextField(appUiStyle, todoModel),
           ],
         ),
       ),
     );
   }
 
-  Widget titleTextField(
-      BuildContext context, AppUiStyle appUiStyle, TodoModel todo) {
-    return SizedBox(
-        height: 50,
-        child: TextFormField(
-          cursorColor: Palette.ultramarineBlue,
-          textCapitalization: TextCapitalization.sentences,
-          textInputAction: TextInputAction.next,
-          style: TextStyle(
-            color: appUiStyle.setTextTheme(),
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-            ),
-          initialValue: todo.title,
-          decoration: const InputDecoration(
-              hintText: "Title",
-              hintStyle: TextStyle(color: Colors.grey),
-              border: InputBorder.none),
-          onChanged: (String value) {
-            todo.title = value;
-          },
-        ));
+  Widget titleTextField(AppUiStyle appUiStyle, TodoModel todo) {
+    return TextFormField(
+      cursorColor: Palette.ultramarineBlue,
+      textCapitalization: TextCapitalization.sentences,
+      textInputAction: TextInputAction.next,
+      style: TextStyle(
+        color: appUiStyle.setTextTheme(),
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
+        ),
+      initialValue: todo.title,
+      decoration: const InputDecoration(
+          hintText: "Title",
+          hintStyle: TextStyle(color: Colors.grey),
+          border: InputBorder.none),
+      onChanged: (String value)=> todo.title = value
+    );
   }
 
-  Widget descriptionTextField(
-      BuildContext context, AppUiStyle appUiStyle, TodoModel todo) {
+  Widget descriptionTextField(AppUiStyle appUiStyle, TodoModel todo) {
     return TextFormField(
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
@@ -105,85 +91,57 @@ class EditCompletedTodoPage extends StatelessWidget {
         hintStyle: TextStyle(color: Colors.grey),
         border: InputBorder.none
       ),
-      onChanged: (String value) {
-        todo.description = value;
-      },
+      onChanged: (String value)=> todo.description = value
     );
   }
 
-  Widget updateCompletedTodoButton(BuildContext context, AppUiStyle appUiStyle,
-      Box<TodoModel> completedTodoBox, TodoModel todo, int index) {
-    return TextButton(
-      onPressed: () {
+  Widget updateCompletedTodoButton(
+      Box<TodoModel> completedTodoBox, TodoModel completedTodoModel) {
+    return TextButtonWidget(
+      function: () {
         completedTodoBox.putAt(
             index,
             TodoModel(
-              todo.title,
-              todo.description,
+              completedTodoModel.title,
+              completedTodoModel.description,
             ));
-        Navigator.of(context).pop();
+        Get.back();
       },
-      child: const Text(
-        "Update",
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
+      buttonTitle: "Update",
+        color: Colors.blue,
     );
   }
 
-  Widget deleteCompletedTodoButton(BuildContext context, AppUiStyle appUiStyle,
-      Box<TodoModel> completedTodoBox, int index) {
-    return TextButton(
-      onPressed: () {
-        deleteCompletedTodoDialog(context, appUiStyle, completedTodoBox, index);
-      },
-      child: Text(
-        "Delete",
-        style: TextStyle(
-            color: Colors.red.shade600,
-            fontWeight: FontWeight.bold,
-            fontSize: 16),
-      ),
+  Widget deleteCompletedTodoButton(BuildContext context,
+      Box<TodoModel> completedTodoBox,) {
+    return TextButtonWidget(
+      function: ()=> deleteCompletedTodoDialog(context, completedTodoBox),
+      buttonTitle: "Delete",
+        color:Colors.red.shade600,
     );
   }
 
-  void deleteCompletedTodoDialog(BuildContext context, AppUiStyle appUiStyle,
-      Box<TodoModel> completedTodoBox, int index) {
+  void deleteCompletedTodoDialog(BuildContext context,
+      Box<TodoModel> completedTodoBox) {
     showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text("Deletion",
-                style: TextStyle(color: appUiStyle.setTextTheme())),
-            backgroundColor: appUiStyle.setBackgroundTheme(),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            content: Text("Are you sure ?",
-                style: TextStyle(color: appUiStyle.setTextTheme())),
-            actions: [
-              Consumer<DbCounterState>(builder: (context, dbCounterState, _) {
-                return TextButton(
-                  onPressed: () {
-                    completedTodoBox.deleteAt(index);
-                    dbCounterState
-                        .updateCompletedCounter(completedTodoBox.length);
+          return Consumer<DbCounterState>(
+            builder: (context, dbCounterState, _) {
+              return DeleteDialogWidget(
+                index: index,
+                firstButtonFunction: (){
+                  completedTodoBox.deleteAt(index);
+                    dbCounterState.updateCompletedCounter(completedTodoBox.length);
                     dbCounterState.saveDbCounterState();
                     Get.back();
                     Get.back();
-                    },
-                  child: const Text("Yes"),
+                  },
                 );
-              }),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
                 },
-                child: Text(
-                  "Cancel",
-                  style: TextStyle(color: Colors.red.shade600),
-                ),
-              )
-            ],
+                
+              );
+            }
           );
-        });
-  }
+        }
 }
