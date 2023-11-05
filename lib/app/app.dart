@@ -4,7 +4,6 @@ import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/palette/palette.dart';
 import 'package:get/get.dart';
-
 import '../view_model/db_counter_state/db_counter_state.dart';
 
 class App extends StatefulWidget{
@@ -28,12 +27,11 @@ class _AppState extends State<App> {
             primarySwatch: Palette.ultramarineBlue,
             useMaterial3: true,
             colorScheme: ColorScheme.fromSeed(seedColor: Palette.ultramarineBlue),
-            fontFamily: Provider.of<AppUiStyle>(context).font,
             pageTransitionsTheme: const PageTransitionsTheme(
             builders: {
               TargetPlatform.android : CupertinoPageTransitionsBuilder()
-            }
-          )
+            },
+          ),
           ),
           routes: appRoutes,
           initialRoute: "/splashScreen",
@@ -44,8 +42,8 @@ class _AppState extends State<App> {
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context, listen: false);
     final DbCounterState dbCounterState = Provider.of<DbCounterState>(context, listen: false);
 
-      appUiStyle.theme = preferences.getString("theme") ?? "light";
-      appUiStyle.font = preferences.getString("font") ?? "Regular";
+      appUiStyle.theme = preferences.getString("Theme") ?? "Light";
+      appUiStyle.font = preferences.getString("Font") ?? "Regular";
       dbCounterState.taskCounter = preferences.getInt("taskCounter") ?? 0;
       dbCounterState.todoCounter = preferences.getInt("todoCounter") ?? 0;
       dbCounterState.completedCounter = preferences.getInt("completedCounter") ?? 0;

@@ -6,7 +6,6 @@ import 'package:jungle/model/todo_model/todo_model.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();

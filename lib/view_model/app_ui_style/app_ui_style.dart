@@ -3,13 +3,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 export 'package:provider/provider.dart';
 
 class AppUiStyle extends ChangeNotifier{
-  String theme = "light";
+  String theme = "Light";
   bool showTaskPage = true;
   String font = "Regular";
   
 
   Color setTextTheme(){
-    if(theme == "dark" || theme == "dim"){
+    if(theme == "Dark" || theme == "Dim"){
       return Colors.white;
     } else {
       return Colors.black;
@@ -17,9 +17,9 @@ class AppUiStyle extends ChangeNotifier{
   }
 
   Color setAppBarTheme(){
-    if(theme == "dark"){
+    if(theme == "Dark"){
       return Colors.grey.shade900;
-    } else if(theme == "dim"){
+    } else if(theme == "Dim"){
         return const Color.fromRGBO(20, 29, 38, 1.0);
     }else {
         return Colors.white;
@@ -27,9 +27,9 @@ class AppUiStyle extends ChangeNotifier{
   }
 
   Color setBackgroundTheme(){
-    if(theme == "dark"){
+    if(theme == "Dark"){
         return Colors.grey.shade800;
-    } else if(theme == "dim") {
+    } else if(theme == "Dim") {
         return const Color.fromRGBO(36, 52, 71, 1.0);
     } else {
         return Colors.white;
@@ -37,41 +37,23 @@ class AppUiStyle extends ChangeNotifier{
   }
 
   Color setDescriptionTheme(){
-    if(theme == "dark" || theme == "dim"){
+    if(theme == "Dark" || theme == "Dim"){
       return Colors.grey.shade200;
     } else {
       return Colors.grey.shade600;
     }
   }
 
-
-  Color setTextFieldBorderTheme(){
-    if(theme == "dark" || theme == "dim"){
-      return Colors.grey;
-    } else {
-      return Colors.black;
-    }
-  }
-
-  Color setDrawerButtonTheme(){
-    if(theme == "dark" || theme == "dim"){
-      return Colors.blueGrey.shade800.withOpacity(0.7);
-    } else {
-      return Colors.blueGrey.shade100;
-    }
-  }
-
   Color setItemBackgroundTheme(){
     switch (theme){
-      case "dark" :
+      case "Dark" :
         return Colors.grey.shade800;
-      case "dim" :
+      case "Dim" :
         return Colors.blueGrey.shade900;
       default: 
         return Colors.grey.shade300;
       
     }
-    
   }
 
   void setAppFont(String appFont){
@@ -82,8 +64,8 @@ class AppUiStyle extends ChangeNotifier{
 
   Future<void> saveChangeTheme() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setString("theme", theme);
-    preferences.setString("font", font);
+    preferences.setString("Theme", theme);
+    preferences.setString("Font", font);
     notifyListeners();
   }
 }

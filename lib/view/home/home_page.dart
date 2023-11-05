@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:jungle/model/palette/palette.dart';
 import 'package:jungle/view/home/task/task_page.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
@@ -91,18 +92,15 @@ class HomePageState extends State<HomePage> {
   PreferredSizeWidget tabBarWidget(AppUiStyle appUiStyle) {
     return TabBar(
         dividerColor: appUiStyle.setAppBarTheme(),
-        indicatorWeight: 2.0,
         indicatorPadding:
-            const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-        indicatorSize: TabBarIndicatorSize.tab,
+            const EdgeInsets.symmetric(vertical: 5),
+        indicatorSize: TabBarIndicatorSize.label,
         splashBorderRadius: BorderRadius.circular(10),
-        labelColor: Colors.black,
+        labelColor: Palette.ultramarineBlue,
         unselectedLabelColor: appUiStyle.setTextTheme(),
-        labelStyle: const TextStyle(
-          fontWeight: FontWeight.bold),
-        indicator: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: const Color(0xff29c5e6)),
+        labelStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontFamily: appUiStyle.font),
         tabs: tabListWidget());
   }
 
@@ -113,20 +111,19 @@ class HomePageState extends State<HomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Task"),
+            const Text("Task",),
             const SizedBox(width: 5.0),
             Container(
               height: 20,
               width: 20,
               decoration: BoxDecoration(
                   color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(5)
-                  ),
+                  borderRadius: BorderRadius.circular(5)),
               child: Center(
                 child: Text("${dbCounterState.taskCounter}",
-                style: const TextStyle(color: Colors.black)),
+                    style: const TextStyle(color: Colors.black)),
               ),
-            ),
+            )
           ],
         ),
       ),

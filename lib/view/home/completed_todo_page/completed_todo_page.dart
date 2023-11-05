@@ -100,6 +100,8 @@ class CompletedTodoState extends State<CompletedTodo>{
               completedTodoBox.getAt(index)!.title,
               style: TextStyle(
                 color: appUiStyle.setTextTheme(),
+                fontFamily: appUiStyle.font,
+                fontWeight: FontWeight.bold,
                 decoration: TextDecoration.lineThrough
               ),
         ),
@@ -121,7 +123,8 @@ class CompletedTodoState extends State<CompletedTodo>{
             "Nothing is completed",
             style: TextStyle(
               fontSize: 17,
-              color: appUiStyle.setTextTheme()
+              color: appUiStyle.setTextTheme(),
+              fontFamily: appUiStyle.font
             ),
           )
         ],
@@ -136,32 +139,48 @@ class CompletedTodoState extends State<CompletedTodo>{
     showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text("Deletion",
-                style: TextStyle(color: appUiStyle.setTextTheme())),
-            backgroundColor: appUiStyle.setBackgroundTheme(),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            content: Text("Are you sure ?",
-                style: TextStyle(color: appUiStyle.setTextTheme())),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  completedTodoBox.deleteAt(index);
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Yes"),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  "Cancel",
-                  style: TextStyle(color: Colors.red.shade600),
-                ),
-              )
-            ],
+          return Consumer<DbCounterState>(
+            builder: (context, dbCounterState, _) {
+              return AlertDialog(
+                title: Text("Deletion",
+                    style: TextStyle(
+                      color: appUiStyle.setTextTheme(),
+                      fontFamily: appUiStyle.font)),
+                backgroundColor: appUiStyle.setBackgroundTheme(),
+                shape:
+                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                content: Text("Are you sure ?",
+                    style: TextStyle(
+                      color: appUiStyle.setTextTheme(),
+                      fontFamily: appUiStyle.font
+                      )),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      completedTodoBox.deleteAt(index);
+                      dbCounterState.updateCompletedCounter(completedTodoBox.length);
+                      Get.back();
+                    },
+                    child: Text(
+                      "Yes",
+                      style: TextStyle(
+                        fontFamily: appUiStyle.font
+                      ),
+                      ),
+                  ),
+                  TextButton(
+                    onPressed: ()=> Get.back(),
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(
+                        color: Colors.red.shade600,
+                        fontFamily: appUiStyle.font
+                        ),
+                    ),
+                  )
+                ],
+              );
+            }
           );
         });
   }

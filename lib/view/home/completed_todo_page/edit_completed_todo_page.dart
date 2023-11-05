@@ -33,7 +33,8 @@ class EditCompletedTodoPage extends StatelessWidget {
       title: Text(
         "Edit completed todo",
         style: TextStyle(
-          color: appUiStyle.setTextTheme()
+          color: appUiStyle.setTextTheme(),
+          fontFamily: appUiStyle.font
         ),
       ),
       leading: LeadingButtonWidget(appUiStyle: appUiStyle),
@@ -67,12 +68,16 @@ class EditCompletedTodoPage extends StatelessWidget {
       style: TextStyle(
         color: appUiStyle.setTextTheme(),
         fontWeight: FontWeight.bold,
+        fontFamily: appUiStyle.font,
         fontSize: 18,
         ),
       initialValue: todo.title,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
           hintText: "Title",
-          hintStyle: TextStyle(color: Colors.grey),
+          hintStyle: TextStyle(
+            color: Colors.grey,
+            fontFamily: appUiStyle.font
+            ),
           border: InputBorder.none),
       onChanged: (String value)=> todo.title = value
     );
@@ -83,12 +88,15 @@ class EditCompletedTodoPage extends StatelessWidget {
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.newline,
-      style: TextStyle(color: appUiStyle.setTextTheme()),
+      style: TextStyle(
+        color: appUiStyle.setTextTheme(),
+        fontFamily: appUiStyle.font),
       maxLines: 20,
       initialValue: todo.description,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         hintText: "Description",
-        hintStyle: TextStyle(color: Colors.grey),
+        hintStyle: TextStyle(
+          color: Colors.grey, fontFamily: appUiStyle.font),
         border: InputBorder.none
       ),
       onChanged: (String value)=> todo.description = value

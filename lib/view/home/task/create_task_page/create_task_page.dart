@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
+import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import '../../../../model/palette/palette.dart';
 import '../../../../model/task_model/task_model.dart';
 import '../../../../view_model/app_ui_style/app_ui_style.dart';
@@ -50,19 +51,11 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       elevation: 0.0,
       title: Text(
         "Create task",
-        style: TextStyle(color: appUiStyle.setTextTheme()),
+        style: TextStyle(
+          color: appUiStyle.setTextTheme(),
+          fontFamily: appUiStyle.font),
       ),
-      leading: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: MaterialButton(
-          onPressed: () {
-            Get.back();
-          },
-          minWidth: 10,
-          shape: CircleBorder(side: BorderSide(color: appUiStyle.setTextTheme())),
-          child: Icon(Icons.arrow_back, color: appUiStyle.setTextTheme()),
-        ),
-      ),
+      leading: LeadingButtonWidget(appUiStyle: appUiStyle),
       actions: [
         saveTaskButton(context, titleController, labelController, descriptionController, currentDate)
       ],
@@ -105,12 +98,16 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
           style: TextStyle(
             fontSize: 26,
             color: appUiStyle.setTextTheme(),
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
+            fontFamily: appUiStyle.font
           ),
           controller: titleController,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             hintText: "Title",
-            hintStyle: TextStyle(color: Colors.grey, fontSize: 26),
+            hintStyle: TextStyle(
+              color: Colors.grey, fontSize: 26,
+              fontFamily: appUiStyle.font
+              ),
             border: InputBorder.none
             ),
 
@@ -126,11 +123,14 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         cursorColor: Palette.ultramarineBlue,
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.next,
-        style: TextStyle(color: appUiStyle.setTextTheme()),
+        style: TextStyle(
+          color: appUiStyle.setTextTheme(),
+          fontFamily: appUiStyle.font),
         controller: labelController,
         decoration: InputDecoration(
           hintText: "Label",
-          hintStyle: const TextStyle(color: Colors.grey),
+          hintStyle: TextStyle(
+            color: Colors.grey, fontFamily: appUiStyle.font),
           border: InputBorder.none,
           prefixIcon: Icon(
             Icons.tag,
@@ -146,14 +146,17 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.newline,
-      style: TextStyle(color: appUiStyle.setTextTheme()),
+      style: TextStyle(
+        color: appUiStyle.setTextTheme(), fontFamily: appUiStyle.font),
       maxLines: 10,
       controller: descriptionController,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         hintText: "Description",
-        hintStyle: TextStyle(color: Colors.grey),
+        hintStyle: TextStyle(
+          color: Colors.grey,
+          fontFamily: appUiStyle.font
+          ),
         border: InputBorder.none
-        
       ),
     );
   }
@@ -166,6 +169,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     String currentDate,
   ) {
     final taskBox = Hive.box<TaskModel>("task");
+    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     final DbCounterState dbCounterState = Provider.of<DbCounterState>(context);
     
     return TextButton(
@@ -178,10 +182,11 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         dbCounterState.saveDbCounterState();
         Navigator.pop(context);
       },
-      child: const Text(
+      child: Text(
         "Save",
         style: TextStyle(
           fontSize: 18,
+          fontFamily: appUiStyle.font,
           fontWeight: FontWeight.bold),
       ),
     );

@@ -47,7 +47,7 @@ class TaskPageState extends State<TaskPage> {
           return ListView.builder(
             itemCount: taskBox.length,
             itemBuilder: (context, int index) {
-              /// To reverse elements of list
+              // To reverse elements of list
               index = taskBox.length - 1 - index;
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
@@ -83,6 +83,7 @@ class TaskPageState extends State<TaskPage> {
                                     style: TextStyle(
                                         color: appUiStyle.setTextTheme(),
                                         fontWeight: FontWeight.bold,
+                                        fontFamily: appUiStyle.font,
                                         fontSize: 16),
                                   ),
                                   Row(
@@ -96,7 +97,8 @@ class TaskPageState extends State<TaskPage> {
                                             color: Palette.ultramarineBlue),
                                         child: Text(
                                           taskBox.getAt(index)!.label,
-                                          style: const TextStyle(
+                                          style: TextStyle(
+                                              fontFamily: appUiStyle.font,
                                               color: Colors.white),
                                         ),
                                       ),
@@ -113,6 +115,7 @@ class TaskPageState extends State<TaskPage> {
                                   Text(
                                     taskBox.getAt(index)!.description,
                                     style: TextStyle(
+                                        fontFamily: appUiStyle.font,
                                         color: appUiStyle.setDescriptionTheme()),
                                     maxLines: 4,
                                   ),
@@ -134,6 +137,7 @@ class TaskPageState extends State<TaskPage> {
                                         .currentDate
                                         .toString(),
                                     style: TextStyle(
+                                      fontFamily: appUiStyle.font,
                                         color: appUiStyle.setTextTheme()),
                                   ),
                                 ],
@@ -160,7 +164,9 @@ class TaskPageState extends State<TaskPage> {
           ),
           Text(
             "No task",
-            style: TextStyle(fontSize: 17, color: appUiStyle.setTextTheme()),
+            style: TextStyle(
+              fontFamily: appUiStyle.font,
+              fontSize: 17, color: appUiStyle.setTextTheme()),
           )
         ],
       ),

@@ -36,7 +36,9 @@ class EditTaskPage extends StatelessWidget{
       backgroundColor: appUiStyle.setAppBarTheme(),
       title: Text(
         "Edit task",
-        style: TextStyle(color: appUiStyle.setTextTheme()),
+        style: TextStyle(
+          color: appUiStyle.setTextTheme(),
+          fontFamily: appUiStyle.font),
       ),
       leading: LeadingButtonWidget(appUiStyle: appUiStyle,),
       actions: [
@@ -86,17 +88,10 @@ class EditTaskPage extends StatelessWidget{
     BuildContext context,
     Box<TaskModel> taskBox
   ){
-    return TextButton(
-    onPressed: () {
-      deleteTaskDialog(context,taskBox);
-    },
-    child: Text(
-      "Delete",
-      style: TextStyle(
-          color: Colors.red.shade600,
-          fontWeight: FontWeight.bold,
-          fontSize: 16),
-    ),
+    return TextButtonWidget(
+    function: ()=> deleteTaskDialog(context,taskBox),
+    buttonTitle: "Delete",
+    color: Colors.red.shade600,
   );
   }
 
@@ -130,26 +125,25 @@ class EditTaskPage extends StatelessWidget{
       AppUiStyle appUiStyle,
       TaskModel task
       ){
-    return SizedBox(
-      height: 50,
-      child: TextFormField(
-        cursorColor: Palette.ultramarineBlue,
-        textCapitalization: TextCapitalization.sentences,
-        textInputAction: TextInputAction.next,
-        style: TextStyle(
-          color: appUiStyle.setTextTheme(),
-          fontSize: 26, fontWeight: FontWeight.bold
-        ),
-        initialValue: task.title,
-        decoration: const InputDecoration(
-          hintText: "Title",
-          hintStyle: TextStyle(
-            color: Colors.grey
-          ),
-          border: InputBorder.none
+    return TextFormField(
+      cursorColor: Palette.ultramarineBlue,
+      textCapitalization: TextCapitalization.sentences,
+      textInputAction: TextInputAction.next,
+      style: TextStyle(
+        color: appUiStyle.setTextTheme(),
+        fontSize: 26, fontWeight: FontWeight.bold,
+        fontFamily: appUiStyle.font
       ),
-      onChanged: (String value)=> task.title = value
-      )
+      initialValue: task.title,
+      decoration: InputDecoration(
+        hintText: "Title",
+        hintStyle: TextStyle(
+          color: Colors.grey,
+          fontFamily: appUiStyle.font
+        ),
+        border: InputBorder.none
+    ),
+    onChanged: (String value)=> task.title = value
     );
   }
 
@@ -157,27 +151,26 @@ class EditTaskPage extends StatelessWidget{
     AppUiStyle appUiStyle,
     TaskModel taskModel
     ){
-    return SizedBox(
-      height: 50,
-      child: TextFormField(
-        cursorColor: Palette.ultramarineBlue,
-        textCapitalization: TextCapitalization.sentences,
-        textInputAction: TextInputAction.next,
-        style: TextStyle(
-          color: appUiStyle.setTextTheme()
-        ),
-        initialValue: taskModel.label,
-        decoration: InputDecoration(
-          hintText: "Label",
-          hintStyle: const TextStyle(
-            color: Colors.grey
-          ),
-          border: InputBorder.none,
-          prefixIcon: Icon(Icons.tag,
-          color: appUiStyle.setTextTheme(),)
-        ),
-        onChanged: (String value)=> taskModel.label = value
+    return TextFormField(
+      cursorColor: Palette.ultramarineBlue,
+      textCapitalization: TextCapitalization.sentences,
+      textInputAction: TextInputAction.next,
+      style: TextStyle(
+        color: appUiStyle.setTextTheme(),
+        fontFamily: appUiStyle.font
       ),
+      initialValue: taskModel.label,
+      decoration: InputDecoration(
+        hintText: "Label",
+        hintStyle: TextStyle(
+          color: Colors.grey,
+          fontFamily: appUiStyle.font
+        ),
+        border: InputBorder.none,
+        prefixIcon: Icon(Icons.tag,
+        color: appUiStyle.setTextTheme(),)
+      ),
+      onChanged: (String value)=> taskModel.label = value
     );
   }
 
@@ -188,16 +181,18 @@ class EditTaskPage extends StatelessWidget{
     return TextFormField(
       cursorColor: Palette.ultramarineBlue,
       style: TextStyle(
-        color: appUiStyle.setTextTheme()
+        color: appUiStyle.setTextTheme(),
+        fontFamily: appUiStyle.font
       ),
       maxLines: 10,
       textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.newline,
       initialValue: taskModel.description,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         hintText:  "Description",
         hintStyle: TextStyle(
-          color: Colors.grey
+          color: Colors.grey,
+          fontFamily: appUiStyle.font
         ),
         border: InputBorder.none
       ),

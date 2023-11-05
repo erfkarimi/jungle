@@ -31,7 +31,9 @@ class EditTodoPage extends StatelessWidget {
       backgroundColor: appUiStyle.setAppBarTheme(),
       title: Text(
         "Edit todo",
-        style: TextStyle(color: appUiStyle.setTextTheme()),
+        style: TextStyle(
+          fontFamily: appUiStyle.font,
+          color: appUiStyle.setTextTheme()),
       ),
       leading: LeadingButtonWidget(appUiStyle: appUiStyle),
       actions: [
@@ -66,11 +68,14 @@ class EditTodoPage extends StatelessWidget {
       style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18,
-          color: appUiStyle.setTextTheme()),
+          color: appUiStyle.setTextTheme(),
+          fontFamily: appUiStyle.font),
       initialValue: todo.title,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
           hintText: "Title",
-          hintStyle: TextStyle(color: Colors.grey),
+          hintStyle: TextStyle(
+            color: Colors.grey,
+            fontFamily: appUiStyle.font),
           border: InputBorder.none),
       onChanged: (String value)=> todo.title = value
     );
@@ -82,12 +87,16 @@ class EditTodoPage extends StatelessWidget {
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.newline,
-      style: TextStyle(color: appUiStyle.setTextTheme()),
+      style: TextStyle(
+        color: appUiStyle.setTextTheme(),
+        fontFamily: appUiStyle.font),
       maxLines: 20,
       initialValue: todo.description,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
           hintText: "Description",
-          hintStyle: TextStyle(color: Colors.grey),
+          hintStyle: TextStyle(
+            color: Colors.grey,
+            fontFamily: appUiStyle.font),
           border: InputBorder.none),
       onChanged: (String value)=> todo.description = value
     );

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
+import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import '../../../model/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
 import 'edit_todo.dart';
@@ -72,7 +73,7 @@ class TodoPageState extends State<TodoPage>{
           );
         
       },
-      onLongPress: () => deleteUnDoneTodoOnLongPressDialog(context, index, appUiStyle),
+      onLongPress: () => deleteUnDoneTodoOnLongPressDialog(index, appUiStyle),
       height: 50,
       elevation: 0.0,
       shape: RoundedRectangleBorder(
@@ -101,7 +102,9 @@ class TodoPageState extends State<TodoPage>{
           Text(
             todoBox.getAt(index)!.title,
             style: TextStyle(
-              color: appUiStyle.setTextTheme()
+              color: appUiStyle.setTextTheme(),
+              fontFamily: appUiStyle.font,
+              fontWeight: FontWeight.bold
               
               ),
           ),
@@ -121,7 +124,9 @@ class TodoPageState extends State<TodoPage>{
           ),
           Text(
             "No todo",
-            style: TextStyle(fontSize: 17, color: appUiStyle.setTextTheme()),
+            style: TextStyle(
+              fontFamily: appUiStyle.font,
+              fontSize: 17, color: appUiStyle.setTextTheme()),
           )
         ],
       ),
@@ -155,11 +160,15 @@ class TodoPageState extends State<TodoPage>{
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
       autofocus: true,
-      style: TextStyle(color: appUiStyle.setTextTheme()),
-      decoration: const InputDecoration(
+      style: TextStyle(
+        fontFamily: appUiStyle.font,
+        color: appUiStyle.setTextTheme()),
+      decoration: InputDecoration(
         hintText: "Title",
-        hintStyle: TextStyle(color: Colors.grey),
-        contentPadding: EdgeInsets.all(8.0),
+        hintStyle: TextStyle(
+          fontFamily: appUiStyle.font,
+          color: Colors.grey),
+        contentPadding: const EdgeInsets.all(8.0),
         border: InputBorder.none,
       ),
       onChanged: (String value) {
@@ -180,7 +189,7 @@ class TodoPageState extends State<TodoPage>{
             );
             dbCounterState.updateTodoCounter(todoBox.length);
             dbCounterState.saveDbCounterState();
-            Navigator.of(context).pop();
+            Get.back();
           });
         },
         height: 40,
@@ -188,9 +197,11 @@ class TodoPageState extends State<TodoPage>{
         color: Palette.ultramarineBlue,
         elevation: 0.0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: const Text(
+        child: Text(
           "Save",
-          style: TextStyle(fontSize: 14, color: Colors.white),
+          style: TextStyle(
+            fontFamily: appUiStyle.font,
+            fontSize: 14, color: Colors.white),
         ),
       ),
     );
@@ -211,37 +222,16 @@ class TodoPageState extends State<TodoPage>{
     );
   }
 
-  void deleteUnDoneTodoOnLongPressDialog(BuildContext context, int index,
-      AppUiStyle appUiStyle) {
+  void deleteUnDoneTodoOnLongPressDialog(int index, AppUiStyle appUiStyle) {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text("Deletion",
-                style: TextStyle(color: appUiStyle.setTextTheme())),
-            backgroundColor: appUiStyle.setBackgroundTheme(),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            content: Text("Are you sure ?",
-                style: TextStyle(color: appUiStyle.setTextTheme())),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  todoBox.deleteAt(index);
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Yes"),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  "Cancel",
-                  style: TextStyle(color: Colors.red.shade600),
-                ),
-              )
-            ],
+          return DeleteDialogWidget(
+            index: index,
+            firstButtonFunction: (){
+              todoBox.deleteAt(index);
+              Get.back();
+            },
           );
         });
   }

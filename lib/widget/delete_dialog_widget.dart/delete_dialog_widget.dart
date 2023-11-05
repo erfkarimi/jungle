@@ -15,24 +15,35 @@ class DeleteDialogWidget extends AlertDialog{
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return AlertDialog(
             title: Text("Deletion",
-                style: TextStyle(color: appUiStyle.setTextTheme())),
+                style: TextStyle(
+                  color: appUiStyle.setTextTheme(),
+                  fontFamily: appUiStyle.font
+                )),
             backgroundColor: appUiStyle.setBackgroundTheme(),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             content: Text("Are you sure ?",
-                style: TextStyle(color: appUiStyle.setTextTheme())),
+                style: TextStyle(
+                  color: appUiStyle.setTextTheme(),
+                  fontFamily: appUiStyle.font
+                  )),
             actions: [
               TextButton(
                 onPressed: firstButtonFunction,
-                child: const Text(
+                child: Text(
                   "Yes",
-                  style: TextStyle(color: Colors.blue),),
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontFamily: appUiStyle.font
+                    ),),
               ),
               TextButton(
                 onPressed: ()=> Get.back(),
                 child: Text(
                   "Cancel",
-                  style: TextStyle(color: Colors.red.shade600),
+                  style: TextStyle(
+                    color: Colors.red.shade600,
+                    fontFamily: appUiStyle.font),
                 ),
               )
             ]
