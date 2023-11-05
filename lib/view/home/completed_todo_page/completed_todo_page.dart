@@ -75,11 +75,11 @@ class CompletedTodoState extends State<CompletedTodo>{
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10)
       ),
-      child: Row(
-          children: [
-            Consumer<DbCounterState>(
+      child: Consumer<DbCounterState>(
               builder: (context, dbCounterState, _) {
-                return IconButton(
+                return ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  leading: IconButton(
                   onPressed: (){
                     setState(() {
                       completedTodoBox.deleteAt(index);
@@ -93,20 +93,28 @@ class CompletedTodoState extends State<CompletedTodo>{
                     Icons.check,
                     color: Palette.ultramarineBlue,
                     ),
+                ),
+                title: Text(
+                  completedTodoBox.getAt(index)!.title,
+                  style: TextStyle(
+                    color: appUiStyle.setTextTheme(),
+                    fontFamily: appUiStyle.font,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.lineThrough),
+                  ),
+                  subtitle: completedTodoBox.getAt(index)!.description.isEmpty ? null :
+                  Text(
+                    completedTodoBox.getAt(index)!.description,
+                    maxLines: 2,
+                    style: TextStyle(
+                      color: appUiStyle.setDescriptionTheme(),
+                      decoration: TextDecoration.lineThrough
+                    ),
+                ),
                 );
               }
             ),
-            Text(
-              completedTodoBox.getAt(index)!.title,
-              style: TextStyle(
-                color: appUiStyle.setTextTheme(),
-                fontFamily: appUiStyle.font,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.lineThrough
-              ),
-        ),
-          ],
-        ),
+            
     );
   }
 

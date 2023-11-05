@@ -79,37 +79,43 @@ class TodoPageState extends State<TodoPage>{
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Row(
-        children: [
-          Consumer<DbCounterState>(
+      child: Consumer<DbCounterState>(
             builder: (context, dbCounterState, _) {
-              return Checkbox(
-                shape: const CircleBorder(),
-                value: false,
-                side: BorderSide(color: appUiStyle.setTextTheme()),
-                onChanged: (value) {
-                  setState(() {
-                    todoBox.deleteAt(index);
-                    completedTodoBox.add(todo);
-                    dbCounterState.updateTodoCounter(todoBox.length);
-                    dbCounterState.updateCompletedCounter(completedTodoBox.length);
-                    dbCounterState.saveDbCounterState();
-                  });
-                },
+              return ListTile(
+                contentPadding: const EdgeInsets.all(0),
+                leading: Checkbox(
+                  shape: const CircleBorder(),
+                  value: false,
+                  side: BorderSide(color: appUiStyle.setTextTheme()),
+                  onChanged: (value) {
+                    setState(() {
+                      todoBox.deleteAt(index);
+                      completedTodoBox.add(todo);
+                      dbCounterState.updateTodoCounter(todoBox.length);
+                      dbCounterState.updateCompletedCounter(completedTodoBox.length);
+                      dbCounterState.saveDbCounterState();
+                    });
+                  },
+                ),
+                title: Text(
+                  todoBox.getAt(index)!.title,
+                  style: TextStyle(
+                    color: appUiStyle.setTextTheme(),
+                    fontFamily: appUiStyle.font,
+                    fontWeight: FontWeight.bold
+                    ),
+                ),
+                subtitle: todoBox.getAt(index)!.description.isEmpty ? null :
+                  Text(
+                    todoBox.getAt(index)!.description,
+                    maxLines: 2,
+                    style: TextStyle(
+                      color: appUiStyle.setDescriptionTheme()
+                    ),
+                ),
               );
             }
           ),
-          Text(
-            todoBox.getAt(index)!.title,
-            style: TextStyle(
-              color: appUiStyle.setTextTheme(),
-              fontFamily: appUiStyle.font,
-              fontWeight: FontWeight.bold
-              
-              ),
-          ),
-        ],
-      ),
     );
   }
 

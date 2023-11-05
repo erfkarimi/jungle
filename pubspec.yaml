@@ -33,7 +33,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - asset/image/notes.png
+    - asset/image/tasks.png
     - asset/image/notes-amico.png
     - asset/image/notes-pana.png
     - asset/image/notes-rafiki.png

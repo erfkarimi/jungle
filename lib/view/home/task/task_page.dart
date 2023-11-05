@@ -84,25 +84,21 @@ class TaskPageState extends State<TaskPage> {
                                         color: appUiStyle.setTextTheme(),
                                         fontWeight: FontWeight.bold,
                                         fontFamily: appUiStyle.font,
-                                        fontSize: 16),
+                                        fontSize: 18),
                                   ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0, vertical: 2.0),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: Palette.ultramarineBlue),
-                                        child: Text(
-                                          taskBox.getAt(index)!.label,
-                                          style: TextStyle(
-                                              fontFamily: appUiStyle.font,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 2.0),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10),
+                                        color: Palette.ultramarineBlue),
+                                    child: Text(
+                                      taskBox.getAt(index)!.label,
+                                      style: TextStyle(
+                                          fontFamily: appUiStyle.font,
+                                          color: Colors.white),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -159,7 +155,7 @@ class TaskPageState extends State<TaskPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            "asset/image/notes.png",
+            "asset/image/tasks.png",
             width: 250,
           ),
           Text(
