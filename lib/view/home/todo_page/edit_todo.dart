@@ -5,7 +5,7 @@ import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
-import '../../../model/palette/palette.dart';
+import '../../../constant/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
 import '../../../view_model/app_ui_style/app_ui_style.dart';
 

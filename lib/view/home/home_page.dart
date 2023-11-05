@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
-import 'package:jungle/model/palette/palette.dart';
+import 'package:jungle/constant/palette/palette.dart';
 import 'package:jungle/view/home/task/task_page.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
@@ -62,11 +61,10 @@ class HomePageState extends State<HomePage> {
   }
 
   List<Widget> appBarActionWidget(AppUiStyle appUiStyle) {
-    final Box welcomePageDB = Hive.box("welcome");
     return [
       MaterialButton(
         minWidth: 10,
-        onPressed: () => welcomePageDB.put("welcomePage", false),
+        onPressed: () => Get.toNamed("/notifications"),
         shape: CircleBorder(
           side: BorderSide(color: appUiStyle.setTextTheme()),
         ),

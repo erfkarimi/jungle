@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:jungle/model/palette/palette.dart';
+import 'package:jungle/constant/palette/palette.dart';
 import 'package:jungle/view/home/home_page.dart';
 import 'package:jungle/view/onboarding_page/onboarding_page.dart';
 import 'package:get/get.dart';

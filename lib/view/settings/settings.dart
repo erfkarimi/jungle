@@ -1,9 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../view_model/app_ui_style/app_ui_style.dart';
 import 'feedback_button/feedback_button.dart';
 import 'font_button/font_button.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:jungle/model/palette/palette.dart';
+import 'package:jungle/constant/palette/palette.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import 'package:jungle/widget/text_button_widget/text_button_widget.dart';

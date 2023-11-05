@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jungle/routes/routes.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../model/palette/palette.dart';
+import '../constant/palette/palette.dart';
 import 'package:get/get.dart';
 import '../view_model/db_counter_state/db_counter_state.dart';
 
@@ -27,6 +27,7 @@ class _AppState extends State<App> {
             primarySwatch: Palette.ultramarineBlue,
             useMaterial3: true,
             colorScheme: ColorScheme.fromSeed(seedColor: Palette.ultramarineBlue),
+            fontFamily: "Regular",
             pageTransitionsTheme: const PageTransitionsTheme(
             builders: {
               TargetPlatform.android : CupertinoPageTransitionsBuilder()

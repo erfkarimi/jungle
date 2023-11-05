@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:jungle/widget/material_button_widget/material_button_widget.dart';
 

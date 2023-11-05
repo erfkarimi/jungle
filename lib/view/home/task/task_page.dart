@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:jungle/model/palette/palette.dart';
+import 'package:jungle/constant/palette/palette.dart';
 import 'package:jungle/model/task_model/task_model.dart';
 import 'package:jungle/view/home/task/edit_task_page/edit_task_page.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';

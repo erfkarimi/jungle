@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
-import '../../../model/palette/palette.dart';
+import '../../../constant/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
 import 'edit_todo.dart';
 
@@ -148,7 +148,7 @@ class TodoPageState extends State<TodoPage>{
                       children: [
                         todoTextField(appUiStyle),
                         const SizedBox(height: 10),
-                        saveTodoButton(appUiStyle)
+                        timeAndDatePickerWidget(appUiStyle),
                       ],
                     )),
               ));
@@ -174,6 +174,21 @@ class TodoPageState extends State<TodoPage>{
       onChanged: (String value) {
         title = value;
       },
+    );
+  }
+
+  Widget timeAndDatePickerWidget(AppUiStyle appUiStyle){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          onPressed: (){},
+          icon: Icon(
+            Icons.schedule,
+            color: appUiStyle.setTextTheme(),
+            )),
+            saveTodoButton(appUiStyle)
+      ],
     );
   }
 

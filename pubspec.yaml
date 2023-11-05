@@ -39,6 +39,7 @@ flutter:
     - asset/image/notes-rafiki.png
     - asset/image/to-do-list-cuate.png
     - asset/image/to-do-list-rafiki.png
+    - asset/image/new-notifications-amico.png
   
   fonts:
     - family: Italic
