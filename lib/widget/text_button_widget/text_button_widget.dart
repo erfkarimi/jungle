@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 
 class TextButtonWidget extends StatelessWidget{
-  final VoidCallback function;
+  final VoidCallback? function;
   final String buttonTitle;
   final Color color;
   const TextButtonWidget({

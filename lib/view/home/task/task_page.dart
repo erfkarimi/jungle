@@ -10,7 +10,6 @@ import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
-
   @override
   TaskPageState createState() => TaskPageState();
 }
@@ -44,14 +43,14 @@ class TaskPageState extends State<TaskPage> {
           if (taskBox.isEmpty) {
             return showNoTask(appUiStyle);
           }
-          return ListView.builder(
-            itemCount: taskBox.length,
-            itemBuilder: (context, int index) {
-              // To reverse elements of list
-              index = taskBox.length - 1 - index;
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-                child: GestureDetector(
+          return Padding(
+            padding: const EdgeInsets.all(10),
+            child: ListView.builder(
+              itemCount: taskBox.length,
+              itemBuilder: (context, int index) {
+                // To reverse elements of list
+                index = taskBox.length - 1 - index;
+                return GestureDetector(
                   onLongPress: () {
                     deleteTaskOnLongPressDialog(
                         context, index, taskBox);
@@ -105,17 +104,16 @@ class TaskPageState extends State<TaskPage> {
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.only(left: 8.0, bottom: 8.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    taskBox.getAt(index)!.description,
-                                    style: TextStyle(
-                                        fontFamily: appUiStyle.font,
-                                        color: appUiStyle.setDescriptionTheme()),
-                                    maxLines: 4,
-                                  ),
-                                ],
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  taskBox.getAt(index)!.description,
+                                  style: TextStyle(
+                                      fontFamily: appUiStyle.font,
+                                      color: appUiStyle.setDescriptionTheme()),
+                                  maxLines: 4,
+                                ),
                               ),
                             ),
                             Padding(
@@ -142,9 +140,9 @@ class TaskPageState extends State<TaskPage> {
                           ],
                         )),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           );
         });
   }
@@ -173,11 +171,11 @@ class TaskPageState extends State<TaskPage> {
     return FloatingActionButton(
       onPressed: ()=> Get.toNamed("/createTask"),
       tooltip: "Add new task",
-      backgroundColor: Palette.ultramarineBlue,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: const Icon(
         Icons.add,
         size: 40,
+        color: Colors.white,
       ),
     );
   }

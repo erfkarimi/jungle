@@ -27,6 +27,9 @@ class _AppState extends State<App> {
             primarySwatch: Palette.ultramarineBlue,
             useMaterial3: true,
             colorScheme: ColorScheme.fromSeed(seedColor: Palette.ultramarineBlue),
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+              backgroundColor: Palette.ultramarineBlue
+            ),
             fontFamily: "Regular",
             pageTransitionsTheme: const PageTransitionsTheme(
             builders: {

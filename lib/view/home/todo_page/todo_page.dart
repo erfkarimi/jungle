@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
+import 'package:jungle/view_model/text_field_validation/text_field_validation.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
+import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
 import '../../../constant/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
 import 'edit_todo.dart';
@@ -162,24 +164,29 @@ class TodoPageState extends State<TodoPage>{
   }
 
   Widget todoTextField(AppUiStyle appUiStyle) {
-    return TextField(
-      cursorColor: Palette.ultramarineBlue,
-      textCapitalization: TextCapitalization.sentences,
-      autofocus: true,
-      style: TextStyle(
-        fontFamily: appUiStyle.font,
-        color: appUiStyle.setTextTheme()),
-      decoration: InputDecoration(
-        hintText: "Title",
-        hintStyle: TextStyle(
-          fontFamily: appUiStyle.font,
-          color: Colors.grey),
-        contentPadding: const EdgeInsets.all(8.0),
-        border: InputBorder.none,
-      ),
-      onChanged: (String value) {
-        title = value;
-      },
+    return Consumer<TextFieldValidation>(
+      builder: (context, textFieldValidation, _) {
+        return TextField(
+          cursorColor: Palette.ultramarineBlue,
+          textCapitalization: TextCapitalization.sentences,
+          autofocus: true,
+          style: TextStyle(
+            fontFamily: appUiStyle.font,
+            color: appUiStyle.setTextTheme()),
+          decoration: InputDecoration(
+            hintText: "Title",
+            hintStyle: TextStyle(
+              fontFamily: appUiStyle.font,
+              color: Colors.grey),
+            contentPadding: const EdgeInsets.all(8.0),
+            border: InputBorder.none,
+          ),
+          onChanged: (String value) {
+            title = value;
+            textFieldValidation.todoTextFieldTitleChange(value);
+          },
+        );
+      }
     );
   }
 
@@ -202,28 +209,24 @@ class TodoPageState extends State<TodoPage>{
     final DbCounterState dbCounterState = Provider.of<DbCounterState>(context);
     return Align(
       alignment: Alignment.centerRight,
-      child: MaterialButton(
-        onPressed: () {
-          setState(() {
-            todoBox.add(
-              TodoModel(title, ""),
-            );
-            dbCounterState.updateTodoCounter(todoBox.length);
-            dbCounterState.saveDbCounterState();
-            Get.back();
-          });
-        },
-        height: 40,
-        minWidth: 40,
-        color: Palette.ultramarineBlue,
-        elevation: 0.0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Text(
-          "Save",
-          style: TextStyle(
-            fontFamily: appUiStyle.font,
-            fontSize: 14, color: Colors.white),
-        ),
+      child: Consumer<TextFieldValidation>(
+        builder: (context, textFieldValidation, _) {
+          return TextButtonWidget(
+            function: (!textFieldValidation.isValid) ? null : () {
+              setState(() {
+                todoBox.add(
+                  TodoModel(title, ""),
+                );
+                dbCounterState.updateTodoCounter(todoBox.length);
+                dbCounterState.saveDbCounterState();
+                Get.back();
+              });
+            },
+            buttonTitle: "Save",
+            color: (!textFieldValidation.isValid) 
+            ?Colors.grey : Palette.ultramarineBlue,
+          );
+        }
       ),
     );
   }
@@ -234,11 +237,11 @@ class TodoPageState extends State<TodoPage>{
         showNewTodoBottomSheet(appUiStyle);
       },
       tooltip: "Add new todo",
-      backgroundColor: Palette.ultramarineBlue,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: const Icon(
         Icons.add,
         size: 40,
+        color: Colors.white,
       ),
     );
   }
