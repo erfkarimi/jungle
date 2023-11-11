@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import '../../../../constant/palette/palette.dart';
 import '../../../../model/task_model/task_model.dart';
@@ -30,7 +29,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     var currentDate = formatter.format(dateTime);
     return Scaffold(
-        backgroundColor: appUiStyle.setAppBarTheme(),
+        backgroundColor: appUiStyle.setBackgroundTheme(),
         appBar: buildAppBar(
           context,
           appUiStyle,
@@ -46,13 +45,13 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     String currentDate
   ) {
     return AppBar(
-      backgroundColor: appUiStyle.setAppBarTheme(),
+      backgroundColor: appUiStyle.setBackgroundTheme(),
       elevation: 0.0,
       title: Text(
         "Create task",
         style: TextStyle(
           color: appUiStyle.setTextTheme(),
-          fontFamily: appUiStyle.font),
+          ),
       ),
       leading: LeadingButtonWidget(appUiStyle: appUiStyle),
       actions: [
@@ -98,14 +97,14 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             fontSize: 26,
             color: appUiStyle.setTextTheme(),
             fontWeight: FontWeight.bold,
-            fontFamily: appUiStyle.font
+            
           ),
           controller: titleController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: "Title",
             hintStyle: TextStyle(
               color: Colors.grey, fontSize: 26,
-              fontFamily: appUiStyle.font
+              
               ),
             border: InputBorder.none
             ),
@@ -124,12 +123,12 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         textInputAction: TextInputAction.next,
         style: TextStyle(
           color: appUiStyle.setTextTheme(),
-          fontFamily: appUiStyle.font),
+          ),
         controller: labelController,
         decoration: InputDecoration(
           hintText: "Label",
-          hintStyle: TextStyle(
-            color: Colors.grey, fontFamily: appUiStyle.font),
+          hintStyle: const TextStyle(
+            color: Colors.grey, ),
           border: InputBorder.none,
           prefixIcon: Icon(
             Icons.tag,
@@ -146,14 +145,13 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.newline,
       style: TextStyle(
-        color: appUiStyle.setTextTheme(), fontFamily: appUiStyle.font),
+        color: appUiStyle.setTextTheme(), ),
       maxLines: 10,
       controller: descriptionController,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         hintText: "Description",
         hintStyle: TextStyle(
           color: Colors.grey,
-          fontFamily: appUiStyle.font
           ),
         border: InputBorder.none
       ),
@@ -168,24 +166,18 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     String currentDate,
   ) {
     final taskBox = Hive.box<TaskModel>("task");
-    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
-    final DbCounterState dbCounterState = Provider.of<DbCounterState>(context);
-    
     return TextButton(
       onPressed: () {
         taskBox.add(
           TaskModel(titleController.text, labelController.text,
               descriptionController.text, currentDate),
         );
-        dbCounterState.updateTaskCounter(taskBox.length);
-        dbCounterState.saveDbCounterState();
         Navigator.pop(context);
       },
-      child: Text(
+      child: const Text(
         "Save",
         style: TextStyle(
           fontSize: 18,
-          fontFamily: appUiStyle.font,
           fontWeight: FontWeight.bold),
       ),
     );

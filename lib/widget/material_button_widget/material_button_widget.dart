@@ -29,7 +29,6 @@ class MaterialButtonWidget extends StatelessWidget{
             buttonTitle,
             style: TextStyle(
               color: appUiStyle.setTextTheme(),
-              fontFamily: appUiStyle.font
             ),
             ),
       )

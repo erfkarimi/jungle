@@ -16,7 +16,7 @@ class SplashScreen extends StatefulWidget{
 
 class SplashScreenState extends State<SplashScreen>{
 
-  final Box welcomePageDB = Hive.box("welcome");
+  final Box settingsBox = Hive.box("settings");
 
   @override 
   void initState() {
@@ -52,9 +52,9 @@ class SplashScreenState extends State<SplashScreen>{
     Timer(
       const Duration(seconds: 2), (){
         Get.off(()=> ValueListenableBuilder(
-          valueListenable: welcomePageDB.listenable(),
+          valueListenable: settingsBox.listenable(),
           builder: (context, box, child){
-            return welcomePageDB.get("welcomePage", defaultValue: false) 
+            return settingsBox.get("introduction", defaultValue: false) 
             ? const HomePage() : const OnboardingPage();
           }
         ),

@@ -42,9 +42,6 @@ flutter:
     - asset/image/new-notifications-amico.png
   
   fonts:
-    - family: Italic
-      fonts:
-        - asset: "asset/font/Lato-Italic.ttf"
     - family: Regular
       fonts:
         - asset: "asset/font/Lato-Regular.ttf"

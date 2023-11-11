@@ -6,7 +6,6 @@ import 'package:jungle/model/task_model/task_model.dart';
 import 'package:jungle/view/home/task/edit_task_page/edit_task_page.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:get/get.dart';
-import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -23,11 +22,11 @@ class TaskPageState extends State<TaskPage> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
       statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: appUiStyle.setAppBarTheme(),
+      systemNavigationBarColor: appUiStyle.setBackgroundTheme(),
       systemNavigationBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: appUiStyle.setAppBarTheme(),
+        //backgroundColor: appUiStyle.setBackgroundTheme(),
         resizeToAvoidBottomInset: false,
         floatingActionButton: floatingActionButton(),
         body: buildBody(appUiStyle),
@@ -82,7 +81,7 @@ class TaskPageState extends State<TaskPage> {
                                     style: TextStyle(
                                         color: appUiStyle.setTextTheme(),
                                         fontWeight: FontWeight.bold,
-                                        fontFamily: appUiStyle.font,
+                                        
                                         fontSize: 18),
                                   ),
                                   Container(
@@ -94,8 +93,7 @@ class TaskPageState extends State<TaskPage> {
                                         color: Palette.ultramarineBlue),
                                     child: Text(
                                       taskBox.getAt(index)!.label,
-                                      style: TextStyle(
-                                          fontFamily: appUiStyle.font,
+                                      style: const TextStyle(
                                           color: Colors.white),
                                     ),
                                   ),
@@ -110,7 +108,7 @@ class TaskPageState extends State<TaskPage> {
                                 child: Text(
                                   taskBox.getAt(index)!.description,
                                   style: TextStyle(
-                                      fontFamily: appUiStyle.font,
+                                      
                                       color: appUiStyle.setDescriptionTheme()),
                                   maxLines: 4,
                                 ),
@@ -131,7 +129,7 @@ class TaskPageState extends State<TaskPage> {
                                         .currentDate
                                         .toString(),
                                     style: TextStyle(
-                                      fontFamily: appUiStyle.font,
+                                      
                                         color: appUiStyle.setTextTheme()),
                                   ),
                                 ],
@@ -149,20 +147,21 @@ class TaskPageState extends State<TaskPage> {
 
   Widget showNoTask(AppUiStyle appUiStyle) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "asset/image/tasks.png",
-            width: 250,
-          ),
-          Text(
-            "No task",
-            style: TextStyle(
-              fontFamily: appUiStyle.font,
-              fontSize: 17, color: appUiStyle.setTextTheme()),
-          )
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "asset/image/tasks.png",
+              width: 250,
+            ),
+            Text(
+              "No task",
+              style: TextStyle(
+                fontSize: 17, color: appUiStyle.setTextTheme()),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -185,18 +184,12 @@ class TaskPageState extends State<TaskPage> {
     showDialog(
         context: context,
         builder: (context) {
-          return Consumer<DbCounterState>(
-            builder: (context, dbCounterState, _) {
-              return DeleteDialogWidget(
-                index: index,
-                firstButtonFunction: (){
-                  taskBox.deleteAt(index);
-                  dbCounterState.updateTaskCounter(taskBox.length);
-                  dbCounterState.saveDbCounterState();
-                  Get.back(); 
-                },
-              );
-            }
+          return DeleteDialogWidget(
+            index: index,
+            firstButtonFunction: (){
+              taskBox.deleteAt(index);
+              Get.back(); 
+            },
           );
         });
   }

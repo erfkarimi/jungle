@@ -17,7 +17,6 @@ class DeleteDialogWidget extends AlertDialog{
             title: Text("Deletion",
                 style: TextStyle(
                   color: appUiStyle.setTextTheme(),
-                  fontFamily: appUiStyle.font
                 )),
             backgroundColor: appUiStyle.setBackgroundTheme(),
             shape:
@@ -25,16 +24,16 @@ class DeleteDialogWidget extends AlertDialog{
             content: Text("Are you sure ?",
                 style: TextStyle(
                   color: appUiStyle.setTextTheme(),
-                  fontFamily: appUiStyle.font
+                  
                   )),
             actions: [
               TextButton(
                 onPressed: firstButtonFunction,
-                child: Text(
+                child: const Text(
                   "Yes",
                   style: TextStyle(
                     color: Colors.blue,
-                    fontFamily: appUiStyle.font
+                    
                     ),),
               ),
               TextButton(
@@ -43,7 +42,7 @@ class DeleteDialogWidget extends AlertDialog{
                   "Cancel",
                   style: TextStyle(
                     color: Colors.red.shade600,
-                    fontFamily: appUiStyle.font),
+                    ),
                 ),
               )
             ]

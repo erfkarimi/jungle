@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/routes/routes.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../constant/palette/palette.dart';
 import 'package:get/get.dart';
-import '../view_model/db_counter_state/db_counter_state.dart';
 
 class App extends StatefulWidget{
   const App({super.key});
@@ -14,42 +14,48 @@ class App extends StatefulWidget{
 }
 
 class _AppState extends State<App> {
-  @override
-  void initState() {
-    appInitState(context);
-    super.initState();
-  }
+  final Box settingsBox = Hive.box("settings");
+  
   @override 
   Widget build(context){
-    return GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-            primarySwatch: Palette.ultramarineBlue,
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(seedColor: Palette.ultramarineBlue),
-            floatingActionButtonTheme: FloatingActionButtonThemeData(
-              backgroundColor: Palette.ultramarineBlue
-            ),
-            fontFamily: "Regular",
-            pageTransitionsTheme: const PageTransitionsTheme(
-            builders: {
-              TargetPlatform.android : CupertinoPageTransitionsBuilder()
-            },
-          ),
-          ),
-          routes: appRoutes,
-          initialRoute: "/splashScreen",
+    return ValueListenableBuilder(
+      valueListenable: settingsBox.listenable(),
+      builder: (context, settingsBox, _) {
+        return GetMaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: themeData(settingsBox),
+              routes: appRoutes,
+              initialRoute: "/splashScreen",
+        );
+      }
     );
   }
-  Future<void> appInitState(context) async{
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context, listen: false);
-    final DbCounterState dbCounterState = Provider.of<DbCounterState>(context, listen: false);
 
-      appUiStyle.theme = preferences.getString("Theme") ?? "Light";
-      appUiStyle.font = preferences.getString("Font") ?? "Regular";
-      dbCounterState.taskCounter = preferences.getInt("taskCounter") ?? 0;
-      dbCounterState.todoCounter = preferences.getInt("todoCounter") ?? 0;
-      dbCounterState.completedCounter = preferences.getInt("completedCounter") ?? 0;
+  ThemeData themeData(Box box){
+    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
+    appUiStyle.darkTheme = box.get("darkTheme");
+    return ThemeData(
+                primarySwatch: Palette.ultramarineBlue,
+                useMaterial3: true,
+                colorScheme: ColorScheme.fromSeed(seedColor: Palette.ultramarineBlue),
+                floatingActionButtonTheme: FloatingActionButtonThemeData(
+                  backgroundColor: Palette.ultramarineBlue),
+                fontFamily: "Regular",
+                pageTransitionsTheme: const PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.android : CupertinoPageTransitionsBuilder()
+                },
+              ),
+              appBarTheme: AppBarTheme(
+                backgroundColor: appUiStyle.setBackgroundTheme(),
+                systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarIconBrightness: Brightness.light,
+                  systemNavigationBarColor: appUiStyle.setBackgroundTheme(),
+                  systemNavigationBarIconBrightness: Brightness.light,
+                  statusBarColor: Colors.transparent,
+                )
+              ),
+              scaffoldBackgroundColor: appUiStyle.setBackgroundTheme(),
+              );
   }
 }

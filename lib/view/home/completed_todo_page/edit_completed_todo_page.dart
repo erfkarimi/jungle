@@ -7,7 +7,6 @@ import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
 import '../../../constant/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
 import '../../../view_model/app_ui_style/app_ui_style.dart';
-import '../../../view_model/db_counter_state/db_counter_state.dart';
 
 class EditCompletedTodoPage extends StatelessWidget {
   final int index;
@@ -19,7 +18,7 @@ class EditCompletedTodoPage extends StatelessWidget {
     final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
     final completedTodoModel = completedTodoBox.getAt(index) as TodoModel;
     return Scaffold(
-      backgroundColor: appUiStyle.setAppBarTheme(),
+      backgroundColor: appUiStyle.setBackgroundTheme(),
       appBar: buildAppBar(context, appUiStyle,
       completedTodoBox, completedTodoModel),
       body: buildBody(appUiStyle, completedTodoModel),
@@ -29,12 +28,12 @@ class EditCompletedTodoPage extends StatelessWidget {
   AppBar buildAppBar(BuildContext context, AppUiStyle appUiStyle,
       Box<TodoModel> completedTodoBox, TodoModel todoModel) {
     return AppBar(
-      backgroundColor: appUiStyle.setAppBarTheme(),
+      backgroundColor: appUiStyle.setBackgroundTheme(),
       title: Text(
         "Edit completed todo",
         style: TextStyle(
           color: appUiStyle.setTextTheme(),
-          fontFamily: appUiStyle.font
+          
         ),
       ),
       leading: LeadingButtonWidget(appUiStyle: appUiStyle),
@@ -68,15 +67,14 @@ class EditCompletedTodoPage extends StatelessWidget {
       style: TextStyle(
         color: appUiStyle.setTextTheme(),
         fontWeight: FontWeight.bold,
-        fontFamily: appUiStyle.font,
         fontSize: 18,
         ),
       initialValue: todo.title,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
           hintText: "Title",
           hintStyle: TextStyle(
             color: Colors.grey,
-            fontFamily: appUiStyle.font
+            
             ),
           border: InputBorder.none),
       onChanged: (String value)=> todo.title = value
@@ -90,13 +88,13 @@ class EditCompletedTodoPage extends StatelessWidget {
       textInputAction: TextInputAction.newline,
       style: TextStyle(
         color: appUiStyle.setTextTheme(),
-        fontFamily: appUiStyle.font),
+        ),
       maxLines: 20,
       initialValue: todo.description,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         hintText: "Description",
         hintStyle: TextStyle(
-          color: Colors.grey, fontFamily: appUiStyle.font),
+          color: Colors.grey, ),
         border: InputBorder.none
       ),
       onChanged: (String value)=> todo.description = value
@@ -134,21 +132,14 @@ class EditCompletedTodoPage extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) {
-          return Consumer<DbCounterState>(
-            builder: (context, dbCounterState, _) {
-              return DeleteDialogWidget(
-                index: index,
-                firstButtonFunction: (){
-                  completedTodoBox.deleteAt(index);
-                    dbCounterState.updateCompletedCounter(completedTodoBox.length);
-                    dbCounterState.saveDbCounterState();
-                    Get.back();
-                    Get.back();
-                  },
-                );
-                },
-                
-              );
+          return DeleteDialogWidget(
+            index: index,
+            firstButtonFunction: (){
+              completedTodoBox.deleteAt(index);
+                Get.back();
+                Get.back();
+              },
+            );
             }
           );
         }

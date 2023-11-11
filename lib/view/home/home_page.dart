@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:jungle/constant/palette/palette.dart';
+import 'package:hive/hive.dart';
 import 'package:jungle/view/home/task/task_page.dart';
-import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'completed_todo_page/completed_todo_page.dart';
 import 'todo_page/todo_page.dart';
@@ -16,25 +15,18 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  final Box settingsBox = Hive.box("settings");
   @override
   Widget build(context) {
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return SafeArea(
       top: false,
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.light,
-          systemNavigationBarColor: appUiStyle.setBackgroundTheme(),
-          systemNavigationBarIconBrightness: Brightness.light,
-          statusBarColor: Colors.transparent,
-        ),
-        child: DefaultTabController(
-          length: 3,
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: buildAppBar(appUiStyle),
-            body: buildBody(),
-          ),
+      child: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: buildAppBar(appUiStyle),
+          body: buildBody(),
         ),
       ),
     );
@@ -44,14 +36,13 @@ class HomePageState extends State<HomePage> {
     return PreferredSize(
       preferredSize: const Size.fromHeight(100),
       child: AppBar(
-        backgroundColor: appUiStyle.setAppBarTheme(),
+       // backgroundColor: appUiStyle.setBackgroundTheme(),
         leading: null,
         elevation: 0.0,
         title: Text(
           "Jungle",
           style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontFamily: appUiStyle.font,
               color: appUiStyle.setTextTheme()),
         ),
         actions: appBarActionWidget(appUiStyle),
@@ -62,6 +53,23 @@ class HomePageState extends State<HomePage> {
 
   List<Widget> appBarActionWidget(AppUiStyle appUiStyle) {
     return [
+      MaterialButton(
+        minWidth: 10,
+        onPressed: (){
+          setState(() {
+          appUiStyle.darkTheme = !appUiStyle.darkTheme;
+          appUiStyle.saveToDb(appUiStyle.darkTheme);
+          print(settingsBox.get("darkTheme"));
+        });
+        },
+        shape: CircleBorder(
+          side: BorderSide(color: appUiStyle.setTextTheme()),
+        ),
+        child: Icon(
+          appUiStyle.darkTheme ? Icons.wb_sunny_outlined
+          : Icons.brightness_2_outlined,
+          color: appUiStyle.setTextTheme())
+      ),
       MaterialButton(
         minWidth: 10,
         onPressed: () => Get.toNamed("/notifications"),
@@ -89,82 +97,24 @@ class HomePageState extends State<HomePage> {
 
   PreferredSizeWidget tabBarWidget(AppUiStyle appUiStyle) {
     return TabBar(
-        dividerColor: appUiStyle.setAppBarTheme(),
+        dividerColor: appUiStyle.setBackgroundTheme(),
         indicatorPadding:
             const EdgeInsets.symmetric(vertical: 5),
         indicatorSize: TabBarIndicatorSize.label,
+        indicatorColor: Colors.blue.shade600,
         splashBorderRadius: BorderRadius.circular(10),
-        labelColor: Palette.ultramarineBlue,
+        labelColor: Colors.blue.shade600,
         unselectedLabelColor: appUiStyle.setTextTheme(),
-        labelStyle: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontFamily: appUiStyle.font),
+        labelStyle: const TextStyle(
+          fontWeight: FontWeight.bold),
         tabs: tabListWidget());
   }
 
   List<Tab> tabListWidget() {
-    final DbCounterState dbCounterState = Provider.of<DbCounterState>(context);
     return [
-      Tab(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Task",),
-            const SizedBox(width: 5.0),
-            Container(
-              height: 20,
-              width: 20,
-              decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(5)),
-              child: Center(
-                child: Text("${dbCounterState.taskCounter}",
-                    style: const TextStyle(color: Colors.black)),
-              ),
-            )
-          ],
-        ),
-      ),
-      Tab(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Todo"),
-            const SizedBox(width: 5.0),
-            Container(
-              height: 20,
-              width: 20,
-              decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(5)),
-              child: Center(
-                child: Text("${dbCounterState.todoCounter}",
-                    style: const TextStyle(color: Colors.black)),
-              ),
-            )
-          ],
-        ),
-      ),
-      Tab(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Completed",),
-            const SizedBox(width: 5.0),
-            Container(
-              height: 20,
-              width: 20,
-              decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(5)),
-              child: Center(
-                child: Text("${dbCounterState.completedCounter}",
-                    style: const TextStyle(color: Colors.black)),
-              ),
-            )
-          ],
-        ),
-      ),
+      const Tab(child: Text("My Task")),
+      const Tab(child:Text("My Todo")),
+      const Tab(child: Text("Completed")),
     ];
   }
 

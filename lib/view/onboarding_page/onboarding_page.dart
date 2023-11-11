@@ -15,6 +15,7 @@ class OnboardingPage extends StatefulWidget{
 
 class _OnboardingPageState extends State<OnboardingPage> {
   final PageController controller = PageController();
+  final Box settingsBox = Hive.box("settings");
   bool isLastPage = false; 
   @override 
   Widget build(context){
@@ -54,7 +55,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }
 
   Widget pageSwitcherWidget(){
-    final Box welcomePageDB = Hive.box("welcome");
     return Container(
           height: 50,
           color: const Color(0xff29c5e6),
@@ -85,7 +85,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ),
               TextButton(
                 onPressed: isLastPage ? 
-                  ()=> welcomePageDB.put("welcomePage", true)
+                  ()=> settingsBox.put("introduction", true)
                   : (){
                   controller.nextPage(
                   duration: const Duration(milliseconds: 500),

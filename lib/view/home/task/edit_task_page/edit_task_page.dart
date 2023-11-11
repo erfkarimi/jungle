@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:jungle/constant/palette/palette.dart';
-import 'package:jungle/view_model/db_counter_state/db_counter_state.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
 import '../../../../model/task_model/task_model.dart';
@@ -19,7 +18,7 @@ class EditTaskPage extends StatelessWidget{
       final Box<TaskModel> taskBox = Hive.box<TaskModel>("task");
       final task = taskBox.getAt(index) as TaskModel;
       return Scaffold(
-        backgroundColor: appUiStyle.setAppBarTheme(),
+        backgroundColor: appUiStyle.setBackgroundTheme(),
         appBar: buildAppBar(
           context, appUiStyle, taskBox, task),
         body: buildBody(appUiStyle, task)
@@ -33,12 +32,12 @@ class EditTaskPage extends StatelessWidget{
       TaskModel taskModel
     ){
       return AppBar(
-      backgroundColor: appUiStyle.setAppBarTheme(),
+      backgroundColor: appUiStyle.setBackgroundTheme(),
       title: Text(
         "Edit task",
         style: TextStyle(
           color: appUiStyle.setTextTheme(),
-          fontFamily: appUiStyle.font),
+          ),
       ),
       leading: LeadingButtonWidget(appUiStyle: appUiStyle,),
       actions: [
@@ -52,16 +51,18 @@ class EditTaskPage extends StatelessWidget{
     Widget buildBody(AppUiStyle appUiStyle, TaskModel taskModel){
       return Padding(
                   padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      titleTextField(appUiStyle, taskModel),
-                      const SizedBox(height: 10),
-                      labelTextField(appUiStyle, taskModel),
-                      const SizedBox(height: 10),
-                      descriptionTextField(appUiStyle, taskModel),
-                      const SizedBox(height: 30),
-                    ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        titleTextField(appUiStyle, taskModel),
+                        const SizedBox(height: 10),
+                        labelTextField(appUiStyle, taskModel),
+                        const SizedBox(height: 10),
+                        descriptionTextField(appUiStyle, taskModel),
+                        const SizedBox(height: 30),
+                      ],
+                    ),
                   ),
                 );
   }
@@ -102,20 +103,14 @@ class EditTaskPage extends StatelessWidget{
     showDialog(
       context: context,
       builder: (context){
-        return Consumer<DbCounterState>(
-          builder: (context, dbCounterState, _) {
-            return DeleteDialogWidget(
-              index: index,
-              firstButtonFunction: (){
-                taskBox.deleteAt(index);
-                dbCounterState.updateTaskCounter(taskBox.length);
-                dbCounterState.saveDbCounterState();
-                Get.back();
-                Get.back();
+        return DeleteDialogWidget(
+          index: index,
+          firstButtonFunction: (){
+            taskBox.deleteAt(index);
+            Get.back();
+            Get.back();
 
-              },
-            );
-          }
+          },
         );
       }
     );
@@ -132,14 +127,13 @@ class EditTaskPage extends StatelessWidget{
       style: TextStyle(
         color: appUiStyle.setTextTheme(),
         fontSize: 26, fontWeight: FontWeight.bold,
-        fontFamily: appUiStyle.font
+        
       ),
       initialValue: task.title,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         hintText: "Title",
         hintStyle: TextStyle(
           color: Colors.grey,
-          fontFamily: appUiStyle.font
         ),
         border: InputBorder.none
     ),
@@ -157,14 +151,13 @@ class EditTaskPage extends StatelessWidget{
       textInputAction: TextInputAction.next,
       style: TextStyle(
         color: appUiStyle.setTextTheme(),
-        fontFamily: appUiStyle.font
+        
       ),
       initialValue: taskModel.label,
       decoration: InputDecoration(
         hintText: "Label",
-        hintStyle: TextStyle(
+        hintStyle: const TextStyle(
           color: Colors.grey,
-          fontFamily: appUiStyle.font
         ),
         border: InputBorder.none,
         prefixIcon: Icon(Icons.tag,
@@ -182,17 +175,16 @@ class EditTaskPage extends StatelessWidget{
       cursorColor: Palette.ultramarineBlue,
       style: TextStyle(
         color: appUiStyle.setTextTheme(),
-        fontFamily: appUiStyle.font
+        
       ),
       maxLines: 10,
       textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.newline,
       initialValue: taskModel.description,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         hintText:  "Description",
         hintStyle: TextStyle(
           color: Colors.grey,
-          fontFamily: appUiStyle.font
         ),
         border: InputBorder.none
       ),
