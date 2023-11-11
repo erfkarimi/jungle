@@ -14,27 +14,21 @@ class EditCompletedTodoPage extends StatelessWidget {
 
   @override
   Widget build(context) {
-    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
+    
     final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
     final completedTodoModel = completedTodoBox.getAt(index) as TodoModel;
     return Scaffold(
-      backgroundColor: appUiStyle.setBackgroundTheme(),
-      appBar: buildAppBar(context, appUiStyle,
-      completedTodoBox, completedTodoModel),
-      body: buildBody(appUiStyle, completedTodoModel),
+      appBar: buildAppBar(context, completedTodoBox, completedTodoModel),
+      body: buildBody(completedTodoModel),
     );
   } 
 
-  AppBar buildAppBar(BuildContext context, AppUiStyle appUiStyle,
+  AppBar buildAppBar(BuildContext context,
       Box<TodoModel> completedTodoBox, TodoModel todoModel) {
+      final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return AppBar(
-      backgroundColor: appUiStyle.setBackgroundTheme(),
-      title: Text(
+      title: const Text(
         "Edit completed todo",
-        style: TextStyle(
-          color: appUiStyle.setTextTheme(),
-          
-        ),
       ),
       leading: LeadingButtonWidget(appUiStyle: appUiStyle),
       actions: [
@@ -44,28 +38,27 @@ class EditCompletedTodoPage extends StatelessWidget {
     );
   }
 
-  Widget buildBody(AppUiStyle appUiStyle, TodoModel todoModel) {
+  Widget buildBody(TodoModel todoModel) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            titleTextField(appUiStyle, todoModel),
+            titleTextField(todoModel),
             const SizedBox(height: 10),
-            descriptionTextField(appUiStyle, todoModel),
+            descriptionTextField(todoModel),
           ],
         ),
       ),
     );
   }
 
-  Widget titleTextField(AppUiStyle appUiStyle, TodoModel todo) {
+  Widget titleTextField(TodoModel todo) {
     return TextFormField(
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.next,
-      style: TextStyle(
-        color: appUiStyle.setTextTheme(),
+      style: const TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 18,
         ),
@@ -81,14 +74,11 @@ class EditCompletedTodoPage extends StatelessWidget {
     );
   }
 
-  Widget descriptionTextField(AppUiStyle appUiStyle, TodoModel todo) {
+  Widget descriptionTextField(TodoModel todo) {
     return TextFormField(
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.newline,
-      style: TextStyle(
-        color: appUiStyle.setTextTheme(),
-        ),
       maxLines: 20,
       initialValue: todo.description,
       decoration: const InputDecoration(
@@ -118,8 +108,9 @@ class EditCompletedTodoPage extends StatelessWidget {
     );
   }
 
-  Widget deleteCompletedTodoButton(BuildContext context,
-      Box<TodoModel> completedTodoBox,) {
+  Widget deleteCompletedTodoButton(
+    BuildContext context,
+    Box<TodoModel> completedTodoBox) {
     return TextButtonWidget(
       function: ()=> deleteCompletedTodoDialog(context, completedTodoBox),
       buttonTitle: "Delete",

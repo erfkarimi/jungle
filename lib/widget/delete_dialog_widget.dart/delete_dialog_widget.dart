@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../view_model/app_ui_style/app_ui_style.dart';
 
 class DeleteDialogWidget extends AlertDialog{
   final int index;
@@ -12,20 +11,11 @@ class DeleteDialogWidget extends AlertDialog{
 
   @override
   Widget build(context){
-    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return AlertDialog(
-            title: Text("Deletion",
+            title: const Text("Deletion",
                 style: TextStyle(
-                  color: appUiStyle.setTextTheme(),
                 )),
-            backgroundColor: appUiStyle.setBackgroundTheme(),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            content: Text("Are you sure ?",
-                style: TextStyle(
-                  color: appUiStyle.setTextTheme(),
-                  
-                  )),
+            content: const Text("Are you sure ?"),
             actions: [
               TextButton(
                 onPressed: firstButtonFunction,

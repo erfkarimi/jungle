@@ -7,6 +7,7 @@ import 'package:jungle/view/home/task/edit_task_page/edit_task_page.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:get/get.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
+
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
   @override
@@ -19,21 +20,12 @@ class TaskPageState extends State<TaskPage> {
   @override
   Widget build(context) {
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: appUiStyle.setBackgroundTheme(),
-      systemNavigationBarIconBrightness: Brightness.light,
-      ),
-      child: Scaffold(
-        //backgroundColor: appUiStyle.setBackgroundTheme(),
-        resizeToAvoidBottomInset: false,
-        floatingActionButton: floatingActionButton(),
-        body: buildBody(appUiStyle),
-      ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      floatingActionButton: floatingActionButton(),
+      body: buildBody(appUiStyle),
     );
   }
-
 
   Widget buildBody(AppUiStyle appUiStyle) {
     return ValueListenableBuilder(
@@ -51,21 +43,18 @@ class TaskPageState extends State<TaskPage> {
                 index = taskBox.length - 1 - index;
                 return GestureDetector(
                   onLongPress: () {
-                    deleteTaskOnLongPressDialog(
-                        context, index, taskBox);
+                    deleteTaskOnLongPressDialog(context, index, taskBox);
                   },
                   child: GestureDetector(
                     onTap: () {
-                      Get.to(
-                        EditTaskPage(index: index),
-                        transition: Transition.cupertino);
+                      Get.to(EditTaskPage(index: index),
+                          transition: Transition.cupertino);
                     },
                     child: Card(
-                        color: appUiStyle.setItemBackgroundTheme(),
                         elevation: 0.0,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -81,20 +70,18 @@ class TaskPageState extends State<TaskPage> {
                                     style: TextStyle(
                                         color: appUiStyle.setTextTheme(),
                                         fontWeight: FontWeight.bold,
-                                        
                                         fontSize: 18),
                                   ),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8.0, vertical: 2.0),
                                     decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10),
+                                        borderRadius: BorderRadius.circular(10),
                                         color: Palette.ultramarineBlue),
                                     child: Text(
                                       taskBox.getAt(index)!.label,
-                                      style: const TextStyle(
-                                          color: Colors.white),
+                                      style:
+                                          const TextStyle(color: Colors.white),
                                     ),
                                   ),
                                 ],
@@ -108,7 +95,6 @@ class TaskPageState extends State<TaskPage> {
                                 child: Text(
                                   taskBox.getAt(index)!.description,
                                   style: TextStyle(
-                                      
                                       color: appUiStyle.setDescriptionTheme()),
                                   maxLines: 4,
                                 ),
@@ -118,9 +104,8 @@ class TaskPageState extends State<TaskPage> {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.calendar_month_outlined,
-                                    color: appUiStyle.setTextTheme(),
                                   ),
                                   const SizedBox(width: 4.0),
                                   Text(
@@ -128,9 +113,6 @@ class TaskPageState extends State<TaskPage> {
                                         .getAt(index)!
                                         .currentDate
                                         .toString(),
-                                    style: TextStyle(
-                                      
-                                        color: appUiStyle.setTextTheme()),
                                   ),
                                 ],
                               ),
@@ -155,10 +137,11 @@ class TaskPageState extends State<TaskPage> {
               "asset/image/tasks.png",
               width: 250,
             ),
-            Text(
+            const Text(
               "No task",
               style: TextStyle(
-                fontSize: 17, color: appUiStyle.setTextTheme()),
+                fontSize: 17,
+              ),
             )
           ],
         ),
@@ -168,7 +151,7 @@ class TaskPageState extends State<TaskPage> {
 
   FloatingActionButton floatingActionButton() {
     return FloatingActionButton(
-      onPressed: ()=> Get.toNamed("/createTask"),
+      onPressed: () => Get.toNamed("/createTask"),
       tooltip: "Add new task",
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: const Icon(
@@ -179,16 +162,16 @@ class TaskPageState extends State<TaskPage> {
     );
   }
 
-  void deleteTaskOnLongPressDialog(BuildContext context, int index,
-      Box<TaskModel> taskBox) {
+  void deleteTaskOnLongPressDialog(
+      BuildContext context, int index, Box<TaskModel> taskBox) {
     showDialog(
         context: context,
         builder: (context) {
           return DeleteDialogWidget(
             index: index,
-            firstButtonFunction: (){
+            firstButtonFunction: () {
               taskBox.deleteAt(index);
-              Get.back(); 
+              Get.back();
             },
           );
         });

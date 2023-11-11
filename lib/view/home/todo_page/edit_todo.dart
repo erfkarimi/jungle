@@ -14,25 +14,21 @@ class EditTodoPage extends StatelessWidget {
 
   @override
   Widget build(context) {
-    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
+    
     final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
     final todoModel = todoBox.getAt(index) as TodoModel;
     return Scaffold(
-      backgroundColor: appUiStyle.setBackgroundTheme(),
-      appBar: buildAppBar(context, appUiStyle, todoBox, todoModel),
-      body: buildBody(appUiStyle, todoModel),
+      appBar: buildAppBar(context, todoBox, todoModel),
+      body: buildBody(todoModel),
     );
   }
 
-  AppBar buildAppBar(BuildContext context, AppUiStyle appUiStyle,
+  AppBar buildAppBar(BuildContext context,
       Box<TodoModel> todoBox, TodoModel todoModel) {
+      final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return AppBar(
-      backgroundColor: appUiStyle.setBackgroundTheme(),
-      title: Text(
-        "Edit todo",
-        style: TextStyle(
-          color: appUiStyle.setTextTheme()),
-      ),
+      title: const Text(
+        "Edit todo"),
       leading: LeadingButtonWidget(appUiStyle: appUiStyle),
       actions: [
         updateTodoButton(todoBox, todoModel),
@@ -42,31 +38,29 @@ class EditTodoPage extends StatelessWidget {
     );
   }
 
-  Widget buildBody(AppUiStyle appUiStyle, TodoModel todoModel) {
+  Widget buildBody(TodoModel todoModel) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            titleTextField(appUiStyle, todoModel),
+            titleTextField(todoModel),
             const SizedBox(height: 10),
-            descriptionTextField(appUiStyle, todoModel),
+            descriptionTextField(todoModel),
           ],
         ),
       ),
     );
   }
 
-  Widget titleTextField(
-      AppUiStyle appUiStyle, TodoModel todo) {
+  Widget titleTextField(TodoModel todo) {
     return TextFormField(
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.next,
-      style: TextStyle(
+      style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18,
-          color: appUiStyle.setTextTheme(),
           ),
       initialValue: todo.title,
       decoration: const InputDecoration(
@@ -79,15 +73,11 @@ class EditTodoPage extends StatelessWidget {
     );
   }
 
-  Widget descriptionTextField(
-      AppUiStyle appUiStyle, TodoModel todo) {
+  Widget descriptionTextField(TodoModel todo) {
     return TextFormField(
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.newline,
-      style: TextStyle(
-        color: appUiStyle.setTextTheme(),
-        ),
       maxLines: 20,
       initialValue: todo.description,
       decoration: const InputDecoration(

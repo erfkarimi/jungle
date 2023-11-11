@@ -15,7 +15,7 @@ class AppUiStyle extends ChangeNotifier{
 
   Color setDescriptionTheme(){
     if(darkTheme){
-      return Colors.grey.shade200;
+      return Colors.grey.shade100;
     }
       return Colors.grey.shade600;
   }

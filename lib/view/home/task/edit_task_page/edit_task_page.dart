@@ -11,32 +11,28 @@ import '../../../../widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 class EditTaskPage extends StatelessWidget{
     final int index;
     const EditTaskPage({super.key, required this.index});
-
     @override 
     Widget build(context){
       final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
       final Box<TaskModel> taskBox = Hive.box<TaskModel>("task");
       final task = taskBox.getAt(index) as TaskModel;
       return Scaffold(
-        backgroundColor: appUiStyle.setBackgroundTheme(),
         appBar: buildAppBar(
-          context, appUiStyle, taskBox, task),
+          context, taskBox, task, appUiStyle),
         body: buildBody(appUiStyle, task)
       );
     }
 
     AppBar buildAppBar(
       BuildContext context,
-      AppUiStyle appUiStyle,
       Box<TaskModel> taskBox,
-      TaskModel taskModel
+      TaskModel taskModel,
+      AppUiStyle appUiStyle
     ){
       return AppBar(
-      backgroundColor: appUiStyle.setBackgroundTheme(),
-      title: Text(
+      title: const Text(
         "Edit task",
         style: TextStyle(
-          color: appUiStyle.setTextTheme(),
           ),
       ),
       leading: LeadingButtonWidget(appUiStyle: appUiStyle,),
@@ -49,17 +45,18 @@ class EditTaskPage extends StatelessWidget{
     }
 
     Widget buildBody(AppUiStyle appUiStyle, TaskModel taskModel){
+      
       return Padding(
                   padding: const EdgeInsets.all(20),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
-                        titleTextField(appUiStyle, taskModel),
+                        titleTextField(taskModel),
                         const SizedBox(height: 10),
                         labelTextField(appUiStyle, taskModel),
                         const SizedBox(height: 10),
-                        descriptionTextField(appUiStyle, taskModel),
+                        descriptionTextField(taskModel),
                         const SizedBox(height: 30),
                       ],
                     ),
@@ -117,15 +114,13 @@ class EditTaskPage extends StatelessWidget{
   }
 
     Widget titleTextField(
-      AppUiStyle appUiStyle,
       TaskModel task
       ){
     return TextFormField(
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.next,
-      style: TextStyle(
-        color: appUiStyle.setTextTheme(),
+      style: const TextStyle(
         fontSize: 26, fontWeight: FontWeight.bold,
         
       ),
@@ -149,10 +144,6 @@ class EditTaskPage extends StatelessWidget{
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.next,
-      style: TextStyle(
-        color: appUiStyle.setTextTheme(),
-        
-      ),
       initialValue: taskModel.label,
       decoration: InputDecoration(
         hintText: "Label",
@@ -168,15 +159,10 @@ class EditTaskPage extends StatelessWidget{
   }
 
   Widget descriptionTextField(
-    AppUiStyle appUiStyle,
     TaskModel taskModel
     ){
     return TextFormField(
       cursorColor: Palette.ultramarineBlue,
-      style: TextStyle(
-        color: appUiStyle.setTextTheme(),
-        
-      ),
       maxLines: 10,
       textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.newline,

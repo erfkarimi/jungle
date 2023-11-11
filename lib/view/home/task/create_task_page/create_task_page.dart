@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
@@ -22,6 +23,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     final TextEditingController descriptionController = TextEditingController();
     final DateTime dateTime = DateTime.now();
     var formatter = DateFormat("yyyy-MM-dd");
+    final taskBox = Hive.box<TaskModel>("task");
     
   
   @override
@@ -29,14 +31,12 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     var currentDate = formatter.format(dateTime);
     return Scaffold(
-        backgroundColor: appUiStyle.setBackgroundTheme(),
         appBar: buildAppBar(
           context,
           appUiStyle,
           currentDate
         ),
-        body: buildBody(context, appUiStyle, titleController, labelController,
-            descriptionController));
+        body: buildBody(context, appUiStyle));
   }
 
   AppBar buildAppBar(
@@ -45,17 +45,13 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     String currentDate
   ) {
     return AppBar(
-      backgroundColor: appUiStyle.setBackgroundTheme(),
       elevation: 0.0,
-      title: Text(
+      title: const Text(
         "Create task",
-        style: TextStyle(
-          color: appUiStyle.setTextTheme(),
-          ),
       ),
       leading: LeadingButtonWidget(appUiStyle: appUiStyle),
       actions: [
-        saveTaskButton(context, titleController, labelController, descriptionController, currentDate)
+        saveTaskButton(currentDate)
       ],
     );
   }
@@ -63,9 +59,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   Widget buildBody(
     BuildContext context,
     AppUiStyle appUiStyle,
-    TextEditingController titleController,
-    TextEditingController labelController,
-    TextEditingController descriptionController,
   ) {
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -74,28 +67,26 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 10),
-            titleTextField(context, appUiStyle, titleController),
+            titleTextField(),
             const SizedBox(height: 10),
-            labelTextField(context, appUiStyle, labelController),
+            labelTextField(appUiStyle),
             const SizedBox(height: 10),
-            descriptionTextField(context, appUiStyle, descriptionController),
+            descriptionTextField(),
           ],
         ),
       ),
     );
   }
 
-  Widget titleTextField(BuildContext context, AppUiStyle appUiStyle,
-      TextEditingController titleController) {
+  Widget titleTextField() {
     return SizedBox(
         height: 50,
         child: TextField(
           cursorColor: Palette.ultramarineBlue,
           textCapitalization: TextCapitalization.sentences,
           textInputAction: TextInputAction.next,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 26,
-            color: appUiStyle.setTextTheme(),
             fontWeight: FontWeight.bold,
             
           ),
@@ -104,7 +95,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             hintText: "Title",
             hintStyle: TextStyle(
               color: Colors.grey, fontSize: 26,
-              
               ),
             border: InputBorder.none
             ),
@@ -113,17 +103,13 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         );
   }
 
-  Widget labelTextField(BuildContext context, AppUiStyle appUiStyle,
-      TextEditingController labelController) {
+  Widget labelTextField(AppUiStyle appUiStyle) {
     return SizedBox(
       height: 50,
       child: TextField(
         cursorColor: Palette.ultramarineBlue,
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.next,
-        style: TextStyle(
-          color: appUiStyle.setTextTheme(),
-          ),
         controller: labelController,
         decoration: InputDecoration(
           hintText: "Label",
@@ -138,14 +124,11 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     );
   }
 
-  Widget descriptionTextField(BuildContext context, AppUiStyle appUiStyle,
-      TextEditingController descriptionController) {
+  Widget descriptionTextField() {
     return TextField(
       cursorColor: Palette.ultramarineBlue,
       textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.newline,
-      style: TextStyle(
-        color: appUiStyle.setTextTheme(), ),
       maxLines: 10,
       controller: descriptionController,
       decoration: const InputDecoration(
@@ -159,20 +142,16 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   }
 
   Widget saveTaskButton(
-    BuildContext context,
-    TextEditingController titleController,
-    TextEditingController labelController,
-    TextEditingController descriptionController,
     String currentDate,
   ) {
-    final taskBox = Hive.box<TaskModel>("task");
+    
     return TextButton(
       onPressed: () {
         taskBox.add(
           TaskModel(titleController.text, labelController.text,
               descriptionController.text, currentDate),
         );
-        Navigator.pop(context);
+        Get.back();
       },
       child: const Text(
         "Save",

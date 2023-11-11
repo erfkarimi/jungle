@@ -8,30 +8,25 @@ class NotificationsPage extends StatelessWidget{
   Widget build(context){
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return Scaffold(
-      backgroundColor: appUiStyle.setBackgroundTheme(),
       appBar: buildAppBar(appUiStyle),
-      body:  buildBody(appUiStyle),
+      body:  buildBody(),
     );
   }
 
   AppBar buildAppBar(AppUiStyle appUiStyle){
     return AppBar(
-      backgroundColor: appUiStyle.setBackgroundTheme(),
-      title: Text(
+      title: const Text(
         "Notifications",
-        style: TextStyle(
-          color: appUiStyle.setTextTheme()
-        ),
       ),
       leading: LeadingButtonWidget(appUiStyle: appUiStyle),
     );
   }
 
-  Widget buildBody(AppUiStyle appUiStyle){
-    return showNoNotifications(appUiStyle);
+  Widget buildBody(){
+    return showNoNotifications();
   }
 
-    Widget showNoNotifications(AppUiStyle appUiStyle) {
+    Widget showNoNotifications() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -40,10 +35,10 @@ class NotificationsPage extends StatelessWidget{
             "asset/image/new-notifications-amico.png",
             width: 250,
           ),
-          Text(
+          const Text(
             "No notifications",
             style: TextStyle(
-              fontSize: 17, color: appUiStyle.setTextTheme()),
+              fontSize: 17,),
           )
         ],
       ),

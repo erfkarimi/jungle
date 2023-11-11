@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/constant/palette/palette.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
+import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import '../../../../model/todo_model/todo_model.dart';
 import 'edit_completed_todo_page.dart';
 
@@ -30,7 +30,7 @@ class CompletedTodoState extends State<CompletedTodo>{
       valueListenable: completedTodoBox.listenable(), 
       builder: (context, completedTodoBox, _){
         if(completedTodoBox.isEmpty){
-          return showNoCompletedTodo(appUiStyle);
+          return showNoCompletedTodo();
         } else {
             return Padding(
               padding: const EdgeInsets.all(10),
@@ -44,7 +44,7 @@ class CompletedTodoState extends State<CompletedTodo>{
                   itemCount: completedTodoBox.length,
                   itemBuilder: (context, int index){
                     index = completedTodoBox.length - 1 - index;
-                    return completedTodoButton(index, appUiStyle);
+                    return completedTodoButton(index);
                   }
                   ),
               ),
@@ -54,7 +54,7 @@ class CompletedTodoState extends State<CompletedTodo>{
       );
   }
 
-  Widget completedTodoButton(int index, AppUiStyle appUiStyle){
+  Widget completedTodoButton(int index){
     final completedTodo = completedTodoBox.getAt(index) as TodoModel;
     return MaterialButton(
       onPressed: (){
@@ -62,7 +62,7 @@ class CompletedTodoState extends State<CompletedTodo>{
           EditCompletedTodoPage(index: index),
           transition: Transition.cupertino);
       },
-      onLongPress: ()=> deleteDoneTodoOnLongPressDialog(context, index, appUiStyle),
+      onLongPress: ()=> deleteDoneTodoOnLongPressDialog(context, index),
       height: 50,
       elevation: 0.0,
       shape: RoundedRectangleBorder(
@@ -84,8 +84,7 @@ class CompletedTodoState extends State<CompletedTodo>{
       ),
       title: Text(
         completedTodoBox.getAt(index)!.title,
-        style: TextStyle(
-          color: appUiStyle.setTextTheme(),
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           decoration: TextDecoration.lineThrough),
         ),
@@ -93,8 +92,7 @@ class CompletedTodoState extends State<CompletedTodo>{
         Text(
           completedTodoBox.getAt(index)!.description,
           maxLines: 2,
-          style: TextStyle(
-            color: appUiStyle.setDescriptionTheme(),
+          style: const TextStyle(
             decoration: TextDecoration.lineThrough
           ),
       ),
@@ -103,7 +101,7 @@ class CompletedTodoState extends State<CompletedTodo>{
     );
   }
 
-  Widget showNoCompletedTodo(AppUiStyle appUiStyle){
+  Widget showNoCompletedTodo(){
     return Center(
       child: SingleChildScrollView(
         child: Column(
@@ -114,12 +112,10 @@ class CompletedTodoState extends State<CompletedTodo>{
               "asset/image/to-do-list-rafiki.png",
               width: 250,
             ),
-            Text(
+            const Text(
               "Nothing is completed",
               style: TextStyle(
                 fontSize: 17,
-                color: appUiStyle.setTextTheme(),
-                
               ),
             )
           ],
@@ -131,47 +127,17 @@ class CompletedTodoState extends State<CompletedTodo>{
   void deleteDoneTodoOnLongPressDialog(
     BuildContext context, 
     int index,
-    AppUiStyle appUiStyle) {
+    ) {
     showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text("Deletion",
-                style: TextStyle(
-                  color: appUiStyle.setTextTheme(),
-                  )),
-            backgroundColor: appUiStyle.setBackgroundTheme(),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            content: Text("Are you sure ?",
-                style: TextStyle(
-                  color: appUiStyle.setTextTheme(),
-                  
-                  )),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  completedTodoBox.deleteAt(index);
+          return DeleteDialogWidget(
+            index: index,
+            firstButtonFunction: (){
+              completedTodoBox.deleteAt(index);
                   Get.back();
-                },
-                child: const Text(
-                  "Yes",
-                  style: TextStyle(
-                    
-                  ),
-                  ),
-              ),
-              TextButton(
-                onPressed: ()=> Get.back(),
-                child: Text(
-                  "Cancel",
-                  style: TextStyle(
-                    color: Colors.red.shade600,
-                    
-                    ),
-                ),
-              )
-            ],
+            },
+  
           );
         });
   }

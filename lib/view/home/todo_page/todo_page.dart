@@ -21,21 +21,16 @@ class TodoPageState extends State<TodoPage>{
   @override 
   Widget build(context){
     
-    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        systemNavigationBarColor: appUiStyle.setBackgroundTheme()
-      ),
-      child: Scaffold(
-        backgroundColor: appUiStyle.setBackgroundTheme(),
-        resizeToAvoidBottomInset: false,
-        floatingActionButton: floatingActionButton(appUiStyle),
-        body: buildBody(appUiStyle)
-      ),
+    
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      floatingActionButton: floatingActionButton(),
+      body: buildBody()
     );
   }
 
-  Widget buildBody(AppUiStyle appUiStyle) {
+  Widget buildBody() {
+    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return ValueListenableBuilder(
         valueListenable: todoBox.listenable(),
         builder: (context, todoBox, __) {
@@ -44,11 +39,11 @@ class TodoPageState extends State<TodoPage>{
           } else {
             return Padding(
               padding: const EdgeInsets.all(10),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: appUiStyle.setItemBackgroundTheme(),
-                    ),
+              child: Card(
+                elevation: 0.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                 child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: todoBox.length,
@@ -72,7 +67,7 @@ class TodoPageState extends State<TodoPage>{
           );
         
       },
-      onLongPress: () => deleteUnDoneTodoOnLongPressDialog(index, appUiStyle),
+      onLongPress: () => deleteUnDoneTodoOnLongPressDialog(index),
       height: 50,
       elevation: 0.0,
       shape: RoundedRectangleBorder(
@@ -93,8 +88,7 @@ class TodoPageState extends State<TodoPage>{
         ),
         title: Text(
           todoBox.getAt(index)!.title,
-          style: TextStyle(
-            color: appUiStyle.setTextTheme(),
+          style: const TextStyle(
             fontWeight: FontWeight.bold
             ),
         ),
@@ -120,24 +114,24 @@ class TodoPageState extends State<TodoPage>{
               "asset/image/to-do-list-cuate.png",
               width: 250,
             ),
-            Text(
+            const Text(
               "No todo",
               style: TextStyle(
-                fontSize: 17, color: appUiStyle.setTextTheme()),
+                fontSize: 17,),
             )
           ],
         ),
       ),
     );
   }
-    void showNewTodoBottomSheet(AppUiStyle appUiStyle) {
+    void showNewTodoBottomSheet() {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         builder: (context) {
           return StatefulBuilder(
             builder: (context, setState){
-              return NewTodoSheet(appUiStyle: appUiStyle);
+              return const NewTodoSheet();
             },
               
           );
@@ -147,10 +141,10 @@ class TodoPageState extends State<TodoPage>{
 
   
 
-  FloatingActionButton floatingActionButton(AppUiStyle appUiStyle) {
+  FloatingActionButton floatingActionButton() {
     return FloatingActionButton(
       onPressed: () {
-        showNewTodoBottomSheet(appUiStyle);
+        showNewTodoBottomSheet();
       },
       tooltip: "Add new todo",
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -162,7 +156,7 @@ class TodoPageState extends State<TodoPage>{
     );
   }
 
-  void deleteUnDoneTodoOnLongPressDialog(int index, AppUiStyle appUiStyle) {
+  void deleteUnDoneTodoOnLongPressDialog(int index) {
       showDialog(
         context: context,
         builder: (context) {

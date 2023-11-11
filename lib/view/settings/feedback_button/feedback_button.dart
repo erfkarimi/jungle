@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
-import 'package:jungle/widget/material_button_widget/material_button_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FeedbackButton extends StatelessWidget{
@@ -9,11 +8,20 @@ class FeedbackButton extends StatelessWidget{
 
   @override
   Widget build(context){
-    return MaterialButtonWidget(
-      function: ()=> _sendMail(),
-      buttonIcon: Icons.question_mark,
-      buttonTitle: "Feedback",
-      appUiStyle: appUiStyle,
+    return MaterialButton(
+      onPressed: ()=> _sendMail(),
+      child: ListTile(
+        leading: Icon(
+          Icons.question_mark,
+          color: appUiStyle.setTextTheme(),
+          ),
+          title: Text(
+            "Feedback",
+            style: TextStyle(
+              fontSize: 16
+            ),
+            ),
+      ),
       );
   }
 }

@@ -15,7 +15,6 @@ class Settings extends StatelessWidget{
         systemNavigationBarColor: appUiStyle.setBackgroundTheme()
       ),
       child: Scaffold(
-        backgroundColor: appUiStyle.setBackgroundTheme(),
         appBar: buildAppBar(context, appUiStyle),
         body: buildBody(context, appUiStyle)
       ),
@@ -24,13 +23,9 @@ class Settings extends StatelessWidget{
 
   AppBar buildAppBar(BuildContext context, AppUiStyle appUiStyle){
     return AppBar(
-      backgroundColor: appUiStyle.setBackgroundTheme(),
       elevation: 0.0,
-      title: Text(
+      title: const Text(
         "Settings",
-        style: TextStyle(
-          color: appUiStyle.setTextTheme(),
-        ),
       ),
       leading: LeadingButtonWidget(appUiStyle: appUiStyle)
     );

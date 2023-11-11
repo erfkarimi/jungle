@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:jungle/view/home/task/task_page.dart';
@@ -18,40 +17,39 @@ class HomePageState extends State<HomePage> {
   final Box settingsBox = Hive.box("settings");
   @override
   Widget build(context) {
-    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
+    
     return SafeArea(
       top: false,
       child: DefaultTabController(
         length: 3,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: buildAppBar(appUiStyle),
+          appBar: buildAppBar(),
           body: buildBody(),
         ),
       ),
     );
   }
 
-  PreferredSizeWidget buildAppBar(AppUiStyle appUiStyle) {
+  PreferredSizeWidget buildAppBar() {
     return PreferredSize(
       preferredSize: const Size.fromHeight(100),
       child: AppBar(
-       // backgroundColor: appUiStyle.setBackgroundTheme(),
         leading: null,
         elevation: 0.0,
-        title: Text(
+        title: const Text(
           "Jungle",
           style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: appUiStyle.setTextTheme()),
+              fontWeight: FontWeight.bold),
         ),
-        actions: appBarActionWidget(appUiStyle),
-        bottom: tabBarWidget(appUiStyle),
+        actions: appBarActionWidget(),
+        bottom: tabBarWidget(),
       ),
     );
   }
 
-  List<Widget> appBarActionWidget(AppUiStyle appUiStyle) {
+  List<Widget> appBarActionWidget() {
+    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return [
       MaterialButton(
         minWidth: 10,
@@ -59,7 +57,6 @@ class HomePageState extends State<HomePage> {
           setState(() {
           appUiStyle.darkTheme = !appUiStyle.darkTheme;
           appUiStyle.saveToDb(appUiStyle.darkTheme);
-          print(settingsBox.get("darkTheme"));
         });
         },
         shape: CircleBorder(
@@ -95,16 +92,11 @@ class HomePageState extends State<HomePage> {
     ];
   }
 
-  PreferredSizeWidget tabBarWidget(AppUiStyle appUiStyle) {
+  PreferredSizeWidget tabBarWidget() {
     return TabBar(
-        dividerColor: appUiStyle.setBackgroundTheme(),
         indicatorPadding:
             const EdgeInsets.symmetric(vertical: 5),
-        indicatorSize: TabBarIndicatorSize.label,
-        indicatorColor: Colors.blue.shade600,
         splashBorderRadius: BorderRadius.circular(10),
-        labelColor: Colors.blue.shade600,
-        unselectedLabelColor: appUiStyle.setTextTheme(),
         labelStyle: const TextStyle(
           fontWeight: FontWeight.bold),
         tabs: tabListWidget());

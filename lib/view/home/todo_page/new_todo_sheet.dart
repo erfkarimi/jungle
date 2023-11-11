@@ -9,10 +9,9 @@ import '../../../view_model/text_field_validation/text_field_validation.dart';
 import '../../../widget/text_button_widget/text_button_widget.dart';
 
 class NewTodoSheet extends StatefulWidget{
-  final AppUiStyle appUiStyle;
   static DateTime presentDate = DateTime.now();
   static TimeOfDay presentTime = TimeOfDay.now();
-  const NewTodoSheet({super.key, required this.appUiStyle});
+  const NewTodoSheet({super.key});
 
   @override
   State<NewTodoSheet> createState() => _NewTodoSheetState();
@@ -27,6 +26,7 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
   
   @override 
   Widget build(context){
+    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return Padding(
               padding: MediaQuery.of(context).viewInsets,
               child: Container(
@@ -35,23 +35,21 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20)
                   ),
-                  color: widget.appUiStyle.setBackgroundTheme(),
+                  color: appUiStyle.setBackgroundTheme(),
                 ),
                 child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        todoTextField(widget.appUiStyle),
-                        
-                        timeAndDatePickerWidget(
-                          widget.appUiStyle),
+                        todoTextField(),
+                        timeAndDatePickerWidget(),
                       ],
                     )),
               ));
   }
 
-  Widget todoTextField(AppUiStyle appUiStyle) {
+  Widget todoTextField() {
     return Consumer<TextFieldValidation>(
       builder: (context, textFieldValidation, _) {
         return TextField(
@@ -59,8 +57,6 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
           textCapitalization: TextCapitalization.sentences,
           autofocus: true,
           controller: controller,
-          style: TextStyle(
-            color: appUiStyle.setTextTheme()),
           decoration: const InputDecoration(
             hintText: "Title",
             hintStyle: TextStyle(
@@ -77,8 +73,7 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
     );
   }
 
-  Widget timeAndDatePickerWidget(
-  AppUiStyle appUiStyle){
+  Widget timeAndDatePickerWidget(){
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -98,9 +93,8 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
                 
               }
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.schedule,
-            color: appUiStyle.setTextTheme(),
             )),
             showTimeAndDate(),
             saveTodoButton()
@@ -109,7 +103,6 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
   }
 
   Future<void> showTP() async {
-    
     TimeOfDay? timeOfDay =
         await showTimePicker(
           context: context, initialTime: NewTodoSheet.presentTime);
