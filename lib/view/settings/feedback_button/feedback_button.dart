@@ -15,7 +15,7 @@ class FeedbackButton extends StatelessWidget{
           Icons.question_mark,
           color: appUiStyle.setTextTheme(),
           ),
-          title: Text(
+          title: const Text(
             "Feedback",
             style: TextStyle(
               fontSize: 16

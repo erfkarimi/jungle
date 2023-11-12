@@ -34,20 +34,14 @@ class CompletedTodoState extends State<CompletedTodo>{
         } else {
             return Padding(
               padding: const EdgeInsets.all(10),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: appUiStyle.setItemBackgroundTheme(),
-                  ),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: completedTodoBox.length,
-                  itemBuilder: (context, int index){
-                    index = completedTodoBox.length - 1 - index;
-                    return completedTodoButton(index);
-                  }
-                  ),
-              ),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: completedTodoBox.length,
+                itemBuilder: (context, int index){
+                  index = completedTodoBox.length - 1 - index;
+                  return completedTodoButton(index);
+                }
+                ),
             );
         }
       }
@@ -78,7 +72,7 @@ class CompletedTodoState extends State<CompletedTodo>{
           });
         },
         icon: Icon(
-          Icons.check,
+          Icons.task_alt_outlined,
           color: Palette.ultramarineBlue,
           ),
       ),
@@ -97,7 +91,6 @@ class CompletedTodoState extends State<CompletedTodo>{
           ),
       ),
       ),
-            
     );
   }
 
@@ -109,7 +102,7 @@ class CompletedTodoState extends State<CompletedTodo>{
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
-              "asset/image/to-do-list-rafiki.png",
+              "asset/image/to-do-list-cuate.png",
               width: 250,
             ),
             const Text(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:jungle/view/home/task/task_page.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'completed_todo_page/completed_todo_page.dart';
 import 'todo_page/todo_page.dart';
@@ -20,21 +20,24 @@ class HomePageState extends State<HomePage> {
     
     return SafeArea(
       top: false,
-      child: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: buildAppBar(),
-          body: buildBody(),
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          systemNavigationBarColor: Theme.of(context).colorScheme.background
+        ),
+        child: DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: buildAppBar(),
+            body: buildBody(),
+          ),
         ),
       ),
     );
   }
 
-  PreferredSizeWidget buildAppBar() {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(100),
-      child: AppBar(
+  AppBar buildAppBar() {
+    return AppBar(
         leading: null,
         elevation: 0.0,
         title: const Text(
@@ -44,7 +47,6 @@ class HomePageState extends State<HomePage> {
         ),
         actions: appBarActionWidget(),
         bottom: tabBarWidget(),
-      ),
     );
   }
 
@@ -53,26 +55,7 @@ class HomePageState extends State<HomePage> {
     return [
       MaterialButton(
         minWidth: 10,
-        onPressed: (){
-          setState(() {
-          appUiStyle.darkTheme = !appUiStyle.darkTheme;
-          appUiStyle.saveToDb(appUiStyle.darkTheme);
-        });
-        },
-        shape: CircleBorder(
-          side: BorderSide(color: appUiStyle.setTextTheme()),
-        ),
-        child: Icon(
-          appUiStyle.darkTheme ? Icons.wb_sunny_outlined
-          : Icons.brightness_2_outlined,
-          color: appUiStyle.setTextTheme())
-      ),
-      MaterialButton(
-        minWidth: 10,
         onPressed: () => Get.toNamed("/notifications"),
-        shape: CircleBorder(
-          side: BorderSide(color: appUiStyle.setTextTheme()),
-        ),
         child: Icon(
           Icons.notifications_outlined,
           color: appUiStyle.setTextTheme()
@@ -81,10 +64,6 @@ class HomePageState extends State<HomePage> {
       MaterialButton(
         minWidth: 10,
         onPressed: () => Get.toNamed("/settings"),
-        shape: CircleBorder(
-          side: BorderSide(
-            color: appUiStyle.setTextTheme()),
-        ),
         child: Icon(
           Icons.settings_outlined,
           color: appUiStyle.setTextTheme()),
@@ -92,26 +71,33 @@ class HomePageState extends State<HomePage> {
     ];
   }
 
-  PreferredSizeWidget tabBarWidget() {
-    return TabBar(
-        indicatorPadding:
-            const EdgeInsets.symmetric(vertical: 5),
-        splashBorderRadius: BorderRadius.circular(10),
-        labelStyle: const TextStyle(
-          fontWeight: FontWeight.bold),
-        tabs: tabListWidget());
+  PreferredSize tabBarWidget() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(40),
+      child: Align(
+        alignment: Alignment.bottomLeft,
+        child: TabBar(
+          dividerColor: Theme.of(context).colorScheme.background,
+          isScrollable: true,
+            indicatorPadding:
+                const EdgeInsets.symmetric(vertical: 5),
+            splashBorderRadius: BorderRadius.circular(10),
+            labelStyle: const TextStyle(
+              fontWeight: FontWeight.bold),
+            tabs: tabListWidget()),
+      ),
+    );
   }
 
   List<Tab> tabListWidget() {
     return [
-      const Tab(child: Text("My Task")),
-      const Tab(child:Text("My Todo")),
+      const Tab(child: Text("My task")),
       const Tab(child: Text("Completed")),
     ];
   }
 
   Widget buildBody() {
     return const TabBarView(
-        children: [TaskPage(), TodoPage(), CompletedTodo()]);
+        children: [TodoPage(), CompletedTodo()]);
   }
 }

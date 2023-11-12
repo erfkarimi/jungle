@@ -157,7 +157,6 @@ class TaskPageState extends State<TaskPage> {
       child: const Icon(
         Icons.add,
         size: 40,
-        color: Colors.white,
       ),
     );
   }

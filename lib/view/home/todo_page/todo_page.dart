@@ -39,19 +39,13 @@ class TodoPageState extends State<TodoPage>{
           } else {
             return Padding(
               padding: const EdgeInsets.all(10),
-              child: Card(
-                elevation: 0.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: todoBox.length,
-                    itemBuilder: (context, index) {
-                      index = todoBox.length - 1 - index;
-                      return todoButton(index, appUiStyle);
-                    }),
-              ),
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: todoBox.length,
+                  itemBuilder: (context, index) {
+                    index = todoBox.length - 1 - index;
+                    return todoButton(index, appUiStyle);
+                  }),
             );
           }
         });
@@ -111,7 +105,7 @@ class TodoPageState extends State<TodoPage>{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              "asset/image/to-do-list-cuate.png",
+              "asset/image/tasks.png",
               width: 250,
             ),
             const Text(
@@ -151,7 +145,7 @@ class TodoPageState extends State<TodoPage>{
       child: const Icon(
         Icons.add,
         size: 40,
-        color: Colors.white,
+        //color: Colors.white,
       ),
     );
   }
