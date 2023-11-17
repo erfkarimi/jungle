@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jungle/view/settings/theme_button/theme_button.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import '../../view_model/app_ui_style/app_ui_style.dart';
@@ -10,9 +11,14 @@ class Settings extends StatelessWidget{
   @override 
   Widget build(context){
     final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
-    return Scaffold(
-      appBar: buildAppBar(context, appUiStyle),
-      body: buildBody(context, appUiStyle)
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        systemNavigationBarColor: Theme.of(context).colorScheme.background
+      ),
+      child: Scaffold(
+        appBar: buildAppBar(context, appUiStyle),
+        body: buildBody(context, appUiStyle)
+      ),
     );
   }
 
@@ -30,7 +36,12 @@ class Settings extends StatelessWidget{
     return Column(
       children: [
         const ThemeButton(),
-        FeedbackButton(appUiStyle: appUiStyle)
+        FeedbackButton(appUiStyle: appUiStyle),
+        const Expanded(
+          child: SizedBox()),
+        const Text(
+          "Made with 💙 by Flutter"
+        )
       ],
     );
   }

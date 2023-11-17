@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
@@ -16,15 +18,18 @@ class EditTodoPage extends StatelessWidget {
   Widget build(context) {
     
     final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
+    
     final todoModel = todoBox.getAt(index) as TodoModel;
     return Scaffold(
       appBar: buildAppBar(context, todoBox, todoModel),
-      body: buildBody(todoModel),
+      body: buildBody(context,todoModel),
     );
   }
 
   AppBar buildAppBar(BuildContext context,
-      Box<TodoModel> todoBox, TodoModel todoModel) {
+      Box<TodoModel> todoBox,
+      TodoModel todoModel,
+      ) {
       final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return AppBar(
       title: const Text(
@@ -38,7 +43,7 @@ class EditTodoPage extends StatelessWidget {
     );
   }
 
-  Widget buildBody(TodoModel todoModel) {
+  Widget buildBody(BuildContext context, TodoModel todoModel,) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: SingleChildScrollView(
@@ -46,6 +51,8 @@ class EditTodoPage extends StatelessWidget {
           children: [
             titleTextField(todoModel),
             const SizedBox(height: 10),
+            timeAndDateWidget(context, todoModel),
+            const SizedBox(width: 10),
             descriptionTextField(todoModel),
           ],
         ),
@@ -73,6 +80,30 @@ class EditTodoPage extends StatelessWidget {
     );
   }
 
+
+  Widget timeAndDateWidget(
+    BuildContext context,
+    TodoModel todoModel){
+    DateFormat currentDate = DateFormat("yyyy-MM-dd");
+    var date = Jiffy.parse(currentDate.format(todoModel.dateTime!)).yMMMEd;
+    String time = todoModel.timeOfDay?.format(context) ?? "";
+    return Row(
+      children: [
+        const Icon(Icons.schedule),
+        TextButton(
+          onPressed: (){},
+          child: Text(
+            "$date, $time",
+            style: const TextStyle(
+              fontWeight: FontWeight.bold
+            )
+          ),
+        ),
+      ],
+    );
+  }
+
+
   Widget descriptionTextField(TodoModel todo) {
     return TextFormField(
       cursorColor: Palette.ultramarineBlue,
@@ -99,6 +130,7 @@ class EditTodoPage extends StatelessWidget {
             TodoModel(
               todoModel.title,
               todoModel.description,
+              null, null
             ));
         Get.back();
       },

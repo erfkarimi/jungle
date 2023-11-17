@@ -19,17 +19,23 @@ class TodoModelAdapter extends TypeAdapter<TodoModel> {
     return TodoModel(
       fields[0] as String,
       fields[1] as String,
+      fields[2] as TimeOfDay?,
+      fields[3] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, TodoModel obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.description);
+      ..write(obj.description)
+      ..writeByte(2)
+      ..write(obj.timeOfDay)
+      ..writeByte(3)
+      ..write(obj.dateTime);
   }
 
   @override

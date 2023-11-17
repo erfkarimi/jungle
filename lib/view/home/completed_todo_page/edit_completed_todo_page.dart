@@ -100,6 +100,7 @@ class EditCompletedTodoPage extends StatelessWidget {
             TodoModel(
               completedTodoModel.title,
               completedTodoModel.description,
+              null, null
             ));
         Get.back();
       },

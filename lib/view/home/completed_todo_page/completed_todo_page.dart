@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:jungle/constant/palette/palette.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import '../../../../model/todo_model/todo_model.dart';
@@ -71,9 +70,9 @@ class CompletedTodoState extends State<CompletedTodo>{
             todoBox.add(completedTodo);
           });
         },
-        icon: Icon(
+        icon: const Icon(
           Icons.task_alt_outlined,
-          color: Palette.ultramarineBlue,
+          color: Colors.teal,
           ),
       ),
       title: Text(
@@ -130,7 +129,6 @@ class CompletedTodoState extends State<CompletedTodo>{
               completedTodoBox.deleteAt(index);
                   Get.back();
             },
-  
           );
         });
   }
