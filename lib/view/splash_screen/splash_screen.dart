@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:jungle/constant/palette/palette.dart';
 import 'package:jungle/view/home/home_page.dart';
 import 'package:jungle/view/onboarding_page/onboarding_page.dart';
 import 'package:get/get.dart';
@@ -26,16 +25,16 @@ class SplashScreenState extends State<SplashScreen>{
 
   @override 
   Widget build(context){
-    return AnnotatedRegion<SystemUiOverlayStyle>(
+    return const AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: Palette.ultramarineBlue,
+        systemNavigationBarColor: Color(0xff009688),
         systemNavigationBarIconBrightness: Brightness.light,
         statusBarColor: Colors.transparent,
       ),
       child: Material(
-        color: Palette.ultramarineBlue,
-        child: const Center(
+        color: Color(0xff009688),
+        child: Center(
           child: Text(
             "Jungle",
             style: TextStyle(
@@ -50,7 +49,7 @@ class SplashScreenState extends State<SplashScreen>{
 
   void navigation(){
     Timer(
-      const Duration(seconds: 2), (){
+      const Duration(seconds: 1), (){
         Get.off(()=> ValueListenableBuilder(
           valueListenable: settingsBox.listenable(),
           builder: (context, box, child){

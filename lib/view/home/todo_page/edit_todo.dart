@@ -48,7 +48,7 @@ class EditTodoPage extends StatelessWidget {
           children: [
             titleTextField(todoModel),
             const SizedBox(height: 10),
-            timeAndDateWidget(context, todoModel),
+            //timeAndDateWidget(context, todoModel),
             const SizedBox(width: 10),
             descriptionTextField(todoModel),
           ],
@@ -82,11 +82,13 @@ class EditTodoPage extends StatelessWidget {
     BuildContext context,
     TodoModel todoModel){
     DateFormat currentDate = DateFormat("yyyy-MM-dd");
-    String presentDate = Jiffy.parse(currentDate.format(DateTime.now())).yMMMEd;
+    TimeOfDay presentTime = TimeOfDay.now();
+    DateTime presentDate = DateTime.now();
     String date = Jiffy.parse(currentDate.format(todoModel.dateTime)).yMMMEd;
     String time = todoModel.timeOfDay.format(context);
 
-    if(date != presentDate){
+    if(todoModel.dateTime != presentDate 
+      && todoModel.timeOfDay != presentTime){
       return Row(
       children: [
         const Icon(Icons.schedule),
@@ -101,8 +103,8 @@ class EditTodoPage extends StatelessWidget {
         ),
       ],
     );
-  } 
-  return Row(
+  } else {
+    return Row(
       children: [
         const Icon(Icons.schedule),
         TextButton(
@@ -116,6 +118,7 @@ class EditTodoPage extends StatelessWidget {
         ),
       ],
     );
+  } 
     
   }
 

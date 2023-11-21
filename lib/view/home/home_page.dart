@@ -28,7 +28,7 @@ class HomePageState extends State<HomePage> {
       top: false,
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
-          systemNavigationBarColor: Theme.of(context).colorScheme.background
+          systemNavigationBarColor: Theme.of(context).colorScheme.background,
         ),
         child: DefaultTabController(
           length: 2,

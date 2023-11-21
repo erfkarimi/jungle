@@ -16,6 +16,7 @@ class TodoPage extends StatefulWidget{
 class TodoPageState extends State<TodoPage>{
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
+  int index = 0;
   
   @override 
   Widget build(context){
@@ -34,23 +35,23 @@ class TodoPageState extends State<TodoPage>{
         valueListenable: todoBox.listenable(),
         builder: (context, todoBox, __) {
           if (todoBox.isEmpty) {
-            return showNoTodo(appUiStyle);
+            return showNoTodo();
           } else {
             return Padding(
               padding: const EdgeInsets.all(10),
               child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: todoBox.length,
-                  itemBuilder: (context, index) {
+                  itemBuilder: (context, _) {
                     index = todoBox.length - 1 - index;
-                    return todoButton(index, appUiStyle);
+                    return todoButton(appUiStyle);
                   }),
             );
           }
         });
   }
 
-  Widget todoButton(int index, AppUiStyle appUiStyle) {
+  Widget todoButton(AppUiStyle appUiStyle) {
     final todo = todoBox.getAt(index) as TodoModel;
     return MaterialButton(
       onPressed: () {
@@ -60,7 +61,7 @@ class TodoPageState extends State<TodoPage>{
           );
         
       },
-      onLongPress: () => deleteUnDoneTodoOnLongPressDialog(index),
+      onLongPress: () => deleteUnDoneTodoOnLongPressDialog(),
       height: 50,
       elevation: 0.0,
       shape: RoundedRectangleBorder(
@@ -73,6 +74,7 @@ class TodoPageState extends State<TodoPage>{
           value: false,
           onChanged: (value) {
             setState(() {
+              showMarkedSnackBar();
               todoBox.deleteAt(index);
               completedTodoBox.add(todo);
             });
@@ -96,7 +98,7 @@ class TodoPageState extends State<TodoPage>{
     );
   }
 
-  Widget showNoTodo(AppUiStyle appUiStyle) {
+  Widget showNoTodo() {
     return Center(
       child: SingleChildScrollView(
         child: Column(
@@ -143,12 +145,11 @@ class TodoPageState extends State<TodoPage>{
       child: const Icon(
         Icons.add,
         size: 40,
-        //color: Colors.white,
       ),
     );
   }
 
-  void deleteUnDoneTodoOnLongPressDialog(int index) {
+  void deleteUnDoneTodoOnLongPressDialog() {
       showDialog(
         context: context,
         builder: (context) {
@@ -160,5 +161,35 @@ class TodoPageState extends State<TodoPage>{
             },
           );
         });
+  }
+
+  void showMarkedSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Theme.of(context).dialogBackgroundColor,
+        content: Row(
+          children: [
+            const Icon(Icons.check, color: Colors.teal),
+            const SizedBox(width: 10),
+            RichText(
+              text: TextSpan(
+                text:  todoBox.getAt(index)!.title,
+                style: TextStyle(
+                color: Theme.of(context).textTheme.bodyMedium!.color,
+                  fontWeight: FontWeight.bold
+              ),
+              children: const [
+                TextSpan(
+                  text: " marked as completed",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500
+                  )
+                )
+              ]
+                )
+            ),
+          ],
+        ))
+    );
   }
 }

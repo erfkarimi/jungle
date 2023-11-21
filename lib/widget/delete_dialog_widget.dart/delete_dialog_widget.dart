@@ -15,23 +15,24 @@ class DeleteDialogWidget extends AlertDialog{
             title: const Text("Deletion",
                 style: TextStyle(
                 )),
-            content: const Text("Are you sure ?"),
+            content: const Text("Would you like to delete this task?"),
             actions: [
               TextButton(
                 onPressed: firstButtonFunction,
                 child: const Text(
-                  "Yes",
+                  "Delete",
                   style: TextStyle(
-                    color: Colors.blue,
-                    
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold
                     ),),
               ),
               TextButton(
                 onPressed: ()=> Get.back(),
-                child: Text(
+                child: const Text(
                   "Cancel",
                   style: TextStyle(
-                    color: Colors.red.shade600,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold
                     ),
                 ),
               )
