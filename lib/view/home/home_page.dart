@@ -1,8 +1,9 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
+import 'package:jungle/constant/palette/palette.dart';
 import 'completed_todo_page/completed_todo_page.dart';
 import 'todo_page/todo_page.dart';
 
@@ -15,6 +16,11 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   final Box settingsBox = Hive.box("settings");
+  @override
+  void initState() {
+    super.initState();
+    notificationPermissionFunc();
+  }
   @override
   Widget build(context) {
     
@@ -51,22 +57,20 @@ class HomePageState extends State<HomePage> {
   }
 
   List<Widget> appBarActionWidget() {
-    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return [
       MaterialButton(
         minWidth: 10,
         onPressed: () => Get.toNamed("/notifications"),
-        child: Icon(
+        child: const Icon(
           Icons.notifications_outlined,
-          color: appUiStyle.setTextTheme()
           ),
       ),
       MaterialButton(
         minWidth: 10,
         onPressed: () => Get.toNamed("/settings"),
-        child: Icon(
+        child: const Icon(
           Icons.settings_outlined,
-          color: appUiStyle.setTextTheme()),
+          ),
       ),
     ];
   }
@@ -99,5 +103,49 @@ class HomePageState extends State<HomePage> {
   Widget buildBody() {
     return const TabBarView(
         children: [TodoPage(), CompletedTodo()]);
+  }
+
+  void notificationPermissionFunc(){
+    AwesomeNotifications().isNotificationAllowed()
+    .then((isAllowed){
+      if(!isAllowed){
+        showDialog(
+      context: context,
+      builder: (context)=> AlertDialog(
+        title: const Text("Allow notifications"),
+        content: const Text("Our app would like to send you notifications"),
+        actions: [
+          TextButton(
+            onPressed: ()=> Navigator.pop(context),
+            child: const Text(
+              'Don\'t allow',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 18
+              ),
+            )
+            ),
+          TextButton(
+            onPressed: (){
+              AwesomeNotifications()
+                .requestPermissionToSendNotifications()
+                .then((_){
+                    Navigator.pop(context);
+                });
+            },
+            child: Text(
+              'Allow',
+              style: TextStyle(
+                fontSize: 18,
+                color: Palette.ultramarineBlue,
+                fontWeight: FontWeight.bold
+              ),
+            )
+            )
+        ],
+      )
+      );
+      }
+    } );
   }
 }

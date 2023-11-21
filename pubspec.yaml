@@ -22,6 +22,8 @@ dependencies:
   google_fonts: ^5.1.0
   smooth_page_indicator: ^1.1.0
   jiffy: ^6.2.1
+  flutter_launcher_icons: ^0.13.1
+  awesome_notifications: ^0.8.2
 
 dev_dependencies:
   flutter_test:
@@ -34,13 +36,12 @@ flutter:
   uses-material-design: true
 
   assets:
-    - asset/image/tasks.png
-    - asset/image/notes-amico.png
-    - asset/image/notes-pana.png
-    - asset/image/notes-rafiki.png
-    - asset/image/to-do-list-cuate.png
-    - asset/image/to-do-list-rafiki.png
-    - asset/image/new-notifications-amico.png
+    - asset/image/1st_page.png
+    - asset/image/2nd_page.png
+    - asset/image/3rd_page.png
+    - asset/image/complete_image.png
+    - asset/image/notification_image.png
+    - asset/image/task_image.png
   
   fonts:
     - family: Regular
@@ -48,8 +49,16 @@ flutter:
         - asset: "asset/font/Lato-Regular.ttf"
 
 flutter_native_splash:
-  color: "#3166ff"
+  color: "#009688"
 
   android_12:
-    color: "#3166ff"
-    icon_background_color: "#3166ff"
+    color: "#009688"
+    icon_background_color: "#009688"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "asset/icon/app_icon.png"
+  adaptive_icon_background: "asset/icon/app_icon_background.png"
+  adaptive_icon_foreground: "asset/icon/app_icon_foreground.png"

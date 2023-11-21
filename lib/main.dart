@@ -5,10 +5,12 @@ import 'package:jungle/model/todo_model/todo_model.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:jungle/view_model/text_field_validation/text_field_validation.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  var appDocumentDirectory = 
+  notificationInitialization();
+    var appDocumentDirectory = 
       await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
   await Hive.initFlutter();
@@ -17,7 +19,6 @@ Future<void> main() async{
   await Hive.openBox<TodoModel>("todo");
   await Hive.openBox<TodoModel>("completed");
   await Hive.openBox("settings");
-  
   runApp(
     MultiProvider(
       providers: [
@@ -29,4 +30,23 @@ Future<void> main() async{
       ],
       child: const App(),
       ));
+}
+
+void notificationInitialization(){
+  AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelGroupKey: 'todo_channel_group',
+        channelKey: 'todo_channel',
+        channelName: 'todo notification',
+        channelDescription: 'To show todo notifications',
+        defaultColor: const Color(0xff009688),
+        importance: NotificationImportance.High,
+        ledColor: Colors.white,
+        channelShowBadge: true,
+        ),
+    ],
+    debug: true
+    );
 }

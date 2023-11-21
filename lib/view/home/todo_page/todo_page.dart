@@ -71,7 +71,6 @@ class TodoPageState extends State<TodoPage>{
         leading: Checkbox(
           shape: const CircleBorder(),
           value: false,
-          side: BorderSide(color: appUiStyle.setTextTheme()),
           onChanged: (value) {
             setState(() {
               todoBox.deleteAt(index);
@@ -104,7 +103,7 @@ class TodoPageState extends State<TodoPage>{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              "asset/image/tasks.png",
+              "asset/image/task_image.png",
               width: 250,
             ),
             const Text(

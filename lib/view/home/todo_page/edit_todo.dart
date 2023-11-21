@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
@@ -8,7 +7,6 @@ import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
 import '../../../constant/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
-import '../../../view_model/app_ui_style/app_ui_style.dart';
 
 class EditTodoPage extends StatelessWidget {
   final int index;
@@ -30,11 +28,10 @@ class EditTodoPage extends StatelessWidget {
       Box<TodoModel> todoBox,
       TodoModel todoModel,
       ) {
-      final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return AppBar(
       title: const Text(
         "Edit todo"),
-      leading: LeadingButtonWidget(appUiStyle: appUiStyle),
+      leading: LeadingButtonWidget(),
       actions: [
         updateTodoButton(todoBox, todoModel),
         const SizedBox(width: 10),
@@ -85,9 +82,12 @@ class EditTodoPage extends StatelessWidget {
     BuildContext context,
     TodoModel todoModel){
     DateFormat currentDate = DateFormat("yyyy-MM-dd");
-    var date = Jiffy.parse(currentDate.format(todoModel.dateTime!)).yMMMEd;
-    String time = todoModel.timeOfDay?.format(context) ?? "";
-    return Row(
+    String presentDate = Jiffy.parse(currentDate.format(DateTime.now())).yMMMEd;
+    String date = Jiffy.parse(currentDate.format(todoModel.dateTime)).yMMMEd;
+    String time = todoModel.timeOfDay.format(context);
+
+    if(date != presentDate){
+      return Row(
       children: [
         const Icon(Icons.schedule),
         TextButton(
@@ -101,6 +101,22 @@ class EditTodoPage extends StatelessWidget {
         ),
       ],
     );
+  } 
+  return Row(
+      children: [
+        const Icon(Icons.schedule),
+        TextButton(
+          onPressed: (){},
+          child: const Text(
+            "Set time/date",
+            style: TextStyle(
+              fontWeight: FontWeight.bold
+            )
+          ),
+        ),
+      ],
+    );
+    
   }
 
 
@@ -125,18 +141,21 @@ class EditTodoPage extends StatelessWidget {
       Box<TodoModel> todoBox, TodoModel todoModel) {
     return TextButtonWidget(
       function: () {
-        todoBox.putAt(
-            index,
-            TodoModel(
-              todoModel.title,
-              todoModel.description,
-              null, null
-            ));
+        updateTodo(todoModel, todoBox, index);
         Get.back();
       },
       buttonTitle: "Update",
       color: Colors.blue,
     );
+  }
+
+  void updateTodo(TodoModel todoModel, Box<TodoModel> todoBox ,int index){
+    final TodoModel updateTodoModel = TodoModel()
+              ..title = todoModel.title
+              ..description = todoModel.description
+              ..timeOfDay = TimeOfDay.now()
+              ..dateTime = DateTime.now();
+    todoBox.putAt(index, updateTodoModel);
   }
 
   Widget deleteTodoButton(

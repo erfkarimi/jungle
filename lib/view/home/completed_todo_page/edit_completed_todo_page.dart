@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
 import '../../../constant/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
-import '../../../view_model/app_ui_style/app_ui_style.dart';
 
 class EditCompletedTodoPage extends StatelessWidget {
   final int index;
@@ -25,12 +23,11 @@ class EditCompletedTodoPage extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context,
       Box<TodoModel> completedTodoBox, TodoModel todoModel) {
-      final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return AppBar(
       title: const Text(
         "Edit completed todo",
       ),
-      leading: LeadingButtonWidget(appUiStyle: appUiStyle),
+      leading: LeadingButtonWidget(),
       actions: [
         updateCompletedTodoButton(completedTodoBox, todoModel),
         deleteCompletedTodoButton(context, completedTodoBox)
@@ -95,18 +92,23 @@ class EditCompletedTodoPage extends StatelessWidget {
       Box<TodoModel> completedTodoBox, TodoModel completedTodoModel) {
     return TextButtonWidget(
       function: () {
-        completedTodoBox.putAt(
-            index,
-            TodoModel(
-              completedTodoModel.title,
-              completedTodoModel.description,
-              null, null
-            ));
+        updateCompletedTodo(completedTodoModel, completedTodoBox, index);
         Get.back();
       },
       buttonTitle: "Update",
         color: Colors.blue,
     );
+  }
+
+  void updateCompletedTodo(
+      TodoModel completedTodoModel,
+      Box<TodoModel> completedTodoBox, int index){
+    final TodoModel updateCompletedTodoModel = TodoModel()
+              ..title = completedTodoModel.title
+              ..description = completedTodoModel.description
+              ..timeOfDay = TimeOfDay.now()
+              ..dateTime = DateTime.now();
+    completedTodoBox.putAt(index, updateCompletedTodoModel);
   }
 
   Widget deleteCompletedTodoButton(

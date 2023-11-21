@@ -10,12 +10,11 @@ class FeedbackButton extends StatelessWidget{
   Widget build(context){
     return MaterialButton(
       onPressed: ()=> _sendMail(),
-      child: ListTile(
+      child: const ListTile(
         leading: Icon(
           Icons.question_mark,
-          color: appUiStyle.setTextTheme(),
           ),
-          title: const Text(
+          title: Text(
             "Feedback",
             style: TextStyle(
               fontSize: 16

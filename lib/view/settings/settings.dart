@@ -28,7 +28,7 @@ class Settings extends StatelessWidget{
       title: const Text(
         "Settings",
       ),
-      leading: LeadingButtonWidget(appUiStyle: appUiStyle)
+      leading: LeadingButtonWidget()
     );
   }
 

@@ -101,7 +101,7 @@ class CompletedTodoState extends State<CompletedTodo>{
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
-              "asset/image/to-do-list-cuate.png",
+              "asset/image/complete_image.png",
               width: 250,
             ),
             const Text(

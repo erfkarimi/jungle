@@ -1,27 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+export 'package:hive/hive.dart';
 part 'todo_model.g.dart';
 
 @HiveType(typeId: 1)
 class TodoModel{
 
   @HiveField(0)
-  String title;
+  late String title;
 
   @HiveField(1)
-  String description;
+  late String description;
 
   @HiveField(2)
-  TimeOfDay? timeOfDay;
+  late TimeOfDay timeOfDay;
 
   @HiveField(3)
-  DateTime? dateTime;
-  
-  TodoModel(
-    this.title,
-    this.description,
-    this.timeOfDay,
-    this.dateTime,
-    
-  );
+  late DateTime dateTime;
 }

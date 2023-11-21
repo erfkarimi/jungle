@@ -34,17 +34,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
             children: [
               PageWidget(
               text: text1,
-              image: "asset/image/notes-amico.png",
+              image: "asset/image/1st_page.png",
               backgroundColor: Colors.purple.shade800
               ),
               PageWidget(
               text: text2,
-              image: "asset/image/notes-pana.png",
+              image: "asset/image/2nd_page.png",
               backgroundColor: Colors.teal
               ),
               PageWidget(
               text: text3,
-              image: "asset/image/notes-rafiki.png",
+              image: "asset/image/3rd_page.png",
               backgroundColor: Palette.ultramarineBlue)
             ],
           ),
