@@ -103,11 +103,10 @@ class EditCompletedTodoPage extends StatelessWidget {
   void updateCompletedTodo(
       TodoModel completedTodoModel,
       Box<TodoModel> completedTodoBox, int index){
-    final TodoModel updateCompletedTodoModel = TodoModel()
-              ..title = completedTodoModel.title
-              ..description = completedTodoModel.description
-              ..timeOfDay = TimeOfDay.now()
-              ..dateTime = DateTime.now();
+    final TodoModel updateCompletedTodoModel = TodoModel(
+            completedTodoModel.title,
+            completedTodoModel.description
+    );
     completedTodoBox.putAt(index, updateCompletedTodoModel);
   }
 

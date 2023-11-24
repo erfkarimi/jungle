@@ -47,6 +47,11 @@ void notificationInitialization(){
         channelShowBadge: true,
         ),
     ],
+    channelGroups: [
+    NotificationChannelGroup(
+        channelGroupKey: 'todo_channel_group',
+        channelGroupName: 'Task group')
+  ],
     debug: true
     );
 }

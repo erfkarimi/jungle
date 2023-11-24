@@ -7,14 +7,21 @@ part 'todo_model.g.dart';
 class TodoModel{
 
   @HiveField(0)
-  late String title;
+  String title;
 
   @HiveField(1)
-  late String description;
+  String description;
 
   @HiveField(2)
-  late TimeOfDay timeOfDay;
+  TimeOfDay? timeOfDay;
 
   @HiveField(3)
-  late DateTime dateTime;
+  DateTime? dateTime;
+
+  TodoModel(
+    this.title,
+    this.description,
+    [this.timeOfDay,
+    this.dateTime]
+  );
 }

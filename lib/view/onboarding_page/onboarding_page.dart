@@ -21,7 +21,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget build(context){
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
-        systemNavigationBarColor: Color(0xff29c5e6)
+        systemNavigationBarColor: Color(0xff009688)
       ),
       child: Scaffold(
         body: PageView(
@@ -57,7 +57,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget pageSwitcherWidget(){
     return Container(
           height: 50,
-          color: const Color(0xff29c5e6),
+          color: const Color(0xff009688),
           padding: const EdgeInsets.symmetric(
             horizontal: 24,
           ),
@@ -120,7 +120,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   "Skip",
                   style: TextStyle(
                     color: isLastPage ? 
-                    const Color(0xff29c5e6) 
+                    const Color(0xff009688) 
                     :Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.bold

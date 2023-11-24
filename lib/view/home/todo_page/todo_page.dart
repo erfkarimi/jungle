@@ -7,26 +7,23 @@ import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dar
 import '../../../model/todo_model/todo_model.dart';
 import 'edit_todo.dart';
 
-class TodoPage extends StatefulWidget{
+class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
 
   @override
-  TodoPageState createState()=> TodoPageState();
+  TodoPageState createState() => TodoPageState();
 }
-class TodoPageState extends State<TodoPage>{
+
+class TodoPageState extends State<TodoPage> {
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
-  int index = 0;
-  
-  @override 
-  Widget build(context){
-    
-    
+
+  @override
+  Widget build(context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      floatingActionButton: floatingActionButton(),
-      body: buildBody()
-    );
+        resizeToAvoidBottomInset: false,
+        floatingActionButton: floatingActionButton(),
+        body: buildBody());
   }
 
   Widget buildBody() {
@@ -42,26 +39,24 @@ class TodoPageState extends State<TodoPage>{
               child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: todoBox.length,
-                  itemBuilder: (context, _) {
+                  itemBuilder: (context, int index) {
                     index = todoBox.length - 1 - index;
-                    return todoButton(appUiStyle);
+                    return todoButton(appUiStyle, index);
                   }),
             );
           }
         });
   }
 
-  Widget todoButton(AppUiStyle appUiStyle) {
+  Widget todoButton(AppUiStyle appUiStyle, int index) {
     final todo = todoBox.getAt(index) as TodoModel;
+    final String todoTitle = todo.title;
+    final String todoDescription = todo.description;
     return MaterialButton(
       onPressed: () {
-        Get.to(
-          EditTodoPage(index: index),
-          transition: Transition.cupertino
-          );
-        
+        Get.to(EditTodoPage(index: index), transition: Transition.cupertino);
       },
-      onLongPress: () => deleteUnDoneTodoOnLongPressDialog(),
+      onLongPress: () => deleteUnDoneTodoOnLongPressDialog(index),
       height: 50,
       elevation: 0.0,
       shape: RoundedRectangleBorder(
@@ -74,26 +69,24 @@ class TodoPageState extends State<TodoPage>{
           value: false,
           onChanged: (value) {
             setState(() {
-              showMarkedSnackBar();
+              showMarkedSnackBar(index);
               todoBox.deleteAt(index);
               completedTodoBox.add(todo);
             });
           },
         ),
         title: Text(
-          todoBox.getAt(index)!.title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold
-            ),
+          todoTitle,
+          maxLines: 2,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: todoBox.getAt(index)!.description.isEmpty ? null :
-          Text(
-            todoBox.getAt(index)!.description,
-            maxLines: 2,
-            style: TextStyle(
-              color: appUiStyle.setDescriptionTheme()
-            ),
-        ),
+        subtitle: todoDescription.isEmpty
+            ? null
+            : Text(
+                todoDescription,
+                maxLines: 2,
+                style: TextStyle(color: appUiStyle.setDescriptionTheme()),
+              ),
       ),
     );
   }
@@ -111,29 +104,27 @@ class TodoPageState extends State<TodoPage>{
             const Text(
               "No todo",
               style: TextStyle(
-                fontSize: 17,),
+                fontSize: 17,
+              ),
             )
           ],
         ),
       ),
     );
   }
-    void showNewTodoBottomSheet() {
+
+  void showNewTodoBottomSheet() {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         builder: (context) {
           return StatefulBuilder(
-            builder: (context, setState){
+            builder: (context, setState) {
               return const NewTodoSheet();
             },
-              
           );
-        }
-    );
+        });
   }
-
-  
 
   FloatingActionButton floatingActionButton() {
     return FloatingActionButton(
@@ -149,13 +140,13 @@ class TodoPageState extends State<TodoPage>{
     );
   }
 
-  void deleteUnDoneTodoOnLongPressDialog() {
-      showDialog(
+  void deleteUnDoneTodoOnLongPressDialog(int index) {
+    showDialog(
         context: context,
         builder: (context) {
           return DeleteDialogWidget(
             index: index,
-            firstButtonFunction: (){
+            firstButtonFunction: () {
               todoBox.deleteAt(index);
               Get.back();
             },
@@ -163,33 +154,25 @@ class TodoPageState extends State<TodoPage>{
         });
   }
 
-  void showMarkedSnackBar() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+  void showMarkedSnackBar(int index) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Theme.of(context).dialogBackgroundColor,
         content: Row(
           children: [
             const Icon(Icons.check, color: Colors.teal),
             const SizedBox(width: 10),
             RichText(
-              text: TextSpan(
-                text:  todoBox.getAt(index)!.title,
-                style: TextStyle(
-                color: Theme.of(context).textTheme.bodyMedium!.color,
-                  fontWeight: FontWeight.bold
-              ),
-              children: const [
-                TextSpan(
-                  text: " marked as completed",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500
-                  )
-                )
-              ]
-                )
-            ),
+                text: TextSpan(
+                    text: todoBox.getAt(index)!.title,
+                    style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyMedium!.color,
+                        fontWeight: FontWeight.bold),
+                    children: const [
+                  TextSpan(
+                      text: " marked as completed",
+                      style: TextStyle(fontWeight: FontWeight.w500))
+                ])),
           ],
-        ))
-    );
+        )));
   }
 }
