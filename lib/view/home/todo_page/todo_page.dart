@@ -50,8 +50,8 @@ class TodoPageState extends State<TodoPage> {
 
   Widget todoButton(AppUiStyle appUiStyle, int index) {
     final todo = todoBox.getAt(index) as TodoModel;
-    final String todoTitle = todo.title;
-    final String todoDescription = todo.description;
+    final String todoTitle = todo.title ?? "";
+    final String todoDescription = todo.description ?? "";
     return MaterialButton(
       onPressed: () {
         Get.to(EditTodoPage(index: index), transition: Transition.cupertino);

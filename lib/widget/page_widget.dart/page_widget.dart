@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class PageWidget extends StatelessWidget{
   final String text;
+  final Color textColor;
   final String image;
   final Color backgroundColor;
 
   const PageWidget({super.key,
   required this.text,
+  required this.textColor,
   required this.image,
   required this.backgroundColor
 
@@ -29,8 +31,9 @@ class PageWidget extends StatelessWidget{
             Text(
             text,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: textColor,
+              fontWeight: FontWeight.bold,
               fontSize: 18,
               wordSpacing: 5,
             )

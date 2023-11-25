@@ -1,139 +1,165 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
-import '../../../constant/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
 
-class EditCompletedTodoPage extends StatelessWidget {
+class EditCompletedTodoPage extends StatefulWidget {
   final int index;
   const EditCompletedTodoPage({super.key, required this.index});
 
   @override
-  Widget build(context) {
-    
-    final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
-    final completedTodoModel = completedTodoBox.getAt(index) as TodoModel;
-    return Scaffold(
-      appBar: buildAppBar(context, completedTodoBox, completedTodoModel),
-      body: buildBody(completedTodoModel),
-    );
-  } 
+  State<EditCompletedTodoPage> createState() => _EditCompletedTodoPageState();
+}
 
-  AppBar buildAppBar(BuildContext context,
-      Box<TodoModel> completedTodoBox, TodoModel todoModel) {
+class _EditCompletedTodoPageState extends State<EditCompletedTodoPage> {
+  final Box<TodoModel> compTodoBox = Hive.box<TodoModel>("completed");
+  String title = "";
+  String description = "";
+  DateTime? dateTime;
+  TimeOfDay? timeOfDay;
+
+  @override
+  Widget build(context) {
+    final compTodoModel = compTodoBox.getAt(widget.index) as TodoModel;
+    return Scaffold(
+      appBar: buildAppBar(compTodoModel),
+      body: buildBody(compTodoModel),
+    );
+  }
+
+  AppBar buildAppBar(
+      TodoModel compTodo) {
     return AppBar(
       title: const Text(
-        "Edit completed todo",
+        "Edit (completed)",
       ),
       leading: LeadingButtonWidget(),
       actions: [
-        updateCompletedTodoButton(completedTodoBox, todoModel),
-        deleteCompletedTodoButton(context, completedTodoBox)
+        deleteCompletedTodoButton()
       ],
     );
   }
 
-  Widget buildBody(TodoModel todoModel) {
+  Widget buildBody(TodoModel compTodo) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            titleTextField(todoModel),
-            const SizedBox(height: 10),
-            descriptionTextField(todoModel),
+            titleTextField(compTodo),
+            timeAndDateWidget(compTodo),
+            descriptionTextField(compTodo),
           ],
         ),
       ),
     );
   }
 
-  Widget titleTextField(TodoModel todo) {
+  Widget titleTextField(TodoModel compTodo) {
     return TextFormField(
-      cursorColor: Palette.ultramarineBlue,
-      textCapitalization: TextCapitalization.sentences,
-      textInputAction: TextInputAction.next,
-      style: const TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 18,
+        textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.next,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
         ),
-      initialValue: todo.title,
-      decoration: const InputDecoration(
-          hintText: "Title",
-          hintStyle: TextStyle(
-            color: Colors.grey,
-            
+        initialValue: compTodo.title,
+        decoration: const InputDecoration(
+            hintText: "Title",
+            hintStyle: TextStyle(
+              color: Colors.grey,
             ),
-          border: InputBorder.none),
-      onChanged: (String value)=> todo.title = value
-    );
+            prefixIcon: Icon(Icons.tag),
+            border: InputBorder.none),
+        onChanged: (String value) {
+          setState(() {
+            compTodoBox.putAt(
+                widget.index,
+                TodoModel(
+                    title: value,
+                    description: compTodo.description,
+                    dateTime: compTodo.dateTime,
+                    timeOfDay: compTodo.timeOfDay));
+          });
+        });
   }
 
-  Widget descriptionTextField(TodoModel todo) {
+  Widget timeAndDateWidget(TodoModel compTodo) {
+    DateFormat currentDate = DateFormat("yyyy-MM-dd");
+    DateTime date = compTodo.dateTime ?? DateTime.now();
+    TimeOfDay time = compTodo.timeOfDay ?? TimeOfDay.now();
+    String formattedDate = Jiffy.parse(currentDate.format(date)).MMMEd;
+
+      if(compTodo.dateTime != null && compTodo.timeOfDay != null){
+        return Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+          children: [
+            const Icon(Icons.schedule),
+              const SizedBox(width: 10),
+              Text("$formattedDate, ${time.format(context)}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    ),
+            ),
+          ],
+              ),
+        );
+    }
+    return const Text("");
+      
+  }
+
+  Widget descriptionTextField(TodoModel compTodo) {
     return TextFormField(
-      cursorColor: Palette.ultramarineBlue,
-      textCapitalization: TextCapitalization.sentences,
-      textInputAction: TextInputAction.newline,
-      maxLines: 20,
-      initialValue: todo.description,
-      decoration: const InputDecoration(
-        hintText: "Description",
-        hintStyle: TextStyle(
-          color: Colors.grey, ),
-        border: InputBorder.none
-      ),
-      onChanged: (String value)=> todo.description = value
-    );
+        textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.newline,
+        maxLines: 20,
+        initialValue: compTodo.description,
+        decoration: const InputDecoration(
+            hintText: "Description",
+            hintStyle: TextStyle(
+              color: Colors.grey,
+            ),
+            border: InputBorder.none),
+        onChanged: (String value) {
+          setState(() {
+            compTodoBox.putAt(
+                widget.index,
+                TodoModel(
+                    title: compTodo.title,
+                    description: value,
+                    dateTime: compTodo.dateTime,
+                    timeOfDay: compTodo.timeOfDay));
+          });
+        });
   }
 
-  Widget updateCompletedTodoButton(
-      Box<TodoModel> completedTodoBox, TodoModel completedTodoModel) {
+
+  Widget deleteCompletedTodoButton() {
     return TextButtonWidget(
-      function: () {
-        updateCompletedTodo(completedTodoModel, completedTodoBox, index);
-        Get.back();
-      },
-      buttonTitle: "Update",
-        color: Colors.blue,
-    );
-  }
-
-  void updateCompletedTodo(
-      TodoModel completedTodoModel,
-      Box<TodoModel> completedTodoBox, int index){
-    final TodoModel updateCompletedTodoModel = TodoModel(
-            completedTodoModel.title,
-            completedTodoModel.description
-    );
-    completedTodoBox.putAt(index, updateCompletedTodoModel);
-  }
-
-  Widget deleteCompletedTodoButton(
-    BuildContext context,
-    Box<TodoModel> completedTodoBox) {
-    return TextButtonWidget(
-      function: ()=> deleteCompletedTodoDialog(context, completedTodoBox),
+      function: () => deleteCompletedTodoDialog(),
       buttonTitle: "Delete",
-        color:Colors.red.shade600,
+      color: Colors.red.shade600,
     );
   }
 
-  void deleteCompletedTodoDialog(BuildContext context,
-      Box<TodoModel> completedTodoBox) {
+  void deleteCompletedTodoDialog() {
     showDialog(
         context: context,
         builder: (context) {
           return DeleteDialogWidget(
-            index: index,
-            firstButtonFunction: (){
-              completedTodoBox.deleteAt(index);
-                Get.back();
-                Get.back();
-              },
-            );
-            }
+            index: widget.index,
+            firstButtonFunction: () {
+              compTodoBox.deleteAt(widget.index);
+              Get.back();
+              Get.back();
+            },
           );
-        }
+        });
+  }
 }

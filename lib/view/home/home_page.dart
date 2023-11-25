@@ -7,8 +7,10 @@ import 'package:jungle/constant/palette/palette.dart';
 import 'completed_todo_page/completed_todo_page.dart';
 import 'todo_page/todo_page.dart';
 
+part 'notification_perm_dialog.dart';
+
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   HomePageState createState() => HomePageState();
@@ -19,11 +21,11 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    notificationPermissionFunc();
+    notificationPermissionFunc(context);
   }
+
   @override
   Widget build(context) {
-    
     return SafeArea(
       top: false,
       child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -44,15 +46,14 @@ class HomePageState extends State<HomePage> {
 
   AppBar buildAppBar() {
     return AppBar(
-        leading: null,
-        elevation: 0.0,
-        title: const Text(
-          "Jungle",
-          style: TextStyle(
-              fontWeight: FontWeight.bold),
-        ),
-        actions: appBarActionWidget(),
-        bottom: tabBarWidget(),
+      leading: null,
+      elevation: 0.0,
+      title: const Text(
+        "Jungle",
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      actions: appBarActionWidget(),
+      bottom: tabBarWidget(),
     );
   }
 
@@ -60,17 +61,10 @@ class HomePageState extends State<HomePage> {
     return [
       MaterialButton(
         minWidth: 10,
-        onPressed: () => Get.toNamed("/notifications"),
-        child: const Icon(
-          Icons.notifications_outlined,
-          ),
-      ),
-      MaterialButton(
-        minWidth: 10,
         onPressed: () => Get.toNamed("/settings"),
         child: const Icon(
           Icons.settings_outlined,
-          ),
+        ),
       ),
     ];
   }
@@ -81,13 +75,11 @@ class HomePageState extends State<HomePage> {
       child: Align(
         alignment: Alignment.bottomLeft,
         child: TabBar(
-          dividerColor: Theme.of(context).colorScheme.background,
-          isScrollable: true,
-            indicatorPadding:
-                const EdgeInsets.symmetric(vertical: 5),
+            dividerColor: Theme.of(context).colorScheme.background,
+            isScrollable: true,
+            indicatorPadding: const EdgeInsets.symmetric(vertical: 5),
             splashBorderRadius: BorderRadius.circular(10),
-            labelStyle: const TextStyle(
-              fontWeight: FontWeight.bold),
+            labelStyle: const TextStyle(fontWeight: FontWeight.bold),
             tabs: tabListWidget()),
       ),
     );
@@ -101,51 +93,6 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget buildBody() {
-    return const TabBarView(
-        children: [TodoPage(), CompletedTodo()]);
-  }
-
-  void notificationPermissionFunc(){
-    AwesomeNotifications().isNotificationAllowed()
-    .then((isAllowed){
-      if(!isAllowed){
-        showDialog(
-      context: context,
-      builder: (context)=> AlertDialog(
-        title: const Text("Allow notifications"),
-        content: const Text("Our app would like to send you notifications"),
-        actions: [
-          TextButton(
-            onPressed: ()=> Navigator.pop(context),
-            child: const Text(
-              'Don\'t allow',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 18
-              ),
-            )
-            ),
-          TextButton(
-            onPressed: (){
-              AwesomeNotifications()
-                .requestPermissionToSendNotifications()
-                .then((_){
-                    Navigator.pop(context);
-                });
-            },
-            child: Text(
-              'Allow',
-              style: TextStyle(
-                fontSize: 18,
-                color: Palette.ultramarineBlue,
-                fontWeight: FontWeight.bold
-              ),
-            )
-            )
-        ],
-      )
-      );
-      }
-    } );
+    return const TabBarView(children: [TodoPage(), CompletedTodo()]);
   }
 }

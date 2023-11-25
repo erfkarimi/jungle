@@ -19,11 +19,10 @@ class NewTodoSheet extends StatefulWidget {
 class _NewTodoSheetState extends State<NewTodoSheet> {
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   TextEditingController controller = TextEditingController();
-  DateTime presentDate = DateTime.now();
-  TimeOfDay presentTime = TimeOfDay.now();
+  DateTime? presentDate;
+  TimeOfDay? presentTime;
   DateTime? notificationDate;
   TimeOfDay? notificationTime;
-
   @override
   Widget build(context) {
     return Padding(
@@ -80,7 +79,7 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
               );
               if (notificationDate != null) {
                 setState(() {
-                  presentDate = notificationDate!;
+                  presentDate = notificationDate;
                   showTP();
                 });
               }
@@ -96,21 +95,22 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
 
   Future<void> showTP() async {
     notificationTime =
-        await showTimePicker(context: context, initialTime: presentTime);
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
     if (notificationTime != null) {
       setState(() {
-        presentTime = notificationTime!;
+        presentTime = notificationTime;
       });
     }
   }
 
   Widget showTimeAndDate() {
     DateFormat currentDate = DateFormat("yyy-MM-dd");
-    String time = presentTime.format(context);
-    String date = Jiffy.parse(currentDate.format(presentDate)).yMMMEd;
+    String time = presentTime?.format(context) ?? "";
+    String date =
+        Jiffy.parse(currentDate.format(presentDate ?? DateTime.now())).yMMMEd;
     return Align(
       alignment: Alignment.topLeft,
-      child: presentTime == TimeOfDay.now()
+      child: presentTime == null
           ? const Text("")
           : Text(
               "$time, $date",
@@ -145,17 +145,12 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
   }
 
   void addTodoItem() {
-    final TodoModel todoModel = 
-        TodoModel(
-          controller.text,
-          "",
-          presentTime,
-          presentDate
-          );
+    final TodoModel todoModel = TodoModel(
+        title: controller.text, dateTime: presentDate, timeOfDay: presentTime);
 
     todoBox.add(todoModel);
-    if (presentDate != DateTime.now() && presentTime != TimeOfDay.now()) {
-      createScheduleNotification(presentDate, presentTime, todoModel);
+    if (presentDate != null && presentTime != null) {
+      NotificationService().createScheduleNotification(todoModel);
     }
   }
 }

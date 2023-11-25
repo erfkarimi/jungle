@@ -40,8 +40,8 @@ class Settings extends StatelessWidget{
         const Expanded(
           child: SizedBox()),
         const Text(
-          "Made with 💙 by Flutter"
-        )
+          "Made with 💙 by Flutter v3.0."
+        ),
       ],
     );
   }

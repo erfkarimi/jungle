@@ -5,16 +5,17 @@ String text1 =
 """Welcome !!
 Thanks for choosing
 Jungle. We hope you
-enjoy it and go to
-next pages for more
-about us.""";
+enjoy it. For more go
+to the next pages.""";
 
 String text2 =
 """Jungle helps
-you to save and manage
-your tasks and todos.""";
+you to save and
+manage your tasks
+and get their
+notifications.""";
 
 String text3 =
-""" So let's start our
-journey by saving a task
-and a todo$wishLuckEmoji""";
+""" So let's get started
+and have a great journey
+by saving a task$wishLuckEmoji""";

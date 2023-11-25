@@ -34,18 +34,21 @@ class _OnboardingPageState extends State<OnboardingPage> {
             children: [
               PageWidget(
               text: text1,
+              textColor: Colors.black,
               image: "asset/image/1st_page.png",
-              backgroundColor: Colors.purple.shade800
+              backgroundColor: const Color(0xff7fdeff)
               ),
               PageWidget(
               text: text2,
+              textColor: Colors.white,
               image: "asset/image/2nd_page.png",
               backgroundColor: Colors.teal
               ),
               PageWidget(
               text: text3,
+              textColor: Colors.white,
               image: "asset/image/3rd_page.png",
-              backgroundColor: Palette.ultramarineBlue)
+              backgroundColor: const Color(0xff061826))
             ],
           ),
           

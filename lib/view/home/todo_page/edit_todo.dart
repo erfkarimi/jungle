@@ -1,22 +1,37 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
-import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
-import '../../../constant/palette/palette.dart';
 import '../../../model/todo_model/todo_model.dart';
 
-class EditTodoPage extends StatelessWidget {
+class EditTodoPage extends StatefulWidget {
   final int index;
   const EditTodoPage({super.key, required this.index});
 
   @override
-  Widget build(context) {
-    final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
+  State<EditTodoPage> createState() => _EditTodoPageState();
+}
 
-    final todoModel = todoBox.getAt(index) as TodoModel;
+class _EditTodoPageState extends State<EditTodoPage> {
+  final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
+  String title = "";
+  String description = "";
+  DateTime? dateTime;
+  TimeOfDay? timeOfDay;
+
+  @override
+  void initState() {
+    super.initState();
+    AwesomeNotifications()
+        .setListeners(onActionReceivedMethod: onActionReceivedMethod);
+  }
+
+  @override
+  Widget build(context) {
+    final todoModel = todoBox.getAt(widget.index) as TodoModel;
     return Scaffold(
       appBar: buildAppBar(context, todoBox, todoModel),
       body: buildBody(context, todoModel),
@@ -31,11 +46,7 @@ class EditTodoPage extends StatelessWidget {
     return AppBar(
       title: const Text("Edit todo"),
       leading: LeadingButtonWidget(),
-      actions: [
-        updateTodoButton(todoBox, todoModel),
-        const SizedBox(width: 10),
-        deleteTodoButton(context, todoBox)
-      ],
+      actions: [deleteTodoButton()],
     );
   }
 
@@ -49,9 +60,7 @@ class EditTodoPage extends StatelessWidget {
         child: Column(
           children: [
             titleTextField(todoModel),
-            const SizedBox(height: 10),
-            //timeAndDateWidget(context, todoModel),
-            const SizedBox(width: 10),
+            timeAndDateWidget(todoModel),
             descriptionTextField(todoModel),
           ],
         ),
@@ -61,7 +70,6 @@ class EditTodoPage extends StatelessWidget {
 
   Widget titleTextField(TodoModel todo) {
     return TextFormField(
-        cursorColor: Palette.ultramarineBlue,
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.next,
         style: const TextStyle(
@@ -74,46 +82,49 @@ class EditTodoPage extends StatelessWidget {
             hintStyle: TextStyle(
               color: Colors.grey,
             ),
+            prefixIcon: Icon(Icons.tag),
             border: InputBorder.none),
-        onChanged: (String value) => todo.title = value);
+        onChanged: (String value) {
+          setState(() {
+            todoBox.putAt(
+                widget.index,
+                TodoModel(
+                    title: value,
+                    description: todo.description,
+                    dateTime: todo.dateTime,
+                    timeOfDay: todo.timeOfDay));
+          });
+        });
   }
 
-  Widget timeAndDateWidget(BuildContext context, TodoModel todoModel) {
+  Widget timeAndDateWidget(TodoModel todoModel) {
     DateFormat currentDate = DateFormat("yyyy-MM-dd");
-    TimeOfDay presentTime = TimeOfDay.now();
-    DateTime presentDate = DateTime.now();
-    String date = Jiffy.parse(currentDate.format(todoModel.dateTime ?? presentDate)).yMMMEd;
-    String time = todoModel.timeOfDay!.format(context);
+    DateTime date = todoModel.dateTime ?? DateTime.now();
+    TimeOfDay time = todoModel.timeOfDay ?? TimeOfDay.now();
+    String formattedDate = Jiffy.parse(currentDate.format(date)).MMMEd;
 
-    if (todoModel.dateTime != presentDate &&
-        todoModel.timeOfDay != presentTime) {
-      return Row(
-        children: [
-          const Icon(Icons.schedule),
-          TextButton(
-            onPressed: () {},
-            child: Text("$date, $time",
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-          ),
-        ],
-      );
-    } else {
-      return Row(
-        children: [
-          const Icon(Icons.schedule),
-          TextButton(
-            onPressed: () {},
-            child: const Text("Set time/date",
-                style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-        ],
+    if (todoModel.dateTime != null && todoModel.timeOfDay != null) {
+      return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          children: [
+            const Icon(Icons.schedule),
+            const SizedBox(width: 10),
+            Text(
+              "$formattedDate, ${time.format(context)}",
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       );
     }
+    return const Text("");
   }
 
   Widget descriptionTextField(TodoModel todo) {
     return TextFormField(
-        cursorColor: Palette.ultramarineBlue,
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.newline,
         maxLines: 20,
@@ -124,47 +135,48 @@ class EditTodoPage extends StatelessWidget {
               color: Colors.grey,
             ),
             border: InputBorder.none),
-        onChanged: (String value) => todo.description = value);
+        onChanged: (String value) {
+          setState(() {
+            todoBox.putAt(
+                widget.index,
+                TodoModel(
+                    title: todo.title,
+                    description: value,
+                    dateTime: todo.dateTime,
+                    timeOfDay: todo.timeOfDay));
+          });
+        });
   }
 
-  Widget updateTodoButton(Box<TodoModel> todoBox, TodoModel todoModel) {
-    return TextButtonWidget(
-      function: () {
-        updateTodo(todoModel, todoBox, index);
-        Get.back();
-      },
-      buttonTitle: "Update",
-      color: Colors.blue,
+  Widget deleteTodoButton() {
+    return TextButton(
+      onPressed: () => deleteTodoDialog(),
+      child: const Text(
+        "Delete",
+        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+      ),
     );
   }
 
-  void updateTodo(TodoModel todoModel, Box<TodoModel> todoBox, int index) {
-    final TodoModel updateTodoModel = TodoModel(
-          todoModel.title,
-          todoModel.description
-    );
-    todoBox.putAt(index, updateTodoModel);
-  }
-
-  Widget deleteTodoButton(BuildContext context, Box<TodoModel> todoBox) {
-    return TextButtonWidget(
-        function: () => deleteTodoDialog(context, todoBox),
-        buttonTitle: "Delete",
-        color: Colors.red.shade600);
-  }
-
-  void deleteTodoDialog(BuildContext context, Box<TodoModel> todoBox) {
+  void deleteTodoDialog() {
     showDialog(
         context: context,
         builder: (context) {
           return DeleteDialogWidget(
-            index: index,
+            index: widget.index,
             firstButtonFunction: () {
-              todoBox.deleteAt(index);
+              todoBox.deleteAt(widget.index);
               Get.back();
               Get.back();
             },
           );
         });
+  }
+
+  static Future<void> onActionReceivedMethod(
+      ReceivedAction receivedAction) async {
+    AwesomeNotifications().getGlobalBadgeCounter().then((value) {
+      AwesomeNotifications().setGlobalBadgeCounter(value - 1);
+    });
   }
 }

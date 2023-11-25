@@ -7,10 +7,10 @@ part 'todo_model.g.dart';
 class TodoModel{
 
   @HiveField(0)
-  String title;
+  String? title;
 
   @HiveField(1)
-  String description;
+  String? description;
 
   @HiveField(2)
   TimeOfDay? timeOfDay;
@@ -19,9 +19,9 @@ class TodoModel{
   DateTime? dateTime;
 
   TodoModel(
-    this.title,
+    {this.title,
     this.description,
-    [this.timeOfDay,
-    this.dateTime]
+    this.timeOfDay,
+    this.dateTime}
   );
 }

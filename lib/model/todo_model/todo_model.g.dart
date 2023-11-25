@@ -17,10 +17,10 @@ class TodoModelAdapter extends TypeAdapter<TodoModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TodoModel(
-      fields[0] as String,
-      fields[1] as String,
-      fields[2] as TimeOfDay?,
-      fields[3] as DateTime?,
+      title: fields[0] as String?,
+      description: fields[1] as String?,
+      timeOfDay: fields[2] as TimeOfDay?,
+      dateTime: fields[3] as DateTime?,
     );
   }
 
