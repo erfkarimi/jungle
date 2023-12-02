@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jungle/constant/palette/palette.dart';
 import 'package:jungle/view/home/todo_page/new_todo_sheet.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
@@ -156,10 +157,10 @@ class TodoPageState extends State<TodoPage> {
 
   void showMarkedSnackBar(int index) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Theme.of(context).dialogBackgroundColor,
+        behavior: SnackBarBehavior.floating,
         content: Row(
           children: [
-            const Icon(Icons.check, color: Colors.teal),
+            Icon(Icons.check, color: Palette.ultramarineBlue),
             const SizedBox(width: 10),
             RichText(
                 text: TextSpan(

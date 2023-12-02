@@ -48,7 +48,6 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
     return Consumer<TextFieldValidation>(
         builder: (context, textFieldValidation, _) {
       return TextField(
-        cursorColor: Palette.ultramarineBlue,
         textCapitalization: TextCapitalization.sentences,
         autofocus: true,
         controller: controller,
@@ -151,6 +150,25 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
     todoBox.add(todoModel);
     if (presentDate != null && presentTime != null) {
       NotificationService().createScheduleNotification(todoModel);
+      showNotificationSnackBar();
     }
+  }
+
+    void showNotificationSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Row(
+          children: [
+            const Icon(Icons.notification_add_outlined),
+            const SizedBox(width: 10),
+            Text(
+              "Notification has set",
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyMedium!.color,
+                fontWeight: FontWeight.bold
+              ),
+            )
+          ],
+        )));
   }
 }

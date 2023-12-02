@@ -7,14 +7,22 @@ ThemeData themeData(BuildContext context, Box box) {
   final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
   appUiStyle.darkTheme = box.get("darkTheme", defaultValue: false);
   return ThemeData(
-      useMaterial3: true,
-      brightness: appUiStyle.darkTheme ? Brightness.dark : Brightness.light,
-      colorSchemeSeed: Colors.teal,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.teal,
+        brightness: appUiStyle.darkTheme ? Brightness.dark : Brightness.light,
+        ),
       fontFamily: "Regular",
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder()},
       ),
       textTheme: GoogleFonts.latoTextTheme()
           .apply(bodyColor: appUiStyle.setTextTheme()),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: appUiStyle.snackBarTheme(),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 0.0
+      )
   );
 }

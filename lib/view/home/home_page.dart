@@ -69,20 +69,15 @@ class HomePageState extends State<HomePage> {
     ];
   }
 
-  PreferredSize tabBarWidget() {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(40),
-      child: Align(
-        alignment: Alignment.bottomLeft,
-        child: TabBar(
-            dividerColor: Theme.of(context).colorScheme.background,
-            isScrollable: true,
-            indicatorPadding: const EdgeInsets.symmetric(vertical: 5),
-            splashBorderRadius: BorderRadius.circular(10),
-            labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-            tabs: tabListWidget()),
-      ),
-    );
+  TabBar tabBarWidget() {
+    return TabBar(
+        tabAlignment: TabAlignment.start,
+        dividerColor: Theme.of(context).colorScheme.background,
+        isScrollable: true,
+        indicatorPadding: const EdgeInsets.symmetric(vertical: 5),
+        splashBorderRadius: BorderRadius.circular(10),
+        labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        tabs: tabListWidget());
   }
 
   List<Tab> tabListWidget() {

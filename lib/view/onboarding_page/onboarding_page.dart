@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:jungle/constant/constant.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../../constant/palette/palette.dart';
 import '../../widget/page_widget.dart/page_widget.dart';
 
 class OnboardingPage extends StatefulWidget{
