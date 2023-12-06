@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FeedbackButton extends StatelessWidget{
-  final AppUiStyle appUiStyle;
-  const FeedbackButton({super.key, required this.appUiStyle});
+  const FeedbackButton({super.key});
 
   @override
   Widget build(context){

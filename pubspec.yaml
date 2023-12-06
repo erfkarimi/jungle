@@ -23,6 +23,7 @@ dependencies:
   jiffy: ^6.2.1
   flutter_launcher_icons: ^0.13.1
   awesome_notifications: ^0.8.2
+  app_settings: ^5.1.1
 
 dev_dependencies:
   flutter_test:

@@ -12,7 +12,7 @@ class AppUiStyle extends ChangeNotifier {
   Color setDescriptionTheme() =>
       darkTheme ? Colors.grey.shade100 : Colors.grey.shade600;
 
-  Color snackBarTheme()=>
+  Color snackBarTheme() =>
       darkTheme ? Colors.teal.shade900 : Colors.teal.shade100;
 
   void saveToDb(bool value) {

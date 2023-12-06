@@ -160,7 +160,7 @@ class TodoPageState extends State<TodoPage> {
         behavior: SnackBarBehavior.floating,
         content: Row(
           children: [
-            Icon(Icons.check, color: Palette.ultramarineBlue),
+            const Icon(Icons.check),
             const SizedBox(width: 10),
             RichText(
                 text: TextSpan(
