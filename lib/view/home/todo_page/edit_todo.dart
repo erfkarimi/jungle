@@ -1,4 +1,3 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -89,15 +88,17 @@ class _EditTodoPageState extends State<EditTodoPage> {
                     dateTime: todo.dateTime,
                     timeOfDay: todo.timeOfDay,
                     id: todo.id));
-            if (todo.dateTime!.day == DateTime.now().day &&
-                todo.timeOfDay!.minute == TimeOfDay.now().minute) {
-              AwesomeNotifications().cancelSchedule(todo.id ?? 0);
-              NotificationService().createScheduleNotification(TodoModel(
-                  title: value,
-                  description: todo.description,
-                  dateTime: todo.dateTime,
-                  timeOfDay: todo.timeOfDay,
-                  id: todo.id));
+            if (todo.dateTime != null && todo.timeOfDay != null) {
+              if (todo.dateTime!.day == DateTime.now().day &&
+                  todo.timeOfDay!.minute == TimeOfDay.now().minute) {
+                NotificationService().cancelNotification(todo.id);
+                NotificationService().createScheduleNotification(TodoModel(
+                    title: value,
+                    description: todo.description,
+                    dateTime: todo.dateTime,
+                    timeOfDay: todo.timeOfDay,
+                    id: todo.id));
+              }
             }
           });
         });
@@ -116,10 +117,47 @@ class _EditTodoPageState extends State<EditTodoPage> {
           children: [
             const Icon(Icons.schedule),
             const SizedBox(width: 10),
-            Text(
-              "$formattedDate, ${time.format(context)}",
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Theme.of(context).textTheme.bodyMedium!.color ??
+                        Colors.white,
+                  )),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "$formattedDate, ${time.format(context)}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                      width: 22,
+                      height: 22,
+                      child: IconButton(
+                          padding: const EdgeInsets.all(0),
+                          onPressed: () {
+                            setState(() {
+                              NotificationService().cancelNotification(
+                                  todoBox.getAt(widget.index)!.id);
+                              todoBox.putAt(
+                                  widget.index,
+                                  TodoModel(
+                                      title: todoModel.title,
+                                      description: todoModel.description,
+                                      dateTime: null,
+                                      timeOfDay: null,
+                                      id: todoModel.id));
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                            size: 20,
+                          )))
+                ],
               ),
             ),
           ],
@@ -151,15 +189,17 @@ class _EditTodoPageState extends State<EditTodoPage> {
                     dateTime: todo.dateTime,
                     timeOfDay: todo.timeOfDay,
                     id: todo.id));
-            if (todo.dateTime!.day == DateTime.now().day &&
-                todo.timeOfDay!.minute == TimeOfDay.now().minute) {
-              AwesomeNotifications().cancelSchedule(todo.id ?? 0);
-              NotificationService().createScheduleNotification(TodoModel(
-                  title: todo.title,
-                  description: value,
-                  dateTime: todo.dateTime,
-                  timeOfDay: todo.timeOfDay,
-                  id: todo.id));
+            if (todo.dateTime != null && todo.timeOfDay != null) {
+              if (todo.dateTime!.day == DateTime.now().day &&
+                  todo.timeOfDay!.minute == TimeOfDay.now().minute) {
+                NotificationService().cancelNotification(todo.id);
+                NotificationService().createScheduleNotification(TodoModel(
+                    title: todo.title,
+                    description: value,
+                    dateTime: todo.dateTime,
+                    timeOfDay: todo.timeOfDay,
+                    id: todo.id));
+              }
             }
           });
         });
@@ -183,6 +223,8 @@ class _EditTodoPageState extends State<EditTodoPage> {
             index: widget.index,
             firstButtonFunction: () {
               todoBox.deleteAt(widget.index);
+              NotificationService()
+                  .cancelNotification(todoBox.getAt(widget.index)!.id);
               Get.back();
               Get.back();
             },

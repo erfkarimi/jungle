@@ -52,5 +52,10 @@ class NotificationService{
             ]
             );
   }
+
+  // To cancel schedule notification
+  Future<void> cancelNotification(int? id) async{
+    await AwesomeNotifications().cancelSchedule(id ?? 0);
+  } 
 }
 
