@@ -45,6 +45,7 @@ void notificationInitialization(){
         importance: NotificationImportance.High,
         ledColor: Colors.white,
         channelShowBadge: true,
+        locked: true
         ),
     ],
     channelGroups: [

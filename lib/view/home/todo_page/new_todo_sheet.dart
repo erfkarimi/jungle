@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:jungle/utility/utility.dart';
 import 'package:jungle/view/service/notification_service/notification_service.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import '../../../constant/palette/palette.dart';
@@ -23,6 +24,13 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
   TimeOfDay? presentTime;
   DateTime? notificationDate;
   TimeOfDay? notificationTime;
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
   @override
   Widget build(context) {
     return Padding(
@@ -145,7 +153,11 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
 
   void addTodoItem() {
     final TodoModel todoModel = TodoModel(
-        title: controller.text, dateTime: presentDate, timeOfDay: presentTime);
+        title: controller.text,
+        dateTime: presentDate,
+        timeOfDay: presentTime,
+        id: createUniqueID()
+        );
 
     todoBox.add(todoModel);
     if (presentDate != null && presentTime != null) {
@@ -154,7 +166,7 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
     }
   }
 
-    void showNotificationSnackBar() {
+  void showNotificationSnackBar() {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
         content: Row(
@@ -164,9 +176,8 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
             Text(
               "Notification has set",
               style: TextStyle(
-                color: Theme.of(context).textTheme.bodyMedium!.color,
-                fontWeight: FontWeight.bold
-              ),
+                  color: Theme.of(context).textTheme.bodyMedium!.color,
+                  fontWeight: FontWeight.bold),
             )
           ],
         )));

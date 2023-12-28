@@ -35,19 +35,22 @@ class _OnboardingPageState extends State<OnboardingPage> {
               text: text1,
               textColor: Colors.black,
               image: "asset/image/1st_page.png",
-              backgroundColor: const Color(0xff7fdeff)
+              backgroundColor: const Color(0xff7fdeff),
+              statusBarIconBrightness: Brightness.dark,
               ),
               PageWidget(
               text: text2,
               textColor: Colors.white,
               image: "asset/image/2nd_page.png",
-              backgroundColor: Colors.teal
+              backgroundColor: Colors.teal,
+              statusBarIconBrightness: Brightness.light,
               ),
               PageWidget(
               text: text3,
               textColor: Colors.white,
               image: "asset/image/3rd_page.png",
-              backgroundColor: const Color(0xff061826))
+              backgroundColor: const Color(0xff061826),
+              statusBarIconBrightness: Brightness.light,)
             ],
           ),
           

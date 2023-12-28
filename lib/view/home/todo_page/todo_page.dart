@@ -1,7 +1,7 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jungle/constant/palette/palette.dart';
 import 'package:jungle/view/home/todo_page/new_todo_sheet.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
@@ -18,7 +18,7 @@ class TodoPage extends StatefulWidget {
 class TodoPageState extends State<TodoPage> {
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
-
+  
   @override
   Widget build(context) {
     return Scaffold(
@@ -55,9 +55,9 @@ class TodoPageState extends State<TodoPage> {
     final String todoDescription = todo.description ?? "";
     return MaterialButton(
       onPressed: () {
-        Get.to(EditTodoPage(index: index), transition: Transition.cupertino);
+        Get.to(()=> EditTodoPage(index: index), transition: Transition.cupertino);
       },
-      onLongPress: () => deleteUnDoneTodoOnLongPressDialog(index),
+      onLongPress: () => deleteUnDoneTodoOnLongPressDialog(index, todo),
       height: 50,
       elevation: 0.0,
       shape: RoundedRectangleBorder(
@@ -141,14 +141,15 @@ class TodoPageState extends State<TodoPage> {
     );
   }
 
-  void deleteUnDoneTodoOnLongPressDialog(int index) {
+  void deleteUnDoneTodoOnLongPressDialog(int index, TodoModel todo) {
     showDialog(
         context: context,
         builder: (context) {
           return DeleteDialogWidget(
             index: index,
-            firstButtonFunction: () {
+            firstButtonFunction: () async{
               todoBox.deleteAt(index);
+              await AwesomeNotifications().cancelSchedule(todo.id ?? 0);
               Get.back();
             },
           );

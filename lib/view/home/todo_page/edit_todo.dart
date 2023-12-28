@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:jungle/view/service/notification_service/notification_service.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import '../../../model/todo_model/todo_model.dart';
@@ -21,13 +22,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
   String description = "";
   DateTime? dateTime;
   TimeOfDay? timeOfDay;
-
-  @override
-  void initState() {
-    super.initState();
-    AwesomeNotifications()
-        .setListeners(onActionReceivedMethod: onActionReceivedMethod);
-  }
+  int? id;
 
   @override
   Widget build(context) {
@@ -92,7 +87,18 @@ class _EditTodoPageState extends State<EditTodoPage> {
                     title: value,
                     description: todo.description,
                     dateTime: todo.dateTime,
-                    timeOfDay: todo.timeOfDay));
+                    timeOfDay: todo.timeOfDay,
+                    id: todo.id));
+            if (todo.dateTime!.day == DateTime.now().day &&
+                todo.timeOfDay!.minute == TimeOfDay.now().minute) {
+              AwesomeNotifications().cancelSchedule(todo.id ?? 0);
+              NotificationService().createScheduleNotification(TodoModel(
+                  title: value,
+                  description: todo.description,
+                  dateTime: todo.dateTime,
+                  timeOfDay: todo.timeOfDay,
+                  id: todo.id));
+            }
           });
         });
   }
@@ -143,7 +149,18 @@ class _EditTodoPageState extends State<EditTodoPage> {
                     title: todo.title,
                     description: value,
                     dateTime: todo.dateTime,
-                    timeOfDay: todo.timeOfDay));
+                    timeOfDay: todo.timeOfDay,
+                    id: todo.id));
+            if (todo.dateTime!.day == DateTime.now().day &&
+                todo.timeOfDay!.minute == TimeOfDay.now().minute) {
+              AwesomeNotifications().cancelSchedule(todo.id ?? 0);
+              NotificationService().createScheduleNotification(TodoModel(
+                  title: todo.title,
+                  description: value,
+                  dateTime: todo.dateTime,
+                  timeOfDay: todo.timeOfDay,
+                  id: todo.id));
+            }
           });
         });
   }
@@ -171,12 +188,5 @@ class _EditTodoPageState extends State<EditTodoPage> {
             },
           );
         });
-  }
-
-  static Future<void> onActionReceivedMethod(
-      ReceivedAction receivedAction) async {
-    AwesomeNotifications().getGlobalBadgeCounter().then((value) {
-      AwesomeNotifications().setGlobalBadgeCounter(value - 1);
-    });
   }
 }

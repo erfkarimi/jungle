@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:jungle/constant/palette/palette.dart';
+import 'package:jungle/view/service/notification_service/notification_service.dart';
 import 'completed_todo_page/completed_todo_page.dart';
 import 'todo_page/todo_page.dart';
 
@@ -22,6 +23,7 @@ class HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     notificationPermissionFunc(context);
+    NotificationService().notificationInitialization();
   }
 
   @override

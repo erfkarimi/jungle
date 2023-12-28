@@ -18,10 +18,14 @@ class TodoModel{
   @HiveField(3)
   DateTime? dateTime;
 
+  @HiveField(4)
+  int? id;
+
   TodoModel(
     {this.title,
     this.description,
     this.timeOfDay,
-    this.dateTime}
+    this.dateTime,
+    this.id}
   );
 }
