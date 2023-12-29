@@ -59,6 +59,8 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
         textCapitalization: TextCapitalization.sentences,
         autofocus: true,
         controller: controller,
+        maxLines: 1,
+        maxLength: 80,
         decoration: const InputDecoration(
           hintText: "Title",
           hintStyle: TextStyle(color: Colors.grey),

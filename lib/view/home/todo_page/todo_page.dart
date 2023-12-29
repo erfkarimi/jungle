@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:jungle/view/home/todo_page/new_todo_sheet.dart';
 import 'package:jungle/view/service/notification_service/notification_service.dart';
-import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import '../../../model/todo_model/todo_model.dart';
 import 'edit_todo.dart';
@@ -86,6 +86,9 @@ class TodoPageState extends State<TodoPage> {
                 todoDescription,
                 maxLines: 2,
               ),
+        trailing: todo.dateTime != null
+        ? const Text("Scheduled") : null
+          
       ),
     );
   }
@@ -145,7 +148,7 @@ class TodoPageState extends State<TodoPage> {
         builder: (context) {
           return DeleteDialogWidget(
             index: index,
-            firstButtonFunction: (){
+            firstButtonFunction: () {
               if (todoBox.getAt(index)!.dateTime != null) {
                 NotificationService()
                     .cancelNotification(todoBox.getAt(index)!.id);

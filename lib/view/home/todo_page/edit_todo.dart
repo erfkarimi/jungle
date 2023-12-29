@@ -66,6 +66,8 @@ class _EditTodoPageState extends State<EditTodoPage> {
     return TextFormField(
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.next,
+        maxLength: 80,
+        maxLines: 3,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18,
