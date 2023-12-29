@@ -18,7 +18,7 @@ class TodoPage extends StatefulWidget {
 class TodoPageState extends State<TodoPage> {
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
-  
+
   @override
   Widget build(context) {
     return Scaffold(
@@ -28,34 +28,33 @@ class TodoPageState extends State<TodoPage> {
   }
 
   Widget buildBody() {
-    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
     return ValueListenableBuilder(
         valueListenable: todoBox.listenable(),
         builder: (context, todoBox, __) {
           if (todoBox.isEmpty) {
             return showNoTodo();
-          } else {
-            return Padding(
-              padding: const EdgeInsets.all(10),
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: todoBox.length,
-                  itemBuilder: (context, int index) {
-                    index = todoBox.length - 1 - index;
-                    return todoButton(appUiStyle, index);
-                  }),
-            );
           }
+          return Padding(
+            padding: const EdgeInsets.all(10),
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: todoBox.length,
+                itemBuilder: (context, int index) {
+                  index = todoBox.length - 1 - index;
+                  return todoButton(index);
+                }),
+          );
         });
   }
 
-  Widget todoButton(AppUiStyle appUiStyle, int index) {
+  Widget todoButton(int index) {
     final todo = todoBox.getAt(index) as TodoModel;
     final String todoTitle = todo.title ?? "";
     final String todoDescription = todo.description ?? "";
     return MaterialButton(
       onPressed: () {
-        Get.to(()=> EditTodoPage(index: index), transition: Transition.cupertino);
+        Get.to(() => EditTodoPage(index: index),
+            transition: Transition.cupertino);
       },
       onLongPress: () => deleteUnDoneTodoOnLongPressDialog(index),
       height: 50,
@@ -86,7 +85,6 @@ class TodoPageState extends State<TodoPage> {
             : Text(
                 todoDescription,
                 maxLines: 2,
-                style: TextStyle(color: appUiStyle.setDescriptionTheme()),
               ),
       ),
     );
@@ -147,9 +145,12 @@ class TodoPageState extends State<TodoPage> {
         builder: (context) {
           return DeleteDialogWidget(
             index: index,
-            firstButtonFunction: () async{
+            firstButtonFunction: (){
+              if (todoBox.getAt(index)!.dateTime != null) {
+                NotificationService()
+                    .cancelNotification(todoBox.getAt(index)!.id);
+              }
               todoBox.deleteAt(index);
-              NotificationService().cancelNotification(todoBox.getAt(index)!.id);
               Get.back();
             },
           );

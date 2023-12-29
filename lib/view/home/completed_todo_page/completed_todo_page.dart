@@ -19,11 +19,10 @@ class CompletedTodoState extends State<CompletedTodo> {
 
   @override
   Widget build(context) {
-    final AppUiStyle appUiStyle = Provider.of<AppUiStyle>(context);
-    return Scaffold(body: buildBody(appUiStyle));
+    return Scaffold(body: buildBody());
   }
 
-  Widget buildBody(AppUiStyle appUiStyle) {
+  Widget buildBody() {
     return ValueListenableBuilder(
         valueListenable: completedTodoBox.listenable(),
         builder: (context, completedTodoBox, _) {

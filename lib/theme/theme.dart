@@ -23,6 +23,11 @@ ThemeData themeData(BuildContext context, Box box) {
           borderRadius: BorderRadius.circular(10),
         ),
         elevation: 0.0
+      ),
+      listTileTheme: ListTileThemeData(
+        subtitleTextStyle: TextStyle(
+          color: appUiStyle.setDescriptionTheme()
+        )
       )
   );
 }

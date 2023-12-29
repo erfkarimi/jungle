@@ -89,8 +89,8 @@ class _EditTodoPageState extends State<EditTodoPage> {
                     timeOfDay: todo.timeOfDay,
                     id: todo.id));
             if (todo.dateTime != null && todo.timeOfDay != null) {
-              if (todo.dateTime!.day == DateTime.now().day &&
-                  todo.timeOfDay!.minute == TimeOfDay.now().minute) {
+              if (todo.dateTime!.day >= DateTime.now().day &&
+                  todo.dateTime!.month >= DateTime.now().month) {
                 NotificationService().cancelNotification(todo.id);
                 NotificationService().createScheduleNotification(TodoModel(
                     title: value,
@@ -190,8 +190,8 @@ class _EditTodoPageState extends State<EditTodoPage> {
                     timeOfDay: todo.timeOfDay,
                     id: todo.id));
             if (todo.dateTime != null && todo.timeOfDay != null) {
-              if (todo.dateTime!.day == DateTime.now().day &&
-                  todo.timeOfDay!.minute == TimeOfDay.now().minute) {
+              if (todo.dateTime!.day >= DateTime.now().day &&
+                  todo.dateTime!.month >= DateTime.now().month) {
                 NotificationService().cancelNotification(todo.id);
                 NotificationService().createScheduleNotification(TodoModel(
                     title: todo.title,
@@ -222,9 +222,9 @@ class _EditTodoPageState extends State<EditTodoPage> {
           return DeleteDialogWidget(
             index: widget.index,
             firstButtonFunction: () {
-              todoBox.deleteAt(widget.index);
               NotificationService()
-                  .cancelNotification(todoBox.getAt(widget.index)!.id);
+                  .cancelNotification(todoBox.getAt(widget.index)?.id);
+              todoBox.deleteAt(widget.index);
               Get.back();
               Get.back();
             },
