@@ -17,6 +17,7 @@ class EditTodoPage extends StatefulWidget {
 
 class _EditTodoPageState extends State<EditTodoPage> {
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
+  final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
   String title = "";
   String description = "";
   DateTime? dateTime;
@@ -48,17 +49,25 @@ class _EditTodoPageState extends State<EditTodoPage> {
     BuildContext context,
     TodoModel todoModel,
   ) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            titleTextField(todoModel),
-            timeAndDateWidget(todoModel),
-            descriptionTextField(todoModel),
-          ],
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraint) {
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraint.maxHeight),
+            child: IntrinsicHeight(
+              child: Column(
+                children: [
+                  titleTextField(todoModel),
+                  timeAndDateWidget(todoModel),
+                  descriptionTextField(todoModel),
+                  markCompButtonWidget(todoModel)
+                ],
+              ),
+            ),
+          ),
+        );
+      }
     );
   }
 
@@ -204,6 +213,25 @@ class _EditTodoPageState extends State<EditTodoPage> {
             }
           });
         });
+  }
+
+
+  Widget markCompButtonWidget(TodoModel todoModel){
+    return Expanded(
+      child: Align(
+        alignment: Alignment.bottomRight,
+        child: TextButton(
+          onPressed: (){
+            Get.back();
+            todoBox.deleteAt(widget.index);
+            completedTodoBox.add(todoModel);
+          },
+          child: const Text(
+            "Mark completed",
+            style: TextStyle(fontWeight: FontWeight.bold),),
+          ),
+      ),
+    );
   }
 
   Widget deleteTodoButton() {
