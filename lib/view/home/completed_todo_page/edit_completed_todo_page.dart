@@ -5,6 +5,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
+import '../../../constant/snack_bar/snack_bar.dart';
 import '../../../model/todo_model/todo_model.dart';
 
 class EditCompletedTodoPage extends StatefulWidget {
@@ -16,6 +17,7 @@ class EditCompletedTodoPage extends StatefulWidget {
 }
 
 class _EditCompletedTodoPageState extends State<EditCompletedTodoPage> {
+  final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   final Box<TodoModel> compTodoBox = Hive.box<TodoModel>("completed");
   String title = "";
   String description = "";
@@ -31,38 +33,42 @@ class _EditCompletedTodoPageState extends State<EditCompletedTodoPage> {
     );
   }
 
-  AppBar buildAppBar(
-      TodoModel compTodo) {
+  AppBar buildAppBar(TodoModel compTodo) {
     return AppBar(
       title: const Text(
         "Edit (completed)",
       ),
       leading: LeadingButtonWidget(),
-      actions: [
-        deleteCompletedTodoButton()
-      ],
+      actions: [deleteCompletedTodoButton()],
     );
   }
 
   Widget buildBody(TodoModel compTodo) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            titleTextField(compTodo),
-            timeAndDateWidget(compTodo),
-            descriptionTextField(compTodo),
-          ],
+    return LayoutBuilder(builder: (context, constraint) {
+      return SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: constraint.maxHeight),
+          child: IntrinsicHeight(
+            child: Column(
+              children: [
+                titleTextField(compTodo),
+                timeAndDateWidget(compTodo),
+                descriptionTextField(compTodo),
+                markUncompletedButtonWidget(compTodo)
+              ],
+            ),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget titleTextField(TodoModel compTodo) {
     return TextFormField(
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.next,
+        maxLines: null,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18,
@@ -94,31 +100,40 @@ class _EditCompletedTodoPageState extends State<EditCompletedTodoPage> {
     TimeOfDay time = compTodo.timeOfDay ?? TimeOfDay.now();
     String formattedDate = Jiffy.parse(currentDate.format(date)).MMMEd;
 
-      if(compTodo.dateTime != null && compTodo.timeOfDay != null){
-        return Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
+    if (compTodo.dateTime != null && compTodo.timeOfDay != null) {
+      return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
           children: [
             const Icon(Icons.schedule),
-              const SizedBox(width: 10),
-              Text("$formattedDate, ${time.format(context)}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    ),
+            const SizedBox(width: 10),
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Theme.of(context).textTheme.bodyMedium!.color ??
+                        Colors.white,
+                  )),
+              child: Text(
+                "$formattedDate, ${time.format(context)}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
-              ),
-        );
+        ),
+      );
     }
     return const Text("");
-      
   }
 
   Widget descriptionTextField(TodoModel compTodo) {
     return TextFormField(
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.newline,
-        maxLines: 20,
+        maxLines: null,
         initialValue: compTodo.description,
         decoration: const InputDecoration(
             hintText: "Description",
@@ -139,6 +154,25 @@ class _EditCompletedTodoPageState extends State<EditCompletedTodoPage> {
         });
   }
 
+  Widget markUncompletedButtonWidget(TodoModel compTodo) {
+    return Expanded(
+      child: Align(
+        alignment: Alignment.bottomRight,
+        child: TextButton(
+          onPressed: () {
+            Get.back();
+            compTodoBox.deleteAt(widget.index);
+            todoBox.add(compTodo);
+            showMarkedUncompletedSnackBar(context);
+          },
+          child: const Text(
+            "Mark uncompleted",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget deleteCompletedTodoButton() {
     return TextButtonWidget(

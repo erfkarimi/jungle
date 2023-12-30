@@ -18,7 +18,7 @@ class TextButtonWidget extends StatelessWidget{
       child: Text(
         buttonTitle,
         style: TextStyle(
-          fontSize: 16, fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.bold,
           color: color,
           ),
       ),

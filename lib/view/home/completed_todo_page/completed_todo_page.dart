@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:jungle/constant/snack_bar/snack_bar.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import '../../../../model/todo_model/todo_model.dart';
@@ -63,6 +64,7 @@ class CompletedTodoState extends State<CompletedTodo> {
             setState(() {
               completedTodoBox.deleteAt(index);
               todoBox.add(completedTodo);
+              showMarkedUncompletedSnackBar(context);
             });
           },
           icon: const Icon(

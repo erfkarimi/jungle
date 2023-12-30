@@ -50,9 +50,11 @@ class HomePageState extends State<HomePage> {
     return AppBar(
       leading: null,
       elevation: 0.0,
+      centerTitle: true,
       title: const Text(
         "Jungle",
-        style: TextStyle(fontWeight: FontWeight.bold),
+        style: TextStyle(
+          fontWeight: FontWeight.bold),
       ),
       actions: appBarActionWidget(),
       bottom: tabBarWidget(),
@@ -74,9 +76,7 @@ class HomePageState extends State<HomePage> {
   TabBar tabBarWidget() {
     return TabBar(
         tabAlignment: TabAlignment.start,
-        dividerColor: Theme.of(context).colorScheme.background,
         isScrollable: true,
-        indicatorPadding: const EdgeInsets.symmetric(vertical: 5),
         splashBorderRadius: BorderRadius.circular(10),
         labelStyle: const TextStyle(fontWeight: FontWeight.bold),
         tabs: tabListWidget());

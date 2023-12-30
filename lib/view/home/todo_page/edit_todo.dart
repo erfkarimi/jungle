@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:jungle/constant/snack_bar/snack_bar.dart';
 import 'package:jungle/view/service/notification_service/notification_service.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import '../../../model/todo_model/todo_model.dart';
+import '../../../widget/text_button_widget/text_button_widget.dart';
 
 class EditTodoPage extends StatefulWidget {
   final int index;
@@ -225,6 +227,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
             Get.back();
             todoBox.deleteAt(widget.index);
             completedTodoBox.add(todoModel);
+            showMarkedCompletedSnackBar(context);
           },
           child: const Text(
             "Mark completed",
@@ -235,12 +238,10 @@ class _EditTodoPageState extends State<EditTodoPage> {
   }
 
   Widget deleteTodoButton() {
-    return TextButton(
-      onPressed: () => deleteTodoDialog(),
-      child: const Text(
-        "Delete",
-        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-      ),
+    return TextButtonWidget(
+      function: () => deleteTodoDialog(),
+      buttonTitle: "Delete",
+      color: Colors.red,
     );
   }
 

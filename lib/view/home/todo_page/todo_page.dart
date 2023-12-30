@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:jungle/view/home/todo_page/new_todo_sheet.dart';
 import 'package:jungle/view/service/notification_service/notification_service.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
+import '../../../constant/snack_bar/snack_bar.dart';
 import '../../../model/todo_model/todo_model.dart';
 import 'edit_todo.dart';
 
@@ -69,7 +69,7 @@ class TodoPageState extends State<TodoPage> {
           value: false,
           onChanged: (value) {
             setState(() {
-              showMarkedSnackBar(index);
+              showMarkedCompletedSnackBar(context);
               todoBox.deleteAt(index);
               completedTodoBox.add(todo);
             });
@@ -164,25 +164,4 @@ class TodoPageState extends State<TodoPage> {
         });
   }
 
-  void showMarkedSnackBar(int index) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        behavior: SnackBarBehavior.floating,
-        content: Row(
-          children: [
-            const Icon(Icons.check),
-            const SizedBox(width: 10),
-            RichText(
-                text: TextSpan(
-                    text: todoBox.getAt(index)!.title,
-                    style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyMedium!.color,
-                        fontWeight: FontWeight.bold),
-                    children: const [
-                  TextSpan(
-                      text: " marked as completed",
-                      style: TextStyle(fontWeight: FontWeight.w500))
-                ])),
-          ],
-        )));
-  }
 }
