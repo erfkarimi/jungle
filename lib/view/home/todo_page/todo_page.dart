@@ -87,7 +87,11 @@ class TodoPageState extends State<TodoPage> {
                 maxLines: 2,
               ),
         trailing: todo.dateTime != null
-        ? const Text("Scheduled") : null
+        ? Icon(
+          Icons.schedule_outlined,
+          color: Theme.of(context).listTileTheme.subtitleTextStyle!.color,
+          size: 20,
+          ) : null
           
       ),
     );

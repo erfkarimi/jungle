@@ -38,7 +38,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
     TodoModel todoModel,
   ) {
     return AppBar(
-      title: const Text("Edit todo"),
+      title: const Text("Edit task"),
       leading: LeadingButtonWidget(),
       actions: [deleteTodoButton()],
     );
@@ -66,8 +66,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
     return TextFormField(
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.next,
-        maxLength: 80,
-        maxLines: 3,
+        maxLines: null,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18,
@@ -173,7 +172,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
     return TextFormField(
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.newline,
-        maxLines: 20,
+        maxLines: null,
         initialValue: todo.description,
         decoration: const InputDecoration(
             hintText: "Description",

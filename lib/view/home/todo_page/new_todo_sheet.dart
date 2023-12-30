@@ -57,10 +57,10 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
         builder: (context, textFieldValidation, _) {
       return TextField(
         textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.done,
         autofocus: true,
         controller: controller,
-        maxLines: 1,
-        maxLength: 80,
+        maxLines: null,
         decoration: const InputDecoration(
           hintText: "Title",
           hintStyle: TextStyle(color: Colors.grey),
@@ -176,7 +176,7 @@ class _NewTodoSheetState extends State<NewTodoSheet> {
             const Icon(Icons.notification_add_outlined),
             const SizedBox(width: 10),
             Text(
-              "Notification has set",
+              "Notification's been set",
               style: TextStyle(
                   color: Theme.of(context).textTheme.bodyMedium!.color,
                   fontWeight: FontWeight.bold),
