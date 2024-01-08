@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../theme/theme.dart';
 
-class App extends StatefulWidget{
+class App extends StatefulWidget {
   const App({super.key});
 
   @override
@@ -14,21 +14,18 @@ class App extends StatefulWidget{
 
 class _AppState extends State<App> {
   final Box settingsBox = Hive.box("settings");
-  
-  @override 
-  Widget build(context){
-    return ValueListenableBuilder(
-      valueListenable: settingsBox.listenable(),
-      builder: (context, settingsBox, _) {
-        return GetMaterialApp(
-                debugShowCheckedModeBanner: false,
-                theme: themeData(context,settingsBox),
-              routes: appRoutes,
-              initialRoute: "/splashScreen",
-        );
-      }
-    );
-  }
 
-  
+  @override
+  Widget build(context) {
+    return ValueListenableBuilder(
+        valueListenable: settingsBox.listenable(),
+        builder: (context, settingsBox, _) {
+          return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: themeData(context, settingsBox),
+            routes: appRoutes,
+            initialRoute: "/splashScreen",
+          );
+        });
+  }
 }

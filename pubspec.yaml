@@ -25,6 +25,7 @@ dependencies:
   awesome_notifications: ^0.8.2
   app_settings: ^5.1.1
   share_plus: ^7.2.1
+  webview_flutter: ^4.4.3
 
 dev_dependencies:
   flutter_test:

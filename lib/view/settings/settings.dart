@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jungle/view/settings/about_button/about_button.dart';
 import 'package:jungle/view/settings/notification_button/notification_button.dart';
 import 'package:jungle/view/settings/share_button/share_button.dart';
 import 'package:jungle/view/settings/theme_button/theme_button.dart';
@@ -38,6 +39,7 @@ class Settings extends StatelessWidget {
         NotificationButton(),
         ShareButton(),
         FeedbackButton(),
+        AboutButton(),
         Expanded(child: SizedBox()),
         Text("Made with 💙 by Flutter v3.0."),
       ],
