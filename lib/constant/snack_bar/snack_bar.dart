@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../widget/snack_bar_widget/snack_bar_widget.dart';
 
 void showMarkedCompletedSnackBar(BuildContext context) {

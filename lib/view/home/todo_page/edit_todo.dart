@@ -8,6 +8,7 @@ import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dar
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import '../../../model/todo_model/todo_model.dart';
 import '../../../widget/text_button_widget/text_button_widget.dart';
+import '../../../widget/time_date_widget/time_date_widget.dart';
 
 class EditTodoPage extends StatefulWidget {
   final int index;
@@ -51,26 +52,25 @@ class _EditTodoPageState extends State<EditTodoPage> {
     BuildContext context,
     TodoModel todoModel,
   ) {
-    return LayoutBuilder(
-      builder: (context, constraint) {
-        return SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: constraint.maxHeight),
-            child: IntrinsicHeight(
-              child: Column(
-                children: [
-                  titleTextField(todoModel),
-                  timeAndDateWidget(todoModel),
-                  descriptionTextField(todoModel),
-                  markCompButtonWidget(todoModel)
-                ],
-              ),
+    return LayoutBuilder(builder: (context, constraint) {
+      return SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: constraint.maxHeight),
+          child: IntrinsicHeight(
+            child: Column(
+              children: [
+                titleTextField(todoModel),
+                timeAndDateWidget(todoModel),
+                descriptionTextField(todoModel),
+                const Expanded(child: SizedBox()),
+                markCompButtonWidget(todoModel)
+              ],
             ),
           ),
-        );
-      }
-    );
+        ),
+      );
+    });
   }
 
   Widget titleTextField(TodoModel todo) {
@@ -122,61 +122,25 @@ class _EditTodoPageState extends State<EditTodoPage> {
     TimeOfDay time = todoModel.timeOfDay ?? TimeOfDay.now();
     String formattedDate = Jiffy.parse(currentDate.format(date)).MMMEd;
 
-    if (todoModel.dateTime != null && todoModel.timeOfDay != null) {
-      return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          children: [
-            const Icon(Icons.schedule),
-            const SizedBox(width: 10),
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Theme.of(context).textTheme.bodyMedium!.color ??
-                        Colors.white,
-                  )),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "$formattedDate, ${time.format(context)}",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                      width: 22,
-                      height: 22,
-                      child: IconButton(
-                          padding: const EdgeInsets.all(0),
-                          onPressed: () {
-                            setState(() {
-                              NotificationService().cancelNotification(
-                                  todoBox.getAt(widget.index)!.id);
-                              todoBox.putAt(
-                                  widget.index,
-                                  TodoModel(
-                                      title: todoModel.title,
-                                      description: todoModel.description,
-                                      dateTime: null,
-                                      timeOfDay: null,
-                                      id: todoModel.id));
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.close,
-                            size: 20,
-                          )))
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-    return const Text("");
+    return TimeDateWidget(
+      time: time.format(context),
+      date: formattedDate,
+      todoModel: todoModel,
+      onFunction: () {
+        setState(() {
+          NotificationService()
+              .cancelNotification(todoBox.getAt(widget.index)!.id);
+          todoBox.putAt(
+              widget.index,
+              TodoModel(
+                  title: todoModel.title,
+                  description: todoModel.description,
+                  dateTime: null,
+                  timeOfDay: null,
+                  id: todoModel.id));
+        });
+      },
+    );
   }
 
   Widget descriptionTextField(TodoModel todo) {
@@ -217,22 +181,20 @@ class _EditTodoPageState extends State<EditTodoPage> {
         });
   }
 
-
-  Widget markCompButtonWidget(TodoModel todoModel){
-    return Expanded(
-      child: Align(
-        alignment: Alignment.bottomRight,
-        child: TextButton(
-          onPressed: (){
-            Get.back();
-            todoBox.deleteAt(widget.index);
-            completedTodoBox.add(todoModel);
-            showMarkedCompletedSnackBar(context);
-          },
-          child: const Text(
-            "Mark completed",
-            style: TextStyle(fontWeight: FontWeight.bold),),
-          ),
+  Widget markCompButtonWidget(TodoModel todoModel) {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: TextButton(
+        onPressed: () {
+          Get.back();
+          todoBox.deleteAt(widget.index);
+          completedTodoBox.add(todoModel);
+          showMarkedCompletedSnackBar(context);
+        },
+        child: const Text(
+          "Mark completed",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

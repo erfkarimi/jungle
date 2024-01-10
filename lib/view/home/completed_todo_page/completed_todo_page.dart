@@ -49,7 +49,7 @@ class CompletedTodoState extends State<CompletedTodo> {
     final String description = completedTodo.description ?? "";
     return MaterialButton(
       onPressed: () {
-        Get.to(()=> EditCompletedTodoPage(index: index),
+        Get.to(() => EditCompletedTodoPage(index: index),
             transition: Transition.cupertino);
       },
       onLongPress: () => deleteDoneTodoOnLongPressDialog(context, index),

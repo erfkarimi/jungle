@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
+import 'package:jungle/widget/time_date_widget/time_date_widget.dart';
 import '../../../constant/snack_bar/snack_bar.dart';
 import '../../../model/todo_model/todo_model.dart';
+import '../../service/notification_service/notification_service.dart';
 
 class EditCompletedTodoPage extends StatefulWidget {
   final int index;
@@ -55,6 +58,7 @@ class _EditCompletedTodoPageState extends State<EditCompletedTodoPage> {
                 titleTextField(compTodo),
                 timeAndDateWidget(compTodo),
                 descriptionTextField(compTodo),
+                const Expanded(child: SizedBox()),
                 markUncompletedButtonWidget(compTodo)
               ],
             ),
@@ -100,33 +104,24 @@ class _EditCompletedTodoPageState extends State<EditCompletedTodoPage> {
     TimeOfDay time = compTodo.timeOfDay ?? TimeOfDay.now();
     String formattedDate = Jiffy.parse(currentDate.format(date)).MMMEd;
 
-    if (compTodo.dateTime != null && compTodo.timeOfDay != null) {
-      return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          children: [
-            const Icon(Icons.schedule),
-            const SizedBox(width: 10),
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Theme.of(context).textTheme.bodyMedium!.color ??
-                        Colors.white,
-                  )),
-              child: Text(
-                "$formattedDate, ${time.format(context)}",
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-    return const Text("");
+    return TimeDateWidget(
+        time: time.format(context),
+        date: formattedDate,
+        todoModel: compTodo,
+        onFunction: () {
+          setState(() {
+            NotificationService()
+                .cancelNotification(compTodoBox.getAt(widget.index)!.id);
+            compTodoBox.putAt(
+                widget.index,
+                TodoModel(
+                    title: compTodo.title,
+                    description: compTodo.description,
+                    dateTime: null,
+                    timeOfDay: null,
+                    id: compTodo.id));
+          });
+        });
   }
 
   Widget descriptionTextField(TodoModel compTodo) {
@@ -155,20 +150,18 @@ class _EditCompletedTodoPageState extends State<EditCompletedTodoPage> {
   }
 
   Widget markUncompletedButtonWidget(TodoModel compTodo) {
-    return Expanded(
-      child: Align(
-        alignment: Alignment.bottomRight,
-        child: TextButton(
-          onPressed: () {
-            Get.back();
-            compTodoBox.deleteAt(widget.index);
-            todoBox.add(compTodo);
-            showMarkedUncompletedSnackBar(context);
-          },
-          child: const Text(
-            "Mark uncompleted",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: TextButton(
+        onPressed: () {
+          Get.back();
+          compTodoBox.deleteAt(widget.index);
+          todoBox.add(compTodo);
+          showMarkedUncompletedSnackBar(context);
+        },
+        child: const Text(
+          "Mark uncompleted",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
     );
