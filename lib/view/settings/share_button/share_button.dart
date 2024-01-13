@@ -9,7 +9,7 @@ class ShareButton extends StatelessWidget {
     return MaterialButton(
       onPressed: (){
         Share.share(
-          "To use it check this link : https://github.com/erfkarimi/jungle/releases",
+          "Hi, Jungle is a task manager app, to get it you can check this link out : https://github.com/erfkarimi/jungle/releases",
           subject: "Jungle");
       },
       child: const ListTile(
