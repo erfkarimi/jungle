@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -9,9 +11,26 @@ class WebViewPage extends StatefulWidget {
 }
 
 class WebViewPageState extends State<WebViewPage> {
-  final WebViewController controller = WebViewController()
+  late WebViewController controller;
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = WebViewController()
   ..setJavaScriptMode(JavaScriptMode.unrestricted)
-  ..loadRequest(Uri.parse("https://github.com/erfkarimi/jungle"));
+  ..loadRequest(Uri.parse("https://github.com/erfkarimi/jungle"))
+  ..setNavigationDelegate(
+    NavigationDelegate(
+      onPageFinished: (_){
+        setState(() {
+          loading = false;
+        });
+      }
+    )
+  );
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +47,15 @@ class WebViewPageState extends State<WebViewPage> {
   }
 
   Widget buildBody(){
-    return WebViewWidget(
-      controller: controller);
+    
+    return Stack(
+      children: [
+        WebViewWidget(
+          controller: controller),
+          if(loading) const Center(
+            child: CircularProgressIndicator(),
+          )
+      ],
+    );
   }
 }
