@@ -36,7 +36,7 @@ class CompletedTodoState extends State<CompletedTodo> {
                   childCount: completedTodoBox.length,
                   (context, int index) {
                   index = completedTodoBox.length - 1 - index;
-                  return completedTodoButton(index);
+                  return completedTaskWidget(index);
                 }
                 ))
             ],
@@ -46,7 +46,7 @@ class CompletedTodoState extends State<CompletedTodo> {
         });
   }
 
-  Widget completedTodoButton(int index) {
+  Widget completedTaskWidget(int index) {
     final completedTodo = completedTodoBox.getAt(index) as TodoModel;
     final String title = completedTodo.title ?? "";
     final String description = completedTodo.description ?? "";
@@ -55,7 +55,7 @@ class CompletedTodoState extends State<CompletedTodo> {
         Get.to(() => EditCompletedTodoPage(index: index),
             transition: Transition.cupertino);
       },
-      onLongPress: () => deleteDoneTodoOnLongPressDialog(context, index),
+      onLongPress: () => delCompTaskDialog(context, index),
       height: 50,
       elevation: 0.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -114,7 +114,7 @@ class CompletedTodoState extends State<CompletedTodo> {
     );
   }
 
-  void deleteDoneTodoOnLongPressDialog(
+  void delCompTaskDialog(
     BuildContext context,
     int index,
   ) {

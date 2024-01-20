@@ -24,7 +24,7 @@ class _AppState extends State<App> {
             debugShowCheckedModeBanner: false,
             theme: themeData(context, settingsBox),
             routes: appRoutes,
-            initialRoute: "/splashScreen",
+            initialRoute: "/wrapper",
           );
         });
   }

@@ -74,10 +74,9 @@ class HomePageState extends State<HomePage> {
 
   List<Widget> appBarActionWidget() {
     return [
-      MaterialButton(
-        minWidth: 10,
+      IconButton(
         onPressed: () => Get.toNamed("/settings"),
-        child: const Icon(
+        icon: const Icon(
           Icons.settings_outlined,
         ),
       ),

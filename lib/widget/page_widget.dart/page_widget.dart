@@ -20,7 +20,8 @@ class PageWidget extends StatelessWidget{
   Widget build(context){
     return  AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
-        statusBarIconBrightness: statusBarIconBrightness
+        statusBarIconBrightness: statusBarIconBrightness,
+        statusBarColor: Colors.transparent,
       ),
       child: Scaffold(
         backgroundColor: backgroundColor,
