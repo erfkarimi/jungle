@@ -34,16 +34,18 @@ class TodoPageState extends State<TodoPage> {
           if (todoBox.isEmpty) {
             return showNoTodo();
           }
-          return Padding(
-            padding: const EdgeInsets.all(10),
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: todoBox.length,
-                itemBuilder: (context, int index) {
+          return CustomScrollView(
+            slivers: [
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  childCount: todoBox.length,
+                  (context, int index) {
                   index = todoBox.length - 1 - index;
                   return todoButton(index);
-                }),
-          );
+                }
+                ))
+            ],
+          ).paddingSymmetric(horizontal: 10);
         });
   }
 

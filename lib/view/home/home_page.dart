@@ -28,36 +28,47 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(context) {
-    return SafeArea(
-      top: false,
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          systemNavigationBarColor: Theme.of(context).colorScheme.background,
-        ),
-        child: DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: buildAppBar(),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        systemNavigationBarColor: Theme.of(context).colorScheme.background,
+      ),
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: NestedScrollView(
+            floatHeaderSlivers: true,
+            headerSliverBuilder: (context, innerBoxIsScrolled){
+              return [
+                buildAppBar(context)
+              ];
+            },
             body: buildBody(),
-          ),
+            ),
         ),
       ),
     );
   }
 
-  AppBar buildAppBar() {
-    return AppBar(
-      leading: null,
-      elevation: 0.0,
-      centerTitle: true,
-      title: const Text(
-        "Jungle",
-        style: TextStyle(
-          fontWeight: FontWeight.bold),
+  Widget buildAppBar(BuildContext context) {
+    return SliverOverlapAbsorber(
+      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+      sliver: SliverSafeArea(
+        top: false,
+        sliver: SliverAppBar(
+          pinned: true,
+          floating: true,
+          leading: null,
+          centerTitle: true,
+          title: const Text(
+            "Jungle",
+            style: TextStyle(
+              fontWeight: FontWeight.bold),
+          ),
+          actions: appBarActionWidget(),
+          bottom: tabBarWidget(),
+        ),
       ),
-      actions: appBarActionWidget(),
-      bottom: tabBarWidget(),
     );
   }
 
@@ -77,6 +88,7 @@ class HomePageState extends State<HomePage> {
     return TabBar(
         tabAlignment: TabAlignment.start,
         isScrollable: true,
+        indicatorWeight: 5,
         splashBorderRadius: BorderRadius.circular(10),
         labelStyle: const TextStyle(fontWeight: FontWeight.bold),
         tabs: tabListWidget());

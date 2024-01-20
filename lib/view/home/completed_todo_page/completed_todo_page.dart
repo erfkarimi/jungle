@@ -29,17 +29,20 @@ class CompletedTodoState extends State<CompletedTodo> {
           if (completedTodoBox.isEmpty) {
             return showNoCompletedTodo();
           } else {
-            return Padding(
-              padding: const EdgeInsets.all(10),
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: completedTodoBox.length,
-                  itemBuilder: (context, int index) {
-                    index = completedTodoBox.length - 1 - index;
-                    return completedTodoButton(index);
-                  }),
-            );
+            return CustomScrollView(
+            slivers: [
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  childCount: completedTodoBox.length,
+                  (context, int index) {
+                  index = completedTodoBox.length - 1 - index;
+                  return completedTodoButton(index);
+                }
+                ))
+            ],
+          ).paddingSymmetric(horizontal: 10);
           }
+          
         });
   }
 
