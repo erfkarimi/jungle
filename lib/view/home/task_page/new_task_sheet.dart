@@ -10,14 +10,14 @@ import '../../../model/todo_model/todo_model.dart';
 import '../../../view_model/text_field_validation/text_field_validation.dart';
 import '../../../widget/text_button_widget/text_button_widget.dart';
 
-class NewTodoSheet extends StatefulWidget {
-  const NewTodoSheet({super.key});
+class NewTaskSheet extends StatefulWidget {
+  const NewTaskSheet({super.key});
 
   @override
-  State<NewTodoSheet> createState() => _NewTodoSheetState();
+  State<NewTaskSheet> createState() => _NewTaskSheetState();
 }
 
-class _NewTodoSheetState extends State<NewTodoSheet> {
+class _NewTaskSheetState extends State<NewTaskSheet> {
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   TextEditingController controller = TextEditingController();
   DateTime? presentDate;

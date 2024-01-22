@@ -10,15 +10,15 @@ import '../../../model/todo_model/todo_model.dart';
 import '../../../widget/text_button_widget/text_button_widget.dart';
 import '../../../widget/time_date_widget/time_date_widget.dart';
 
-class EditTodoPage extends StatefulWidget {
+class EditTaskPage extends StatefulWidget {
   final int index;
-  const EditTodoPage({super.key, required this.index});
+  const EditTaskPage({super.key, required this.index});
 
   @override
-  State<EditTodoPage> createState() => _EditTodoPageState();
+  State<EditTaskPage> createState() => _EditTaskPageState();
 }
 
-class _EditTodoPageState extends State<EditTodoPage> {
+class _EditTaskPageState extends State<EditTaskPage> {
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
   String title = "";
@@ -31,6 +31,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
   Widget build(context) {
     final todoModel = todoBox.getAt(widget.index) as TodoModel;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: buildAppBar(context, todoBox, todoModel),
       body: buildBody(context, todoModel),
     );
@@ -189,7 +190,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
           Get.back();
           todoBox.deleteAt(widget.index);
           completedTodoBox.add(todoModel);
-          showMarkedCompletedSnackBar(context);
+          showMarkedCompSnackBar(context);
         },
         child: const Text(
           "Mark completed",

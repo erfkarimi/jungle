@@ -10,15 +10,15 @@ import '../../../constant/snack_bar/snack_bar.dart';
 import '../../../model/todo_model/todo_model.dart';
 import '../../service/notification_service/notification_service.dart';
 
-class EditCompletedTodoPage extends StatefulWidget {
+class EditCompletedTaskPage extends StatefulWidget {
   final int index;
-  const EditCompletedTodoPage({super.key, required this.index});
+  const EditCompletedTaskPage({super.key, required this.index});
 
   @override
-  State<EditCompletedTodoPage> createState() => _EditCompletedTodoPageState();
+  State<EditCompletedTaskPage> createState() => _EditCompletedTaskPageState();
 }
 
-class _EditCompletedTodoPageState extends State<EditCompletedTodoPage> {
+class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   final Box<TodoModel> compTodoBox = Hive.box<TodoModel>("completed");
   String title = "";
@@ -30,6 +30,7 @@ class _EditCompletedTodoPageState extends State<EditCompletedTodoPage> {
   Widget build(context) {
     final compTodoModel = compTodoBox.getAt(widget.index) as TodoModel;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: buildAppBar(compTodoModel),
       body: buildBody(compTodoModel),
     );
@@ -156,7 +157,7 @@ class _EditCompletedTodoPageState extends State<EditCompletedTodoPage> {
           Get.back();
           compTodoBox.deleteAt(widget.index);
           todoBox.add(compTodo);
-          showMarkedUncompletedSnackBar(context);
+          showMarkedUncompSnackBar(context);
         },
         child: const Text(
           "Mark uncompleted",

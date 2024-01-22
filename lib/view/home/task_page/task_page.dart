@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jungle/view/home/todo_page/new_todo_sheet.dart';
+import 'package:jungle/view/home/task_page/new_task_sheet.dart';
 import 'package:jungle/view/service/notification_service/notification_service.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import '../../../constant/snack_bar/snack_bar.dart';
 import '../../../model/todo_model/todo_model.dart';
-import 'edit_todo.dart';
+import 'edit_task.dart';
 
-class TodoPage extends StatefulWidget {
-  const TodoPage({super.key});
+class TaskPage extends StatefulWidget {
+  const TaskPage({super.key});
 
   @override
-  TodoPageState createState() => TodoPageState();
+  TaskPageState createState() => TaskPageState();
 }
 
-class TodoPageState extends State<TodoPage> {
+class TaskPageState extends State<TaskPage> {
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
   final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
 
@@ -55,7 +55,7 @@ class TodoPageState extends State<TodoPage> {
     final String todoDescription = todo.description ?? "";
     return MaterialButton(
       onPressed: () {
-        Get.to(() => EditTodoPage(index: index),
+        Get.to(() => EditTaskPage(index: index),
             transition: Transition.cupertino);
       },
       onLongPress: () => deleteUnDoneTodoOnLongPressDialog(index),
@@ -71,7 +71,7 @@ class TodoPageState extends State<TodoPage> {
           value: false,
           onChanged: (value) {
             setState(() {
-              showMarkedCompletedSnackBar(context);
+              showMarkedCompSnackBar(context);
               todoBox.deleteAt(index);
               completedTodoBox.add(todo);
             });
@@ -107,12 +107,12 @@ class TodoPageState extends State<TodoPage> {
           children: [
             Image.asset(
               "asset/image/task_image.png",
-              width: 250,
+              width: 220,
             ),
             const Text(
-              "No todo",
+              "No task",
               style: TextStyle(
-                fontSize: 17,
+                fontSize: 16,
               ),
             )
           ],
@@ -128,7 +128,7 @@ class TodoPageState extends State<TodoPage> {
         builder: (context) {
           return StatefulBuilder(
             builder: (context, setState) {
-              return const NewTodoSheet();
+              return const NewTaskSheet();
             },
           );
         });

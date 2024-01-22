@@ -9,10 +9,10 @@ class App extends StatefulWidget {
   const App({super.key});
 
   @override
-  State<App> createState() => _AppState();
+  State<App> createState() => AppState();
 }
 
-class _AppState extends State<App> {
+class AppState extends State<App> {
   final Box settingsBox = Hive.box("settings");
 
   @override

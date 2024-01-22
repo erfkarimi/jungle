@@ -41,7 +41,7 @@ class Settings extends StatelessWidget {
         FeedbackButton(),
         AboutButton(),
         Expanded(child: SizedBox()),
-        Text("Made with 💙 by Flutter v3.0."),
+        Text("Made with 💙 by Flutter"),
       ],
     );
   }

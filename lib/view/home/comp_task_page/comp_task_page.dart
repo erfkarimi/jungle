@@ -5,15 +5,15 @@ import 'package:jungle/constant/snack_bar/snack_bar.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import '../../../../model/todo_model/todo_model.dart';
 import '../../service/notification_service/notification_service.dart';
-import 'edit_completed_todo_page.dart';
+import 'edit_comp_task_page.dart';
 
-class CompletedTodo extends StatefulWidget {
-  const CompletedTodo({super.key});
+class CompTaskPage extends StatefulWidget {
+  const CompTaskPage({super.key});
   @override
-  CompletedTodoState createState() => CompletedTodoState();
+  CompTaskPageState createState() => CompTaskPageState();
 }
 
-class CompletedTodoState extends State<CompletedTodo> {
+class CompTaskPageState extends State<CompTaskPage> {
   final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
   final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
 
@@ -36,7 +36,7 @@ class CompletedTodoState extends State<CompletedTodo> {
                   childCount: completedTodoBox.length,
                   (context, int index) {
                   index = completedTodoBox.length - 1 - index;
-                  return completedTaskWidget(index);
+                  return compTaskWidget(index);
                 }
                 ))
             ],
@@ -46,13 +46,13 @@ class CompletedTodoState extends State<CompletedTodo> {
         });
   }
 
-  Widget completedTaskWidget(int index) {
+  Widget compTaskWidget(int index) {
     final completedTodo = completedTodoBox.getAt(index) as TodoModel;
     final String title = completedTodo.title ?? "";
     final String description = completedTodo.description ?? "";
     return MaterialButton(
       onPressed: () {
-        Get.to(() => EditCompletedTodoPage(index: index),
+        Get.to(() => EditCompletedTaskPage(index: index),
             transition: Transition.cupertino);
       },
       onLongPress: () => delCompTaskDialog(context, index),
@@ -66,7 +66,7 @@ class CompletedTodoState extends State<CompletedTodo> {
             setState(() {
               completedTodoBox.deleteAt(index);
               todoBox.add(completedTodo);
-              showMarkedUncompletedSnackBar(context);
+              showMarkedUncompSnackBar(context);
             });
           },
           icon: const Icon(
@@ -100,12 +100,12 @@ class CompletedTodoState extends State<CompletedTodo> {
           children: [
             Image.asset(
               "asset/image/complete_image.png",
-              width: 250,
+              width: 220,
             ),
             const Text(
               "Nothing is completed",
               style: TextStyle(
-                fontSize: 17,
+                fontSize: 16,
               ),
             )
           ],

@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:jungle/constant/palette/palette.dart';
 import 'package:jungle/view/service/notification_service/notification_service.dart';
-import 'completed_todo_page/completed_todo_page.dart';
-import 'todo_page/todo_page.dart';
+import 'comp_task_page/comp_task_page.dart';
+import 'task_page/task_page.dart';
 
 part 'notification_perm_dialog.dart';
 
@@ -101,6 +101,6 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget buildBody() {
-    return const TabBarView(children: [TodoPage(), CompletedTodo()]);
+    return const TabBarView(children: [TaskPage(), CompTaskPage()]);
   }
 }

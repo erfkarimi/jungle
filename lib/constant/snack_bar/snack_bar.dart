@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widget/snack_bar_widget/snack_bar_widget.dart';
 
-void showMarkedCompletedSnackBar(BuildContext context) {
+void showMarkedCompSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBarWidget(
         bodyText: "Task completed",
@@ -9,7 +9,7 @@ void showMarkedCompletedSnackBar(BuildContext context) {
         ));
   }
 
-void showMarkedUncompletedSnackBar(BuildContext context) {
+void showMarkedUncompSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBarWidget(
         bodyText: "Task marked uncompleted",

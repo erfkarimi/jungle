@@ -45,7 +45,6 @@ class WebViewPageState extends State<WebViewPage> {
   }
 
   Widget buildBody(){
-    
     return Stack(
       children: [
         WebViewWidget(
