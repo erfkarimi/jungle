@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jungle/constant/snack_bar/snack_bar.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
-import '../../../../model/todo_model/todo_model.dart';
+import '../../../../model/task_model/task_model.dart';
 import '../../service/notification_service/notification_service.dart';
 import 'edit_comp_task_page.dart';
 
@@ -14,8 +14,8 @@ class CompTaskPage extends StatefulWidget {
 }
 
 class CompTaskPageState extends State<CompTaskPage> {
-  final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
-  final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
+  final Box<TaskModel> compTaskBox = Hive.box<TaskModel>("completed");
+  final Box<TaskModel> todoBox = Hive.box<TaskModel>("task");
 
   @override
   Widget build(context) {
@@ -24,18 +24,18 @@ class CompTaskPageState extends State<CompTaskPage> {
 
   Widget buildBody() {
     return ValueListenableBuilder(
-        valueListenable: completedTodoBox.listenable(),
-        builder: (context, completedTodoBox, _) {
-          if (completedTodoBox.isEmpty) {
+        valueListenable: compTaskBox.listenable(),
+        builder: (context, compTaskBox, _) {
+          if (compTaskBox.isEmpty) {
             return showNoCompletedTodo();
           } else {
             return CustomScrollView(
             slivers: [
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  childCount: completedTodoBox.length,
+                  childCount: compTaskBox.length,
                   (context, int index) {
-                  index = completedTodoBox.length - 1 - index;
+                  index = compTaskBox.length - 1 - index;
                   return compTaskWidget(index);
                 }
                 ))
@@ -47,9 +47,9 @@ class CompTaskPageState extends State<CompTaskPage> {
   }
 
   Widget compTaskWidget(int index) {
-    final completedTodo = completedTodoBox.getAt(index) as TodoModel;
-    final String title = completedTodo.title ?? "";
-    final String description = completedTodo.description ?? "";
+    final compTask = compTaskBox.getAt(index) as TaskModel;
+    final String title = compTask.title ?? "";
+    final String description = compTask.description ?? "";
     return MaterialButton(
       onPressed: () {
         Get.to(() => EditCompletedTaskPage(index: index),
@@ -64,8 +64,8 @@ class CompTaskPageState extends State<CompTaskPage> {
         leading: IconButton(
           onPressed: () {
             setState(() {
-              completedTodoBox.deleteAt(index);
-              todoBox.add(completedTodo);
+              compTaskBox.deleteAt(index);
+              todoBox.add(compTask);
               showMarkedUncompSnackBar(context);
             });
           },
@@ -124,9 +124,9 @@ class CompTaskPageState extends State<CompTaskPage> {
           return DeleteDialogWidget(
             index: index,
             firstButtonFunction: () {
-              completedTodoBox.deleteAt(index);
+              compTaskBox.deleteAt(index);
               NotificationService()
-                  .cancelNotification(completedTodoBox.getAt(index)!.id);
+                  .cancelNotification(compTaskBox.getAt(index)!.id);
               Get.back();
             },
           );

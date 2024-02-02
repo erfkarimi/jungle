@@ -1,5 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:jungle/model/todo_model/todo_model.dart';
+import 'package:jungle/model/task_model/task_model.dart';
 
 
 class NotificationService{
@@ -28,18 +28,18 @@ class NotificationService{
 
   }
   // To create Schedule notification
-  Future<void> createScheduleNotification(TodoModel todoModel) async {
+  Future<void> createScheduleNotification(TaskModel task) async {
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
-            id: todoModel.id ?? 0,
+            id: task.id ?? 0,
             channelKey: 'todo_channel',
-            title: todoModel.title,
-            body: todoModel.description,
+            title: task.title,
+            body: task.description,
             notificationLayout: NotificationLayout.Default),
         schedule: NotificationCalendar(
-            day: todoModel.dateTime!.day,
-            hour: todoModel.timeOfDay!.hour,
-            minute: todoModel.timeOfDay!.minute,
+            day: task.dateTime!.day,
+            hour: task.timeOfDay!.hour,
+            minute: task.timeOfDay!.minute,
             second: 0,
             millisecond: 0,
             repeats: true),

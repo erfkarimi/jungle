@@ -6,7 +6,7 @@ import 'package:jungle/utility/utility.dart';
 import 'package:jungle/view/service/notification_service/notification_service.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import '../../../constant/palette/palette.dart';
-import '../../../model/todo_model/todo_model.dart';
+import '../../../model/task_model/task_model.dart';
 import '../../../view_model/text_field_validation/text_field_validation.dart';
 import '../../../widget/text_button_widget/text_button_widget.dart';
 
@@ -18,7 +18,7 @@ class NewTaskSheet extends StatefulWidget {
 }
 
 class _NewTaskSheetState extends State<NewTaskSheet> {
-  final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
+  final Box<TaskModel> todoBox = Hive.box<TaskModel>("task");
   TextEditingController controller = TextEditingController();
   DateTime? presentDate;
   TimeOfDay? presentTime;
@@ -154,7 +154,7 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
   }
 
   void addTodoItem() {
-    final TodoModel todoModel = TodoModel(
+    final TaskModel todoModel = TaskModel(
         title: controller.text,
         dateTime: presentDate,
         timeOfDay: presentTime,

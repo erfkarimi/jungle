@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jungle/model/todo_model/todo_model.dart';
+import 'package:jungle/model/task_model/task_model.dart';
 
 class TimeDateWidget extends StatefulWidget {
   final String? time;
   final String? date;
-  final TodoModel? todoModel;
+  final TaskModel? todoModel;
   final VoidCallback onFunction;
   const TimeDateWidget(
       {super.key,

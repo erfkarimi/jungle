@@ -5,7 +5,7 @@ import 'package:jungle/view/home/task_page/new_task_sheet.dart';
 import 'package:jungle/view/service/notification_service/notification_service.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import '../../../constant/snack_bar/snack_bar.dart';
-import '../../../model/todo_model/todo_model.dart';
+import '../../../model/task_model/task_model.dart';
 import 'edit_task.dart';
 
 class TaskPage extends StatefulWidget {
@@ -16,8 +16,8 @@ class TaskPage extends StatefulWidget {
 }
 
 class TaskPageState extends State<TaskPage> {
-  final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
-  final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
+  final Box<TaskModel> taskBox = Hive.box<TaskModel>("task");
+  final Box<TaskModel> compTaskBox = Hive.box<TaskModel>("completed");
 
   @override
   Widget build(context) {
@@ -29,19 +29,19 @@ class TaskPageState extends State<TaskPage> {
 
   Widget buildBody() {
     return ValueListenableBuilder(
-        valueListenable: todoBox.listenable(),
-        builder: (context, todoBox, __) {
-          if (todoBox.isEmpty) {
+        valueListenable: taskBox.listenable(),
+        builder: (context, taskBox, __) {
+          if (taskBox.isEmpty) {
             return showNoTodo();
           }
           return CustomScrollView(
             slivers: [
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  childCount: todoBox.length,
+                  childCount: taskBox.length,
                   (context, int index) {
-                  index = todoBox.length - 1 - index;
-                  return todoButton(index);
+                  index = taskBox.length - 1 - index;
+                  return taskButton(index);
                 }
                 ))
             ],
@@ -49,10 +49,10 @@ class TaskPageState extends State<TaskPage> {
         });
   }
 
-  Widget todoButton(int index) {
-    final todo = todoBox.getAt(index) as TodoModel;
-    final String todoTitle = todo.title ?? "";
-    final String todoDescription = todo.description ?? "";
+  Widget taskButton(int index) {
+    final task = taskBox.getAt(index) as TaskModel;
+    final String taskTitle = task.title ?? "";
+    final String taskDescription = task.description ?? "";
     return MaterialButton(
       onPressed: () {
         Get.to(() => EditTaskPage(index: index),
@@ -72,23 +72,23 @@ class TaskPageState extends State<TaskPage> {
           onChanged: (value) {
             setState(() {
               showMarkedCompSnackBar(context);
-              todoBox.deleteAt(index);
-              completedTodoBox.add(todo);
+              taskBox.deleteAt(index);
+              compTaskBox.add(task);
             });
           },
         ),
         title: Text(
-          todoTitle,
+          taskTitle,
           maxLines: 2,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: todoDescription.isEmpty
+        subtitle: taskDescription.isEmpty
             ? null
             : Text(
-                todoDescription,
+                taskDescription,
                 maxLines: 2,
               ),
-        trailing: todo.dateTime != null
+        trailing: task.dateTime != null
         ? Icon(
           Icons.schedule_outlined,
           color: Theme.of(context).listTileTheme.subtitleTextStyle!.color,
@@ -155,11 +155,11 @@ class TaskPageState extends State<TaskPage> {
           return DeleteDialogWidget(
             index: index,
             firstButtonFunction: () {
-              if (todoBox.getAt(index)!.dateTime != null) {
+              if (taskBox.getAt(index)!.dateTime != null) {
                 NotificationService()
-                    .cancelNotification(todoBox.getAt(index)!.id);
+                    .cancelNotification(taskBox.getAt(index)!.id);
               }
-              todoBox.deleteAt(index);
+              taskBox.deleteAt(index);
               Get.back();
             },
           );

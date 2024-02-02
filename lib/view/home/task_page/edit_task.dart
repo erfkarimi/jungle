@@ -6,7 +6,7 @@ import 'package:jungle/constant/snack_bar/snack_bar.dart';
 import 'package:jungle/view/service/notification_service/notification_service.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
-import '../../../model/todo_model/todo_model.dart';
+import '../../../model/task_model/task_model.dart';
 import '../../../widget/text_button_widget/text_button_widget.dart';
 import '../../../widget/time_date_widget/time_date_widget.dart';
 
@@ -19,8 +19,8 @@ class EditTaskPage extends StatefulWidget {
 }
 
 class _EditTaskPageState extends State<EditTaskPage> {
-  final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
-  final Box<TodoModel> completedTodoBox = Hive.box<TodoModel>("completed");
+  final Box<TaskModel> taskBox = Hive.box<TaskModel>("task");
+  final Box<TaskModel> compTaskBox = Hive.box<TaskModel>("completed");
   String title = "";
   String description = "";
   DateTime? dateTime;
@@ -29,18 +29,17 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
   @override
   Widget build(context) {
-    final todoModel = todoBox.getAt(widget.index) as TodoModel;
+    final task = taskBox.getAt(widget.index) as TaskModel;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: buildAppBar(context, todoBox, todoModel),
-      body: buildBody(context, todoModel),
+      appBar: buildAppBar(context, task),
+      body: buildBody(context, task),
     );
   }
 
   AppBar buildAppBar(
     BuildContext context,
-    Box<TodoModel> todoBox,
-    TodoModel todoModel,
+    TaskModel task,
   ) {
     return AppBar(
       title: const Text("Edit task"),
@@ -51,7 +50,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
   Widget buildBody(
     BuildContext context,
-    TodoModel todoModel,
+    TaskModel task,
   ) {
     return LayoutBuilder(builder: (context, constraint) {
       return SingleChildScrollView(
@@ -61,11 +60,11 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: IntrinsicHeight(
             child: Column(
               children: [
-                titleTextField(todoModel),
-                timeAndDateWidget(todoModel),
-                descriptionTextField(todoModel),
+                titleTextField(task),
+                timeAndDateWidget(task),
+                descriptionTextField(task),
                 const Expanded(child: SizedBox()),
-                markCompButtonWidget(todoModel)
+                markCompButtonWidget(task)
               ],
             ),
           ),
@@ -74,7 +73,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
     });
   }
 
-  Widget titleTextField(TodoModel todo) {
+  Widget titleTextField(TaskModel task) {
     return TextFormField(
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.next,
@@ -83,7 +82,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
           fontWeight: FontWeight.bold,
           fontSize: 18,
         ),
-        initialValue: todo.title,
+        initialValue: task.title,
         decoration: const InputDecoration(
             hintText: "Title",
             hintStyle: TextStyle(
@@ -93,63 +92,63 @@ class _EditTaskPageState extends State<EditTaskPage> {
             border: InputBorder.none),
         onChanged: (String value) {
           setState(() {
-            todoBox.putAt(
+            taskBox.putAt(
                 widget.index,
-                TodoModel(
+                TaskModel(
                     title: value,
-                    description: todo.description,
-                    dateTime: todo.dateTime,
-                    timeOfDay: todo.timeOfDay,
-                    id: todo.id));
-            if (todo.dateTime != null && todo.timeOfDay != null) {
-              if (todo.dateTime!.day >= DateTime.now().day &&
-                  todo.dateTime!.month >= DateTime.now().month) {
-                NotificationService().cancelNotification(todo.id);
-                NotificationService().createScheduleNotification(TodoModel(
+                    description: task.description,
+                    dateTime: task.dateTime,
+                    timeOfDay: task.timeOfDay,
+                    id: task.id));
+            if (task.dateTime != null && task.timeOfDay != null) {
+              if (task.dateTime!.day >= DateTime.now().day &&
+                  task.dateTime!.month >= DateTime.now().month) {
+                NotificationService().cancelNotification(task.id);
+                NotificationService().createScheduleNotification(TaskModel(
                     title: value,
-                    description: todo.description,
-                    dateTime: todo.dateTime,
-                    timeOfDay: todo.timeOfDay,
-                    id: todo.id));
+                    description: task.description,
+                    dateTime: task.dateTime,
+                    timeOfDay: task.timeOfDay,
+                    id: task.id));
               }
             }
           });
         });
   }
 
-  Widget timeAndDateWidget(TodoModel todoModel) {
+  Widget timeAndDateWidget(TaskModel task) {
     DateFormat currentDate = DateFormat("yyyy-MM-dd");
-    DateTime date = todoModel.dateTime ?? DateTime.now();
-    TimeOfDay time = todoModel.timeOfDay ?? TimeOfDay.now();
+    DateTime date = task.dateTime ?? DateTime.now();
+    TimeOfDay time = task.timeOfDay ?? TimeOfDay.now();
     String formattedDate = Jiffy.parse(currentDate.format(date)).MMMEd;
 
     return TimeDateWidget(
       time: time.format(context),
       date: formattedDate,
-      todoModel: todoModel,
+      todoModel: task,
       onFunction: () {
         setState(() {
           NotificationService()
-              .cancelNotification(todoBox.getAt(widget.index)!.id);
-          todoBox.putAt(
+              .cancelNotification(taskBox.getAt(widget.index)!.id);
+          taskBox.putAt(
               widget.index,
-              TodoModel(
-                  title: todoModel.title,
-                  description: todoModel.description,
+              TaskModel(
+                  title: task.title,
+                  description: task.description,
                   dateTime: null,
                   timeOfDay: null,
-                  id: todoModel.id));
+                  id: task.id));
         });
       },
     );
   }
 
-  Widget descriptionTextField(TodoModel todo) {
+  Widget descriptionTextField(TaskModel task) {
     return TextFormField(
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.newline,
         maxLines: null,
-        initialValue: todo.description,
+        initialValue: task.description,
         decoration: const InputDecoration(
             hintText: "Description",
             hintStyle: TextStyle(
@@ -158,38 +157,38 @@ class _EditTaskPageState extends State<EditTaskPage> {
             border: InputBorder.none),
         onChanged: (String value) {
           setState(() {
-            todoBox.putAt(
+            taskBox.putAt(
                 widget.index,
-                TodoModel(
-                    title: todo.title,
+                TaskModel(
+                    title: task.title,
                     description: value,
-                    dateTime: todo.dateTime,
-                    timeOfDay: todo.timeOfDay,
-                    id: todo.id));
-            if (todo.dateTime != null && todo.timeOfDay != null) {
-              if (todo.dateTime!.day >= DateTime.now().day &&
-                  todo.dateTime!.month >= DateTime.now().month) {
-                NotificationService().cancelNotification(todo.id);
-                NotificationService().createScheduleNotification(TodoModel(
-                    title: todo.title,
+                    dateTime: task.dateTime,
+                    timeOfDay: task.timeOfDay,
+                    id: task.id));
+            if (task.dateTime != null && task.timeOfDay != null) {
+              if (task.dateTime!.day >= DateTime.now().day &&
+                  task.dateTime!.month >= DateTime.now().month) {
+                NotificationService().cancelNotification(task.id);
+                NotificationService().createScheduleNotification(TaskModel(
+                    title: task.title,
                     description: value,
-                    dateTime: todo.dateTime,
-                    timeOfDay: todo.timeOfDay,
-                    id: todo.id));
+                    dateTime: task.dateTime,
+                    timeOfDay: task.timeOfDay,
+                    id: task.id));
               }
             }
           });
         });
   }
 
-  Widget markCompButtonWidget(TodoModel todoModel) {
+  Widget markCompButtonWidget(TaskModel task) {
     return Align(
       alignment: Alignment.bottomRight,
       child: TextButton(
         onPressed: () {
           Get.back();
-          todoBox.deleteAt(widget.index);
-          completedTodoBox.add(todoModel);
+          taskBox.deleteAt(widget.index);
+          compTaskBox.add(task);
           showMarkedCompSnackBar(context);
         },
         child: const Text(
@@ -216,8 +215,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
             index: widget.index,
             firstButtonFunction: () {
               NotificationService()
-                  .cancelNotification(todoBox.getAt(widget.index)?.id);
-              todoBox.deleteAt(widget.index);
+                  .cancelNotification(taskBox.getAt(widget.index)?.id);
+              taskBox.deleteAt(widget.index);
               Get.back();
               Get.back();
             },

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:jungle/app/app.dart';
-import 'package:jungle/model/todo_model/todo_model.dart';
+import 'package:jungle/model/task_model/task_model.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
 import 'package:jungle/view_model/text_field_validation/text_field_validation.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -15,9 +15,9 @@ Future<void> main() async{
   Hive.init(appDocumentDirectory.path);
   await Hive.initFlutter();
   Hive.registerAdapter(TimeOfDayAdapter());
-  Hive.registerAdapter(TodoModelAdapter());
-  await Hive.openBox<TodoModel>("todo");
-  await Hive.openBox<TodoModel>("completed");
+  Hive.registerAdapter(TaskModelAdapter());
+  await Hive.openBox<TaskModel>("task");
+  await Hive.openBox<TaskModel>("completed");
   await Hive.openBox("settings");
   runApp(
     MultiProvider(
@@ -37,10 +37,10 @@ void notificationInitialization(){
     null,
     [
       NotificationChannel(
-        channelGroupKey: 'todo_channel_group',
-        channelKey: 'todo_channel',
-        channelName: 'todo notification',
-        channelDescription: 'To show todo notifications',
+        channelGroupKey: 'task_channel_group',
+        channelKey: 'task_channel',
+        channelName: 'task notification',
+        channelDescription: 'To show task notifications',
         defaultColor: const Color(0xff009688),
         importance: NotificationImportance.High,
         ledColor: Colors.white,
@@ -50,7 +50,7 @@ void notificationInitialization(){
     ],
     channelGroups: [
     NotificationChannelGroup(
-        channelGroupKey: 'todo_channel_group',
+        channelGroupKey: 'task_channel_group',
         channelGroupName: 'Task group')
   ],
     debug: true

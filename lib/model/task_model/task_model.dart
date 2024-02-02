@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 export 'package:hive/hive.dart';
-part 'todo_model.g.dart';
+part 'task_model.g.dart';
 
 @HiveType(typeId: 1)
-class TodoModel{
+class TaskModel{
 
   @HiveField(0)
   String? title;
@@ -21,7 +21,7 @@ class TodoModel{
   @HiveField(4)
   int? id;
 
-  TodoModel(
+  TaskModel(
     {this.title,
     this.description,
     this.timeOfDay,

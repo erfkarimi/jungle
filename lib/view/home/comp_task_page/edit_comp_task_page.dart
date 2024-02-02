@@ -7,7 +7,7 @@ import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
 import 'package:jungle/widget/time_date_widget/time_date_widget.dart';
 import '../../../constant/snack_bar/snack_bar.dart';
-import '../../../model/todo_model/todo_model.dart';
+import '../../../model/task_model/task_model.dart';
 import '../../service/notification_service/notification_service.dart';
 
 class EditCompletedTaskPage extends StatefulWidget {
@@ -19,8 +19,8 @@ class EditCompletedTaskPage extends StatefulWidget {
 }
 
 class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
-  final Box<TodoModel> todoBox = Hive.box<TodoModel>("todo");
-  final Box<TodoModel> compTodoBox = Hive.box<TodoModel>("completed");
+  final Box<TaskModel> todoBox = Hive.box<TaskModel>("task");
+  final Box<TaskModel> compTodoBox = Hive.box<TaskModel>("completed");
   String title = "";
   String description = "";
   DateTime? dateTime;
@@ -28,15 +28,15 @@ class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
 
   @override
   Widget build(context) {
-    final compTodoModel = compTodoBox.getAt(widget.index) as TodoModel;
+    final compTask = compTodoBox.getAt(widget.index) as TaskModel;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: buildAppBar(compTodoModel),
-      body: buildBody(compTodoModel),
+      appBar: buildAppBar(compTask),
+      body: buildBody(compTask),
     );
   }
 
-  AppBar buildAppBar(TodoModel compTodo) {
+  AppBar buildAppBar(TaskModel compTask) {
     return AppBar(
       title: const Text(
         "Edit (completed)",
@@ -46,7 +46,7 @@ class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
     );
   }
 
-  Widget buildBody(TodoModel compTodo) {
+  Widget buildBody(TaskModel compTask) {
     return LayoutBuilder(builder: (context, constraint) {
       return SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -55,11 +55,11 @@ class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
           child: IntrinsicHeight(
             child: Column(
               children: [
-                titleTextField(compTodo),
-                timeAndDateWidget(compTodo),
-                descriptionTextField(compTodo),
+                titleTextField(compTask),
+                timeAndDateWidget(compTask),
+                descriptionTextField(compTask),
                 const Expanded(child: SizedBox()),
-                markUncompletedButtonWidget(compTodo)
+                markUncompletedButtonWidget(compTask)
               ],
             ),
           ),
@@ -68,7 +68,7 @@ class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
     });
   }
 
-  Widget titleTextField(TodoModel compTodo) {
+  Widget titleTextField(TaskModel compTask) {
     return TextFormField(
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.next,
@@ -77,7 +77,7 @@ class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
           fontWeight: FontWeight.bold,
           fontSize: 18,
         ),
-        initialValue: compTodo.title,
+        initialValue: compTask.title,
         decoration: const InputDecoration(
             hintText: "Title",
             hintStyle: TextStyle(
@@ -89,47 +89,47 @@ class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
           setState(() {
             compTodoBox.putAt(
                 widget.index,
-                TodoModel(
+                TaskModel(
                     title: value,
-                    description: compTodo.description,
-                    dateTime: compTodo.dateTime,
-                    timeOfDay: compTodo.timeOfDay));
+                    description: compTask.description,
+                    dateTime: compTask.dateTime,
+                    timeOfDay: compTask.timeOfDay));
           });
         });
   }
 
-  Widget timeAndDateWidget(TodoModel compTodo) {
+  Widget timeAndDateWidget(TaskModel compTask) {
     DateFormat currentDate = DateFormat("yyyy-MM-dd");
-    DateTime date = compTodo.dateTime ?? DateTime.now();
-    TimeOfDay time = compTodo.timeOfDay ?? TimeOfDay.now();
+    DateTime date = compTask.dateTime ?? DateTime.now();
+    TimeOfDay time = compTask.timeOfDay ?? TimeOfDay.now();
     String formattedDate = Jiffy.parse(currentDate.format(date)).MMMEd;
 
     return TimeDateWidget(
         time: time.format(context),
         date: formattedDate,
-        todoModel: compTodo,
+        todoModel: compTask,
         onFunction: () {
           setState(() {
             NotificationService()
                 .cancelNotification(compTodoBox.getAt(widget.index)!.id);
             compTodoBox.putAt(
                 widget.index,
-                TodoModel(
-                    title: compTodo.title,
-                    description: compTodo.description,
+                TaskModel(
+                    title: compTask.title,
+                    description: compTask.description,
                     dateTime: null,
                     timeOfDay: null,
-                    id: compTodo.id));
+                    id: compTask.id));
           });
         });
   }
 
-  Widget descriptionTextField(TodoModel compTodo) {
+  Widget descriptionTextField(TaskModel compTask) {
     return TextFormField(
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.newline,
         maxLines: null,
-        initialValue: compTodo.description,
+        initialValue: compTask.description,
         decoration: const InputDecoration(
             hintText: "Description",
             hintStyle: TextStyle(
@@ -140,23 +140,23 @@ class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
           setState(() {
             compTodoBox.putAt(
                 widget.index,
-                TodoModel(
-                    title: compTodo.title,
+                TaskModel(
+                    title: compTask.title,
                     description: value,
-                    dateTime: compTodo.dateTime,
-                    timeOfDay: compTodo.timeOfDay));
+                    dateTime: compTask.dateTime,
+                    timeOfDay: compTask.timeOfDay));
           });
         });
   }
 
-  Widget markUncompletedButtonWidget(TodoModel compTodo) {
+  Widget markUncompletedButtonWidget(TaskModel compTask) {
     return Align(
       alignment: Alignment.bottomRight,
       child: TextButton(
         onPressed: () {
           Get.back();
           compTodoBox.deleteAt(widget.index);
-          todoBox.add(compTodo);
+          todoBox.add(compTask);
           showMarkedUncompSnackBar(context);
         },
         child: const Text(

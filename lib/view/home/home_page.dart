@@ -2,7 +2,6 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:jungle/constant/palette/palette.dart';
 import 'package:jungle/view/service/notification_service/notification_service.dart';
 import 'comp_task_page/comp_task_page.dart';
@@ -18,7 +17,6 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  final Box settingsBox = Hive.box("settings");
   @override
   void initState() {
     super.initState();
