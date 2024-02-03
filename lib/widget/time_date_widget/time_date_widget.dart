@@ -5,13 +5,13 @@ import 'package:jungle/model/task_model/task_model.dart';
 class TimeDateWidget extends StatefulWidget {
   final String? time;
   final String? date;
-  final TaskModel? todoModel;
+  final TaskModel? task;
   final VoidCallback onFunction;
   const TimeDateWidget(
       {super.key,
       required this.time,
       required this.date,
-      required this.todoModel,
+      required this.task,
       required this.onFunction
       });
 
@@ -22,7 +22,7 @@ class TimeDateWidget extends StatefulWidget {
 class TimeDateWidgetState extends State<TimeDateWidget> {
   @override
   Widget build(context) {
-    if (widget.todoModel!.timeOfDay != null && widget.todoModel!.dateTime != null) {
+    if (widget.task!.timeOfDay != null && widget.task!.dateTime != null) {
           return Row(
             children: [
               const Icon(Icons.schedule),

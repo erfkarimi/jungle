@@ -9,6 +9,7 @@ import '../../../constant/palette/palette.dart';
 import '../../../model/task_model/task_model.dart';
 import '../../../view_model/text_field_validation/text_field_validation.dart';
 import '../../../widget/text_button_widget/text_button_widget.dart';
+import 'dart:ui' as ui;
 
 class NewTaskSheet extends StatefulWidget {
   const NewTaskSheet({super.key});
@@ -18,12 +19,13 @@ class NewTaskSheet extends StatefulWidget {
 }
 
 class _NewTaskSheetState extends State<NewTaskSheet> {
-  final Box<TaskModel> todoBox = Hive.box<TaskModel>("task");
+  final Box<TaskModel> taskBox = Hive.box<TaskModel>("task");
   TextEditingController controller = TextEditingController();
   DateTime? presentDate;
   TimeOfDay? presentTime;
   DateTime? notificationDate;
   TimeOfDay? notificationTime;
+  bool titleRTL = false;
 
   @override
   void dispose() {
@@ -45,20 +47,22 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  todoTextField(),
+                  taskTextField(),
                   timeAndDatePickerWidget(),
                 ],
               )),
         ));
   }
 
-  Widget todoTextField() {
+  Widget taskTextField() {
     return Consumer<TextFieldValidation>(
         builder: (context, textFieldValidation, _) {
       return TextField(
         textCapitalization: TextCapitalization.sentences,
         textInputAction: TextInputAction.done,
         autofocus: true,
+        textDirection: textFieldValidation.rTol 
+          ? ui.TextDirection.rtl : ui.TextDirection.ltr,
         controller: controller,
         maxLines: null,
         decoration: const InputDecoration(
@@ -68,7 +72,9 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
           border: InputBorder.none,
         ),
         onChanged: (_) {
-          textFieldValidation.todoTextFieldTitleChange(controller.text);
+          textFieldValidation.taskTextFieldTitleChange(controller.text);
+          textFieldValidation.rtlCheck(controller.text);
+          titleRTL = textFieldValidation.rTol;
         },
       );
     });
@@ -139,8 +145,8 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
               ? null
               : () {
                   setState(() {
-                    addTodoItem();
-                    textFieldValidation.todoTextFieldTitleChange("");
+                    addTaskItem();
+                    textFieldValidation.taskTextFieldTitleChange("");
                     Get.back();
                   });
                 },
@@ -153,17 +159,19 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
     );
   }
 
-  void addTodoItem() {
-    final TaskModel todoModel = TaskModel(
+  void addTaskItem() {
+    final TaskModel task = TaskModel(
         title: controller.text,
         dateTime: presentDate,
         timeOfDay: presentTime,
-        id: createUniqueID()
+        id: createUniqueID(),
+        titleRTL: titleRTL,
+        descriptionRTL: false
         );
 
-    todoBox.add(todoModel);
+    taskBox.add(task);
     if (presentDate != null && presentTime != null) {
-      NotificationService().createScheduleNotification(todoModel);
+      NotificationService().createScheduleNotification(task);
       showNotificationSnackBar();
     }
   }

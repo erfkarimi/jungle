@@ -43,7 +43,7 @@ void notificationInitialization(){
         channelDescription: 'To show task notifications',
         defaultColor: const Color(0xff009688),
         importance: NotificationImportance.High,
-        ledColor: Colors.white,
+        ledColor: const Color(0xff009688),
         channelShowBadge: true,
         locked: true
         ),

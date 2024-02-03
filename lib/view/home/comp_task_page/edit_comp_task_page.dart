@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:jungle/view_model/text_field_validation/text_field_validation.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import 'package:jungle/widget/text_button_widget/text_button_widget.dart';
 import 'package:jungle/widget/time_date_widget/time_date_widget.dart';
+import 'package:provider/provider.dart';
 import '../../../constant/snack_bar/snack_bar.dart';
 import '../../../model/task_model/task_model.dart';
 import '../../service/notification_service/notification_service.dart';
+import 'dart:ui' as ui;
 
 class EditCompletedTaskPage extends StatefulWidget {
   final int index;
@@ -25,6 +28,8 @@ class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
   String description = "";
   DateTime? dateTime;
   TimeOfDay? timeOfDay;
+  bool titleRTL = false;
+  bool descriptionRTL = false;
 
   @override
   Widget build(context) {
@@ -69,33 +74,43 @@ class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
   }
 
   Widget titleTextField(TaskModel compTask) {
-    return TextFormField(
-        textCapitalization: TextCapitalization.sentences,
-        textInputAction: TextInputAction.next,
-        maxLines: null,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-        initialValue: compTask.title,
-        decoration: const InputDecoration(
-            hintText: "Title",
-            hintStyle: TextStyle(
-              color: Colors.grey,
+    return Consumer<TextFieldValidation>(
+      builder: (context, textFieldValidation, _) {
+        return TextFormField(
+            textCapitalization: TextCapitalization.sentences,
+            textInputAction: TextInputAction.next,
+            textDirection:  compTask.titleRTL 
+            ? ui.TextDirection.rtl : ui.TextDirection.ltr,
+            maxLines: null,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
             ),
-            prefixIcon: Icon(Icons.tag),
-            border: InputBorder.none),
-        onChanged: (String value) {
-          setState(() {
-            compTodoBox.putAt(
-                widget.index,
-                TaskModel(
-                    title: value,
-                    description: compTask.description,
-                    dateTime: compTask.dateTime,
-                    timeOfDay: compTask.timeOfDay));
-          });
-        });
+            initialValue: compTask.title,
+            decoration: const InputDecoration(
+                hintText: "Title",
+                hintStyle: TextStyle(
+                  color: Colors.grey,
+                ),
+                prefixIcon: Icon(Icons.tag),
+                border: InputBorder.none),
+            onChanged: (String value) {
+              textFieldValidation.rtlCheck(value);
+              titleRTL = textFieldValidation.rTol;
+              setState(() {
+                compTodoBox.putAt(
+                    widget.index,
+                    TaskModel(
+                        title: value,
+                        description: compTask.description,
+                        dateTime: compTask.dateTime,
+                        timeOfDay: compTask.timeOfDay,
+                        titleRTL: titleRTL,
+                        descriptionRTL: compTask.descriptionRTL));
+              });
+            });
+      }
+    );
   }
 
   Widget timeAndDateWidget(TaskModel compTask) {
@@ -107,7 +122,7 @@ class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
     return TimeDateWidget(
         time: time.format(context),
         date: formattedDate,
-        todoModel: compTask,
+        task: compTask,
         onFunction: () {
           setState(() {
             NotificationService()
@@ -117,36 +132,49 @@ class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
                 TaskModel(
                     title: compTask.title,
                     description: compTask.description,
-                    dateTime: null,
-                    timeOfDay: null,
-                    id: compTask.id));
+                    dateTime: compTask.dateTime,
+                    timeOfDay: compTask.timeOfDay,
+                    id: compTask.id,
+                    titleRTL: compTask.titleRTL,
+                    descriptionRTL: compTask.descriptionRTL));
           });
         });
   }
 
   Widget descriptionTextField(TaskModel compTask) {
-    return TextFormField(
-        textCapitalization: TextCapitalization.sentences,
-        textInputAction: TextInputAction.newline,
-        maxLines: null,
-        initialValue: compTask.description,
-        decoration: const InputDecoration(
-            hintText: "Description",
-            hintStyle: TextStyle(
-              color: Colors.grey,
-            ),
-            border: InputBorder.none),
-        onChanged: (String value) {
-          setState(() {
-            compTodoBox.putAt(
-                widget.index,
-                TaskModel(
-                    title: compTask.title,
-                    description: value,
-                    dateTime: compTask.dateTime,
-                    timeOfDay: compTask.timeOfDay));
-          });
-        });
+    return Consumer<TextFieldValidation>(
+      builder: (context, textFieldValidation, _) {
+        return TextFormField(
+            textCapitalization: TextCapitalization.sentences,
+            textInputAction: TextInputAction.newline,
+            maxLines: null,
+            initialValue: compTask.description,
+            textDirection:  compTask.descriptionRTL 
+            ? ui.TextDirection.rtl : ui.TextDirection.ltr,
+            decoration: const InputDecoration(
+                hintText: "Description",
+                hintStyle: TextStyle(
+                  color: Colors.grey,
+                ),
+                border: InputBorder.none),
+            onChanged: (String value) {
+              textFieldValidation.rtlCheck(value);
+              descriptionRTL = textFieldValidation.rTol;
+              setState(() {
+                compTodoBox.putAt(
+                    widget.index,
+                    TaskModel(
+                        title: compTask.title,
+                        description: value,
+                        dateTime: compTask.dateTime,
+                        timeOfDay: compTask.timeOfDay,
+                        id: compTask.id,
+                        titleRTL: compTask.titleRTL,
+                        descriptionRTL: descriptionRTL));
+              });
+            });
+      }
+    );
   }
 
   Widget markUncompletedButtonWidget(TaskModel compTask) {

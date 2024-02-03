@@ -32,7 +32,7 @@ class NotificationService{
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: task.id ?? 0,
-            channelKey: 'todo_channel',
+            channelKey: 'task_channel',
             title: task.title,
             body: task.description,
             notificationLayout: NotificationLayout.Default),
@@ -46,7 +46,7 @@ class NotificationService{
             actionButtons: [
               NotificationActionButton(
                 key: "DISMISS",
-                label: "${Emojis.symbols_check_mark} Dismiss",
+                label: "Dismiss",
                 actionType: ActionType.DismissAction
               )
             ]

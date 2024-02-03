@@ -21,11 +21,20 @@ class TaskModel{
   @HiveField(4)
   int? id;
 
+  @HiveField(5)
+  bool titleRTL;
+
+  @HiveField(6)
+  bool descriptionRTL;
+
   TaskModel(
     {this.title,
     this.description,
     this.timeOfDay,
     this.dateTime,
-    this.id}
+    this.id,
+    required this.titleRTL,
+    required this.descriptionRTL
+    }
   );
 }

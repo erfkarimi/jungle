@@ -7,6 +7,7 @@ import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dar
 import '../../../constant/snack_bar/snack_bar.dart';
 import '../../../model/task_model/task_model.dart';
 import 'edit_task.dart';
+import 'dart:ui' as ui;
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -80,13 +81,18 @@ class TaskPageState extends State<TaskPage> {
         title: Text(
           taskTitle,
           maxLines: 2,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          textDirection: task.titleRTL
+          ? ui.TextDirection.rtl : ui.TextDirection.ltr,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold),
         ),
         subtitle: taskDescription.isEmpty
             ? null
             : Text(
                 taskDescription,
                 maxLines: 2,
+                textDirection: task.descriptionRTL
+                ? ui.TextDirection.rtl : ui.TextDirection.ltr,
               ),
         trailing: task.dateTime != null
         ? Icon(

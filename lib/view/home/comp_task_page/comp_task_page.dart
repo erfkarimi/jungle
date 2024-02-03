@@ -6,6 +6,7 @@ import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dar
 import '../../../../model/task_model/task_model.dart';
 import '../../service/notification_service/notification_service.dart';
 import 'edit_comp_task_page.dart';
+import 'dart:ui' as ui;
 
 class CompTaskPage extends StatefulWidget {
   const CompTaskPage({super.key});
@@ -76,6 +77,8 @@ class CompTaskPageState extends State<CompTaskPage> {
         ),
         title: Text(
           title,
+          textDirection: compTask.titleRTL 
+          ? ui.TextDirection.rtl : ui.TextDirection.ltr,
           style: const TextStyle(
               fontWeight: FontWeight.bold,
               decoration: TextDecoration.lineThrough),
@@ -85,6 +88,8 @@ class CompTaskPageState extends State<CompTaskPage> {
             : Text(
                 description,
                 maxLines: 2,
+                textDirection: compTask.descriptionRTL 
+                ? ui.TextDirection.rtl : ui.TextDirection.ltr,
                 style: const TextStyle(decoration: TextDecoration.lineThrough),
               ),
       ),
