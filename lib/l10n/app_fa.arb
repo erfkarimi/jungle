@@ -1,0 +1,38 @@
+{
+    "@homePage" : {
+        "description" : "Home page items"
+    },
+    "firstTabButtonTitle" : "تکلیف من",
+    "secondTabButtonTitle" : "کامل شده",
+    "noTaskText" : "بدون تکلیف",
+    "noCompTaskText" : "هیچی کامل نشده",
+    "saveButtonTitle" : "ذخیره",
+    "titleTextFieldTitle" : "عنوان",
+    "descriptionTextFieldTitle" : "توضیحات",
+    "firstSnackBarTitle" : "تکلیف کامل شد",
+    "secondSnackBarTitle" : "تکلیف کامل نشده",
+    "dataAndTime" : "تنظیم نشده",
+    
+    "@settingsPage" : {
+        "description" : "Settings page items"
+    },
+    "appBarTitle" : "تنظیمات",
+    "lightButtonTitle" : "روشن",
+    "darkButtonTitle" : "تاریک",
+    "notificationButtonTitle" : "اعلان",
+    "shareButtonTitle" : "دعوت از دوستان",
+    "feedbackButtonTitle" : "بازخورد",
+    "aboutButtonTitle" : "درباره",
+
+    "@deletionDialog" : {
+        "description" : "Deletion dialog to delete tasks"
+    },
+    "dialogTitle" : "حذف",
+    "dialogContent" : "آیا مایل به حذف این تکلیف هستید ؟",
+    "firstDialogButtonTitle" : "حذف",
+    "secondDialogButtonTitle" : "لغو",
+
+    "@language" : {
+        "description" : "Second language"
+    }
+}

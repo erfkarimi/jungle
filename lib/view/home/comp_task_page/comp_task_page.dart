@@ -5,6 +5,7 @@ import 'package:jungle/constant/snack_bar/snack_bar.dart';
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import '../../../../model/task_model/task_model.dart';
 import '../../service/notification_service/notification_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'edit_comp_task_page.dart';
 import 'dart:ui' as ui;
 
@@ -107,9 +108,9 @@ class CompTaskPageState extends State<CompTaskPage> {
               "asset/image/complete_image.png",
               width: 220,
             ),
-            const Text(
-              "Nothing is completed",
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.noCompTaskText,
+              style: const TextStyle(
                 fontSize: 16,
               ),
             )

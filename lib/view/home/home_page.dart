@@ -6,6 +6,8 @@ import 'package:jungle/constant/palette/palette.dart';
 import 'package:jungle/view/service/notification_service/notification_service.dart';
 import 'comp_task_page/comp_task_page.dart';
 import 'task_page/task_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'dart:io';
 
 part 'notification_perm_dialog.dart';
 
@@ -36,13 +38,11 @@ class HomePageState extends State<HomePage> {
           resizeToAvoidBottomInset: false,
           body: NestedScrollView(
             floatHeaderSlivers: true,
-            headerSliverBuilder: (context, innerBoxIsScrolled){
-              return [
-                buildAppBar(context)
-              ];
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [buildAppBar(context)];
             },
             body: buildBody(),
-            ),
+          ),
         ),
       ),
     );
@@ -60,8 +60,7 @@ class HomePageState extends State<HomePage> {
           centerTitle: true,
           title: const Text(
             "Jungle",
-            style: TextStyle(
-              fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
           actions: appBarActionWidget(),
           bottom: tabBarWidget(),
@@ -87,14 +86,16 @@ class HomePageState extends State<HomePage> {
         isScrollable: true,
         indicatorWeight: 5,
         splashBorderRadius: BorderRadius.circular(10),
-        labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        labelStyle: TextStyle(
+          fontFamily: Platform.localeName == "en" ? "Lato" : "Vazirmatn",
+          fontWeight: FontWeight.bold),
         tabs: tabListWidget());
   }
 
   List<Tab> tabListWidget() {
     return [
-      const Tab(child: Text("My task")),
-      const Tab(child: Text("Completed")),
+      Tab(child: Text(AppLocalizations.of(context)!.firstTabButtonTitle)),
+      Tab(child: Text(AppLocalizations.of(context)!.secondTabButtonTitle)),
     ];
   }
 

@@ -26,6 +26,8 @@ dependencies:
   app_settings: ^5.1.1
   share_plus: ^7.2.1
   webview_flutter: ^4.4.3
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -36,6 +38,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
     - asset/image/1st_page.png
@@ -46,9 +49,12 @@ flutter:
     - asset/image/task_image.png
   
   fonts:
-    - family: Regular
+    - family: Lato
       fonts:
         - asset: "asset/font/Lato-Regular.ttf"
+    - family: Vazirmatn
+      fonts:
+      - asset: "asset/font/Vazirmatn-Regular.ttf"
 
 flutter_native_splash:
   color: "#009688"

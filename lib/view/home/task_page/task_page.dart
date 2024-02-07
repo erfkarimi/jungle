@@ -6,6 +6,7 @@ import 'package:jungle/view/service/notification_service/notification_service.da
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import '../../../constant/snack_bar/snack_bar.dart';
 import '../../../model/task_model/task_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'edit_task.dart';
 import 'dart:ui' as ui;
 
@@ -115,9 +116,9 @@ class TaskPageState extends State<TaskPage> {
               "asset/image/task_image.png",
               width: 220,
             ),
-            const Text(
-              "No task",
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.noTaskText,
+              style: const TextStyle(
                 fontSize: 16,
               ),
             )
@@ -145,7 +146,7 @@ class TaskPageState extends State<TaskPage> {
       onPressed: () {
         showNewTodoBottomSheet();
       },
-      tooltip: "Add new todo",
+      tooltip: "Add new task",
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: const Icon(
         Icons.add,

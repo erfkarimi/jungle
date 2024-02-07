@@ -8,6 +8,7 @@ import 'package:jungle/view_model/text_field_validation/text_field_validation.da
 import 'package:jungle/widget/delete_dialog_widget.dart/delete_dialog_widget.dart';
 import 'package:jungle/widget/leading_button_widget/leading_button_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../model/task_model/task_model.dart';
 import '../../../widget/text_button_widget/text_button_widget.dart';
 import '../../../widget/time_date_widget/time_date_widget.dart';
@@ -80,58 +81,56 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
   Widget titleTextField(TaskModel task) {
     return Consumer<TextFieldValidation>(
-      builder: (context, textFieldValidation, _) {
-        return TextFormField(
-            textCapitalization: TextCapitalization.sentences,
-            textInputAction: TextInputAction.next,
-            maxLines: null,
-            textDirection:  task.titleRTL
-          ? ui.TextDirection.rtl : ui.TextDirection.ltr,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-            initialValue: task.title,
-            
-            decoration: const InputDecoration(
-                hintText: "Title",
-                hintStyle: TextStyle(
-                  color: Colors.grey,
-                ),
-                prefixIcon: Icon(Icons.tag),
-                border: InputBorder.none),
-            onChanged: (String value) {
-              textFieldValidation.rtlCheck(value);
-              titleRTL = textFieldValidation.rTol;
-              setState(() {
-                taskBox.putAt(
-                    widget.index,
-                    TaskModel(
-                        title: value,
-                        description: task.description,
-                        dateTime: task.dateTime,
-                        timeOfDay: task.timeOfDay,
-                        id: task.id,
-                        titleRTL: titleRTL,
-                        descriptionRTL: task.descriptionRTL));
-                if (task.dateTime != null && task.timeOfDay != null) {
-                  if (task.dateTime!.day >= DateTime.now().day &&
-                      task.dateTime!.month >= DateTime.now().month) {
-                    NotificationService().cancelNotification(task.id);
-                    NotificationService().createScheduleNotification(TaskModel(
-                        title: value,
-                        description: task.description,
-                        dateTime: task.dateTime,
-                        timeOfDay: task.timeOfDay,
-                        id: task.id,
-                        titleRTL: titleRTL,
-                        descriptionRTL: task.descriptionRTL));
-                  }
+        builder: (context, textFieldValidation, _) {
+      return TextFormField(
+          textCapitalization: TextCapitalization.sentences,
+          textInputAction: TextInputAction.next,
+          maxLines: null,
+          textDirection:
+              task.titleRTL ? ui.TextDirection.rtl : ui.TextDirection.ltr,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+          initialValue: task.title,
+          decoration: InputDecoration(
+              hintText: AppLocalizations.of(context)!.titleTextFieldTitle,
+              hintStyle: const TextStyle(
+                color: Colors.grey,
+              ),
+              prefixIcon: const Icon(Icons.tag),
+              border: InputBorder.none),
+          onChanged: (String value) {
+            textFieldValidation.rtlCheck(value);
+            titleRTL = textFieldValidation.rTol;
+            setState(() {
+              taskBox.putAt(
+                  widget.index,
+                  TaskModel(
+                      title: value,
+                      description: task.description,
+                      dateTime: task.dateTime,
+                      timeOfDay: task.timeOfDay,
+                      id: task.id,
+                      titleRTL: titleRTL,
+                      descriptionRTL: task.descriptionRTL));
+              if (task.dateTime != null && task.timeOfDay != null) {
+                if (task.dateTime!.day >= DateTime.now().day &&
+                    task.dateTime!.month >= DateTime.now().month) {
+                  NotificationService().cancelNotification(task.id);
+                  NotificationService().createScheduleNotification(TaskModel(
+                      title: value,
+                      description: task.description,
+                      dateTime: task.dateTime,
+                      timeOfDay: task.timeOfDay,
+                      id: task.id,
+                      titleRTL: titleRTL,
+                      descriptionRTL: task.descriptionRTL));
                 }
-              });
+              }
             });
-      }
-    );
+          });
+    });
   }
 
   Widget timeAndDateWidget(TaskModel task) {
@@ -165,52 +164,51 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
   Widget descriptionTextField(TaskModel task) {
     return Consumer<TextFieldValidation>(
-      builder: (context, textFieldValidation, _) {
-        return TextFormField(
-            textCapitalization: TextCapitalization.sentences,
-            textInputAction: TextInputAction.newline,
-            maxLines: null,
-            initialValue: task.description,
-            textDirection:  task.descriptionRTL 
-              ? ui.TextDirection.rtl : ui.TextDirection.ltr,
-            decoration: const InputDecoration(
-                hintText: "Description",
-                hintStyle: TextStyle(
-                  color: Colors.grey,
-                ),
-                border: InputBorder.none),
-            onChanged: (String value) {
-              textFieldValidation.rtlCheck(value);
-              descriptionRTL = textFieldValidation.rTol;
-              setState(() {
-                taskBox.putAt(
-                    widget.index,
-                    TaskModel(
-                        title: task.title,
-                        description: value,
-                        dateTime: task.dateTime,
-                        timeOfDay: task.timeOfDay,
-                        id: task.id,
-                        titleRTL: task.titleRTL,
-                        descriptionRTL: descriptionRTL));
-                if (task.dateTime != null && task.timeOfDay != null) {
-                  if (task.dateTime!.day >= DateTime.now().day &&
-                      task.dateTime!.month >= DateTime.now().month) {
-                    NotificationService().cancelNotification(task.id);
-                    NotificationService().createScheduleNotification(TaskModel(
-                        title: task.title,
-                        description: value,
-                        dateTime: task.dateTime,
-                        timeOfDay: task.timeOfDay,
-                        id: task.id,
-                        titleRTL: task.titleRTL,
-                        descriptionRTL: descriptionRTL));
-                  }
+        builder: (context, textFieldValidation, _) {
+      return TextFormField(
+          textCapitalization: TextCapitalization.sentences,
+          textInputAction: TextInputAction.newline,
+          maxLines: null,
+          initialValue: task.description,
+          textDirection:
+              task.descriptionRTL ? ui.TextDirection.rtl : ui.TextDirection.ltr,
+          decoration: InputDecoration(
+              hintText: AppLocalizations.of(context)!.descriptionTextFieldTitle,
+              hintStyle: const TextStyle(
+                color: Colors.grey,
+              ),
+              border: InputBorder.none),
+          onChanged: (String value) {
+            textFieldValidation.rtlCheck(value);
+            descriptionRTL = textFieldValidation.rTol;
+            setState(() {
+              taskBox.putAt(
+                  widget.index,
+                  TaskModel(
+                      title: task.title,
+                      description: value,
+                      dateTime: task.dateTime,
+                      timeOfDay: task.timeOfDay,
+                      id: task.id,
+                      titleRTL: task.titleRTL,
+                      descriptionRTL: descriptionRTL));
+              if (task.dateTime != null && task.timeOfDay != null) {
+                if (task.dateTime!.day >= DateTime.now().day &&
+                    task.dateTime!.month >= DateTime.now().month) {
+                  NotificationService().cancelNotification(task.id);
+                  NotificationService().createScheduleNotification(TaskModel(
+                      title: task.title,
+                      description: value,
+                      dateTime: task.dateTime,
+                      timeOfDay: task.timeOfDay,
+                      id: task.id,
+                      titleRTL: task.titleRTL,
+                      descriptionRTL: descriptionRTL));
                 }
-              });
+              }
             });
-      }
-    );
+          });
+    });
   }
 
   Widget markCompButtonWidget(TaskModel task) {
@@ -234,7 +232,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
   Widget deleteTodoButton() {
     return TextButtonWidget(
       function: () => deleteTodoDialog(),
-      buttonTitle: "Delete",
+      buttonTitle: AppLocalizations.of(context)!.firstDialogButtonTitle,
       color: Colors.red,
     );
   }

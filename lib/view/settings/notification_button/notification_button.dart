@@ -1,5 +1,6 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationButton extends StatelessWidget {
   const NotificationButton({super.key});
@@ -7,20 +8,18 @@ class NotificationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      onPressed: (){
+      onPressed: () {
         AppSettings.openAppSettings(type: AppSettingsType.notification);
       },
-      child: const ListTile(
-        leading: Icon(
+      child: ListTile(
+        leading: const Icon(
           Icons.notifications_outlined,
-          ),
-          title: Text(
-            "Notification",
-            style: TextStyle(
-              fontSize: 16
-            ),
-            ),
+        ),
+        title: Text(
+          AppLocalizations.of(context)!.notificationButtonTitle,
+          style: const TextStyle(fontSize: 16),
+        ),
       ),
-      );
+    );
   }
 }

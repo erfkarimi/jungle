@@ -5,6 +5,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:jungle/utility/utility.dart';
 import 'package:jungle/view/service/notification_service/notification_service.dart';
 import 'package:jungle/view_model/app_ui_style/app_ui_style.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../constant/palette/palette.dart';
 import '../../../model/task_model/task_model.dart';
 import '../../../view_model/text_field_validation/text_field_validation.dart';
@@ -65,8 +66,8 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
           ? ui.TextDirection.rtl : ui.TextDirection.ltr,
         controller: controller,
         maxLines: null,
-        decoration: const InputDecoration(
-          hintText: "Title",
+        decoration: InputDecoration(
+          hintText: AppLocalizations.of(context)!.titleTextFieldTitle,
           hintStyle: TextStyle(color: Colors.grey),
           contentPadding: EdgeInsets.all(8.0),
           border: InputBorder.none,
@@ -150,7 +151,7 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
                     Get.back();
                   });
                 },
-          buttonTitle: "Save",
+          buttonTitle: AppLocalizations.of(context)!.saveButtonTitle,
           color: (!textFieldValidation.isValid)
               ? Colors.grey
               : Palette.ultramarineBlue,

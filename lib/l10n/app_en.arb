@@ -1,0 +1,37 @@
+{
+    "@homePage" : {
+        "description" : "Home page items"
+    },
+    "appBarTitle" : "Settings",
+    "firstTabButtonTitle" : "My task",
+    "secondTabButtonTitle" : "Completed",
+    "noTaskText" : "No Task",
+    "noCompTaskText" : "Nothing is completed",
+    "saveButtonTitle" : "Save",
+    "titleTextFieldTitle" : "Title",
+    "descriptionTextFieldTitle" : "Description",
+    "firstSnackBarTitle" : "Task completed",
+    "secondSnackBarTitle" : "Task marked uncompleted",
+    "dataAndTime" : "Not set",
+    
+    "@settingsPage" : {
+        "description" : "Home page items"
+    },
+    "lightButtonTitle" : "Light",
+    "darkButtonTitle" : "Dark",
+    "notificationButtonTitle" : "Notification",
+    "shareButtonTitle" : "Invite friends",
+    "feedbackButtonTitle" : "Feedback",
+    "aboutButtonTitle" : "About",
+
+    "@deletionDialog" : {
+        "description" : "Deletion dialog to delete tasks"
+    },
+    "dialogTitle" : "Deletion",
+    "dialogContent" : "Would you like to delete this task?",
+    "firstDialogButtonTitle" : "Delete",
+    "secondDialogButtonTitle" : "Cancel",
+    "@language" : {
+        "description" : "Current language"
+    }
+}
