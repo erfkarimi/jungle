@@ -58,4 +58,3 @@ class NotificationService{
     await AwesomeNotifications().cancelSchedule(id ?? 0);
   } 
 }
-

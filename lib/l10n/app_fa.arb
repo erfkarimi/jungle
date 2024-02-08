@@ -21,7 +21,6 @@
     "editUncompTaskBarTitle" : "ویرایش (کامل شده)",
     "markCompButtonTitle" : "انتقال به کامل شده",
     "markUncompButtonTitle" : "انتقال به کامل نشده",
-    
     "@settingsPage" : {
         "description" : "Settings page items"
     },
@@ -32,7 +31,6 @@
     "shareButtonTitle" : "دعوت از دوستان",
     "feedbackButtonTitle" : "بازخورد",
     "aboutButtonTitle" : "درباره",
-
     "@deletionDialog" : {
         "description" : "Deletion dialog to delete tasks"
     },

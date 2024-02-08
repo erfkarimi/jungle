@@ -116,6 +116,7 @@ class TaskPageState extends State<TaskPage> {
               "asset/image/task_image.png",
               width: 220,
             ),
+            const SizedBox(height: 10),
             Text(
               AppLocalizations.of(context)!.noTaskText,
               style: const TextStyle(
@@ -172,5 +173,4 @@ class TaskPageState extends State<TaskPage> {
           );
         });
   }
-
 }
