@@ -44,8 +44,8 @@ class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
 
   AppBar buildAppBar(TaskModel compTask) {
     return AppBar(
-      title: const Text(
-        "Edit (completed)",
+      title: Text(
+        AppLocalizations.of(context)!.editUncompTaskBarTitle,
       ),
       leading: LeadingButtonWidget(),
       actions: [deleteCompletedTodoButton()],
@@ -187,9 +187,9 @@ class _EditCompletedTaskPageState extends State<EditCompletedTaskPage> {
           todoBox.add(compTask);
           showMarkedUncompSnackBar(context);
         },
-        child: const Text(
-          "Mark uncompleted",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        child: Text(
+          AppLocalizations.of(context)!.markUncompButtonTitle,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
     );

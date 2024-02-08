@@ -13,7 +13,15 @@
     "firstSnackBarTitle" : "Task completed",
     "secondSnackBarTitle" : "Task marked uncompleted",
     "dataAndTime" : "Not set",
-    
+    "notificationPerDialogTitle" : "Allow notifications",
+    "notificationPerDialogContent" : "Our app would like to send you notifications",
+    "notificationPerDialogFirstButton" : "Don't allow",
+    "notificationPerDialogSecondButton" : "Allow",
+    "notificationSnackBarContent" : "Notification's been set",
+    "editTaskBarTitle" : "Edit task",
+    "editUncompTaskBarTitle" : "Edit (completed)",
+    "markCompButtonTitle" : "Mark completed",
+    "markUncompButtonTitle" : "Mark uncompleted",
     "@settingsPage" : {
         "description" : "Home page items"
     },

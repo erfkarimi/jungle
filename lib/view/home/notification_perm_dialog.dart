@@ -6,15 +6,17 @@ void notificationPermissionFunc(BuildContext context) {
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
-                title: const Text("Allow notifications"),
-                content:
-                    const Text("Our app would like to send you notifications"),
+                title: Text(
+                    AppLocalizations.of(context)!.notificationPerDialogTitle),
+                content: Text(
+                    AppLocalizations.of(context)!.notificationPerDialogContent),
                 actions: [
                   TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text(
-                        'Don\'t allow',
-                        style: TextStyle(color: Colors.grey, fontSize: 18),
+                      child: Text(
+                        AppLocalizations.of(context)!
+                            .notificationPerDialogFirstButton,
+                        style: const TextStyle(color: Colors.grey, fontSize: 18),
                       )),
                   TextButton(
                       onPressed: () {
@@ -25,7 +27,8 @@ void notificationPermissionFunc(BuildContext context) {
                         });
                       },
                       child: Text(
-                        'Allow',
+                        AppLocalizations.of(context)!
+                            .notificationPerDialogSecondButton,
                         style: TextStyle(
                             fontSize: 18,
                             color: Palette.ultramarineBlue,

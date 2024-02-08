@@ -12,6 +12,15 @@
     "firstSnackBarTitle" : "تکلیف کامل شد",
     "secondSnackBarTitle" : "تکلیف کامل نشده",
     "dataAndTime" : "تنظیم نشده",
+    "notificationPerDialogTitle" : "مجوز اعلان",
+    "notificationPerDialogContent" : "آیا مایل به دریافت اعلان هستید ؟",
+    "notificationPerDialogFirstButton" : "اجازه ندادن",
+    "notificationPerDialogSecondButton" : "اجازه دادن",
+    "notificationSnackBarContent" : "اعلان تنظیم شد",
+    "editTaskBarTitle" : "ویرایش تکلیف",
+    "editUncompTaskBarTitle" : "ویرایش (کامل شده)",
+    "markCompButtonTitle" : "انتقال به کامل شده",
+    "markUncompButtonTitle" : "انتقال به کامل نشده",
     
     "@settingsPage" : {
         "description" : "Settings page items"

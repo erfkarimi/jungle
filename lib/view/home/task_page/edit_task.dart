@@ -48,7 +48,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
     TaskModel task,
   ) {
     return AppBar(
-      title: const Text("Edit task"),
+      title: Text(AppLocalizations.of(context)!.editTaskBarTitle),
       leading: LeadingButtonWidget(),
       actions: [deleteTodoButton()],
     );
@@ -221,8 +221,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
           compTaskBox.add(task);
           showMarkedCompSnackBar(context);
         },
-        child: const Text(
-          "Mark completed",
+        child: Text(
+          AppLocalizations.of(context)!.markCompButtonTitle,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
