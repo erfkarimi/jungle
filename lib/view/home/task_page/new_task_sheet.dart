@@ -68,8 +68,8 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
         maxLines: null,
         decoration: InputDecoration(
           hintText: AppLocalizations.of(context)!.titleTextFieldTitle,
-          hintStyle: TextStyle(color: Colors.grey),
-          contentPadding: EdgeInsets.all(8.0),
+          hintStyle: const TextStyle(color: Colors.grey),
+          contentPadding: const EdgeInsets.all(8.0),
           border: InputBorder.none,
         ),
         onChanged: (_) {
@@ -185,7 +185,7 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
             const Icon(Icons.notification_add_outlined),
             const SizedBox(width: 10),
             Text(
-              "Notification's been set",
+              AppLocalizations.of(context)!.notificationSnackBarContent,
               style: TextStyle(
                   color: Theme.of(context).textTheme.bodyMedium!.color,
                   fontWeight: FontWeight.bold),
